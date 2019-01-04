@@ -1,4 +1,4 @@
-Code for the blog post: 
+Code for the blog post: https://golb.hplar.ch/2019/01/machine-learning-with-brain-and-tensorflow-js.html
 
 Online Demo: https://demo.rasc.ch/mnistjs
 
