@@ -1,0 +1,13 @@
+{
+  "name": "mnistjs",
+  "version": "1.0.0",
+  "main": "train.js",
+  "scripts": {
+    "train": "node --max-old-space-size=4096 ./train.js",
+    "traintf": "node --max-old-space-size=4096 ./tfjs.js"
+  },
+  "dependencies": {
+    "@tensorflow/tfjs-node": "0.2.1",
+    "brain.js": "1.6.1"
+  }
+}
