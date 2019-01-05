@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>BigInt and JSON</title>
+</head>
+
+<body>
+
+<script>
+
+function stringifyReplacer(key, value) {
+    if (typeof value === 'bigint') {
+        return value.toString() + 'n';
+    } else {
+        return value;
+    }
+}
+
+function parseReviver(key, value) {
+    if (typeof value === 'string' && /^\d+n$/.test(value)) {
+        return BigInt(value.slice(0, -1));
+    }
+    return value;
+}
+
+async function fetchData() {
+    /*
+    const response1 = await fetch('fetchData1');
+    const obj1 = await response1.json();
+    console.log(obj1);
+    // {value1: 1, value2: 2147483647, prime: 2305843009213694000}
+    // incorrect, should be                   2305843009213693951
+
+    const response2 = await fetch('fetchData2');
+    const obj2 = await response2.json();
+    console.log(obj2);
+    // {value1: 2, value2: 9007199254740991, prime: Infinity}
+    */
+
+    const response1 = await fetch('fetchData1');
+    const obj1 = JSON.parse(await response1.text(), parseReviver);
+    console.log(obj1);
+    // {value1: 1, value2: 2147483647n, prime: 2305843009213693951n}
+
+    const response2 = await fetch('fetchData2');
+    const obj2 = JSON.parse(await response2.text(), parseReviver);
+    console.log(obj2);
+    // {value1: 2, value2: 9007199254740991n, prime: 10407932194664399081925240327364085538615262247266...958028878050869736186900714720710555703168729087n}
+
+    /*
+    const storeObj = {
+        value1: 3,
+        value2: 2147483647,
+        prime: 2305843009213693951
+    };
+    */
+
+    const storeObj = {
+        value1: 3,
+        value2: 2147483647n,
+        prime: 2305843009213693951n
+    };
+
+    await fetch('storeData', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(storeObj, stringifyReplacer)
+    })
+    console.log(JSON.stringify(storeObj, stringifyReplacer));
+}
+
+fetchData();
+</script>
+</body>
+
+</html>
