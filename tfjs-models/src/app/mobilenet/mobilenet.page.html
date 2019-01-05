@@ -1,0 +1,23 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Image classification using MobileNet</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+  <div text-center>
+    <img #image>
+  </div>
+
+  <ul class="output">
+    <li *ngFor="let prediction of predictions | async">
+      {{prediction.className}} ({{prediction.probability | number:'1.5-5'}})
+    </li>
+  </ul>
+</ion-content>
+
+<ion-footer text-center>
+  <input #fileSelector type="file" accept="image/*" (change)="onFileCange($event)"
+         style="display: none;">
+  <ion-button (click)="clickFileSelector()" text-center>Select File ...</ion-button>
+</ion-footer>

@@ -1,0 +1,27 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      Object-Detection
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content #content>
+  <ion-item>
+    <ion-label position="stacked">Base Model</ion-label>
+    <ion-select (ionChange)="baseModelChange($event)" name="baseModel" value="lite_mobilenet_v2">
+      <ion-select-option value="lite_mobilenet_v2">Lite Mobilenet V2</ion-select-option>
+      <ion-select-option value="mobilenet_v2">Mobilenet v2</ion-select-option>
+      <ion-select-option value="mobilenet_v1">Mobilenet v1</ion-select-option>
+    </ion-select>
+  </ion-item>
+  <div text-center class="canvasContainer" #canvasContainer>
+    <canvas #canvas></canvas>
+  </div>
+</ion-content>
+
+<ion-footer text-center>
+  <input #fileSelector type="file" accept="image/*" (change)="onFileChange($event)"
+         style="display: none;">
+  <ion-button (click)="clickFileSelector()" text-center>Select File ...</ion-button>
+</ion-footer>
