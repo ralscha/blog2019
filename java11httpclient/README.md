@@ -1,1 +1,1 @@
-Code for the blog post:  
+Code for the blog post:  https://golb.hplar.ch/2019/01/java-11-http-client.html
