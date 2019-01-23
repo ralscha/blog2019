@@ -37,7 +37,8 @@ public class WebSocketDemo {
 
     var client = HttpClient.newHttpClient();
 
-    WebSocket webSocket = client.newWebSocketBuilder().buildAsync(URI.create("wss://localhost:8443/wsEndpoint"), wsListener).join();
+    WebSocket webSocket = client.newWebSocketBuilder()
+    		       .buildAsync(URI.create("wss://localhost:8443/wsEndpoint"), wsListener).join();
     webSocket.sendText("hello from the client", true);
     
     TimeUnit.SECONDS.sleep(30);
