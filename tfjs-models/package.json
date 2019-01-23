@@ -18,7 +18,7 @@
     "@angular/platform-browser": "7.2.2",
     "@angular/platform-browser-dynamic": "7.2.2",
     "@angular/router": "7.2.2",
-    "@ionic/angular": "4.0.0-rc.3",
+    "@ionic/angular": "4.0.0",
     "@tensorflow-models/coco-ssd": "0.1.1",
     "@tensorflow-models/mobilenet": "0.2.2",
     "@tensorflow-models/posenet": "0.2.3",
