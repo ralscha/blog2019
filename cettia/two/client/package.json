@@ -1,0 +1,47 @@
+{
+  "name": "cettiatwo",
+  "version": "0.0.1",
+  "scripts": {
+    "ng": "ng",
+    "start": "ng serve",
+    "build": "ng build",
+    "build-prod": "ng build --prod",
+    "serve-www": "http-server www -o -a localhost -p 1234",
+    "lint": "ng lint",
+    "pbts": "pbjs -t static-module ../server/src/main/protobuf/ChangeEvent.proto -o src/app/protos/changeevent.js && pbts --no-comments src/app/protos/changeevent.js -o src/app/protos/changeevent.d.ts"
+  },
+  "private": true,
+  "dependencies": {
+    "@angular/common": "7.2.2",
+    "@angular/core": "7.2.2",
+    "@angular/forms": "7.2.2",
+    "@angular/http": "7.2.2",
+    "@angular/platform-browser": "7.2.2",
+    "@angular/platform-browser-dynamic": "7.2.2",
+    "@angular/router": "7.2.2",
+    "@ionic/angular": "4.0.0",
+    "cettia-client": "1.0.1",
+    "core-js": "2.6.3",
+    "protobufjs": "6.8.8",
+    "rxjs": "6.3.3",
+    "uuid": "3.3.2",
+    "zone.js": "0.8.29"
+  },
+  "devDependencies": {
+    "@angular-devkit/architect": "0.12.3",
+    "@angular-devkit/build-angular": "0.12.3",
+    "@angular-devkit/core": "7.2.3",
+    "@angular-devkit/schematics": "7.2.3",
+    "@angular/cli": "7.2.3",
+    "@angular/compiler": "7.2.2",
+    "@angular/compiler-cli": "7.2.2",
+    "@angular/language-service": "7.2.2",
+    "@ionic/angular-toolkit": "1.2.3",
+    "@types/node": "10.12.18",
+    "codelyzer": "4.5.0",
+    "http-server": "0.11.1",
+    "ts-node": "8.0.2",
+    "tslint": "5.12.1",
+    "typescript": "3.2.4"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "name": "cettia-one-client",
+  "version": "1.0.0",
+  "private": true,
+  "devDependencies": {
+    "parcel-bundler": "1.11.0",
+    "shx": "0.3.2"
+  },
+  "scripts": {
+    "start": "parcel src/index.html",
+    "prebuild": "shx rm -rf dist/*",
+    "build": "parcel build src/index.html --public-url ./"
+  },
+  "dependencies": {
+    "cettia-client": "1.0.1",
+    "core-js": "2.6.3",
+    "echarts": "4.2.0-rc.2"
+  }
+}

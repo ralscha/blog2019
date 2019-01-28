@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+option java_package = "ch.rasc.cettiatwo";
+
+message Todo {
+  string id = 1;
+  string title = 2;
+  bool completed = 3;
+}
+
+message Todos {
+  repeated Todo todos = 1;
+}
+
+message ChangeEvent {
+
+  enum ChangeType {
+    INSERT = 0;
+    UPDATE = 1;
+    DELETE = 2;
+  }
+
+  Todo todo = 1;
+  ChangeType change = 2;
+}

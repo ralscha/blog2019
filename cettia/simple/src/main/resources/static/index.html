@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Cettia QuickStart</title>
+    <script src="https://unpkg.com/cettia-client@1.0.1/cettia-browser.min.js"></script>
+</head>
+<body>
+    <script>
+		const serverPathUrl = window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/') + 1);
+		const cettiaUrl = window.location.protocol + '//' + window.location.host + serverPathUrl + "cettia";
+
+		const socket = cettia.open(cettiaUrl);
+
+        var log = arg => console.log(socket.state(), arg);
+		socket.on('connecting', log);
+		socket.on('open', log);
+		socket.on('close', log);
+		socket.on('waiting', log);
+		
+		socket.on('open', () => {
+ 		  socket.send('ping', 'message from client');
+		});
+		
+		socket.on("pong", data => console.log('message from server: ' + data));
+    </script>
+</body>
+</html>
