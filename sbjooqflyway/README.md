@@ -1,1 +1,1 @@
-Source code for the blog posts: 
+Source code for the blog posts: https://golb.hplar.ch/2019/01/jooq-flyway-springboot.html
