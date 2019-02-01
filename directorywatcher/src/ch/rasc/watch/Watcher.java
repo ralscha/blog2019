@@ -11,33 +11,32 @@ import java.nio.file.WatchKey;
 import java.nio.file.WatchService;
 
 public class Watcher {
-	public static void main(String[] args) throws IOException, InterruptedException {
-		try (WatchService watchService = FileSystems.getDefault().newWatchService()) {
+  public static void main(String[] args) throws IOException, InterruptedException {
+    try (WatchService watchService = FileSystems.getDefault().newWatchService()) {
 
-			Path path = Paths.get("e:/watchme");
+      Path path = Paths.get("e:/watchme");
 
-			path.register(watchService, StandardWatchEventKinds.ENTRY_CREATE,
-					StandardWatchEventKinds.ENTRY_MODIFY,
-					StandardWatchEventKinds.ENTRY_DELETE,
-					StandardWatchEventKinds.OVERFLOW);
+      path.register(watchService, StandardWatchEventKinds.ENTRY_CREATE,
+          StandardWatchEventKinds.ENTRY_MODIFY, StandardWatchEventKinds.ENTRY_DELETE,
+          StandardWatchEventKinds.OVERFLOW);
 
-			while (true) {
-				WatchKey key = watchService.take();
+      while (true) {
+        WatchKey key = watchService.take();
 
-				for (WatchEvent<?> watchEvent : key.pollEvents()) {
+        for (WatchEvent<?> watchEvent : key.pollEvents()) {
 
-					Kind<?> kind = watchEvent.kind();
-					Path context = (Path) watchEvent.context();
+          Kind<?> kind = watchEvent.kind();
+          Path context = (Path) watchEvent.context();
 
-					System.out.printf("%s:%s\n", context, kind);
-				}
+          System.out.printf("%s:%s\n", context, kind);
+        }
 
-				boolean valid = key.reset();
-				if (!valid) {
-					break;
-				}
-			}
-		}
-	}
+        boolean valid = key.reset();
+        if (!valid) {
+          break;
+        }
+      }
+    }
+  }
 
 }
