@@ -1,1 +1,1 @@
-Code for the blog post: https://golb.hplar.ch/2019/01/cettia-springboot.html
+Code for blog post: https://golb.hplar.ch/2019/01/cettia-springboot.html
