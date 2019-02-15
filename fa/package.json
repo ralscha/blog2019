@@ -1,12 +1,11 @@
 {
-  "name": "mnist",
+  "name": "fa",
   "version": "0.0.1",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
     "build-prod": "ng build --prod",
-    "postbuild-prod": "bread-compressor www",
     "serve-www": "http-server www -o -a localhost -p 1234",
     "lint": "ng lint"
   },
@@ -19,9 +18,12 @@
     "@angular/platform-browser": "7.2.4",
     "@angular/platform-browser-dynamic": "7.2.4",
     "@angular/router": "7.2.4",
+    "@fortawesome/angular-fontawesome": "0.3.0",
+    "@fortawesome/fontawesome-svg-core": "1.2.15",
+    "@fortawesome/free-brands-svg-icons": "5.7.2",
+    "@fortawesome/free-regular-svg-icons": "5.7.2",
+    "@fortawesome/free-solid-svg-icons": "5.7.2",
     "@ionic/angular": "4.0.1",
-    "@tensorflow/tfjs": "0.15.1",
-    "brain.js": "1.6.1",
     "core-js": "2.6.5",
     "rxjs": "6.4.0",
     "zone.js": "0.8.29"
@@ -37,7 +39,6 @@
     "@angular/language-service": "7.2.4",
     "@ionic/angular-toolkit": "1.4.0",
     "@types/node": "11.9.4",
-    "bread-compressor-cli": "1.0.5",
     "codelyzer": "4.5.0",
     "http-server": "0.11.1",
     "ts-node": "8.0.2",
