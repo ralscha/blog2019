@@ -69,7 +69,7 @@ public class File {
   public static BodyPublisher ofMimeMultipartData(Map<Object, Object> data,
       String boundary) throws IOException {
     var byteArrays = new ArrayList<byte[]>();
-    byte[] separator = ("--" + boundary + "\nContent-Disposition: form-data; name=")
+    byte[] separator = ("--" + boundary + "\r\nContent-Disposition: form-data; name=")
         .getBytes(StandardCharsets.UTF_8);
     for (Map.Entry<Object, Object> entry : data.entrySet()) {
       byteArrays.add(separator);
@@ -78,11 +78,12 @@ public class File {
         var path = (Path) entry.getValue();
         String mimeType = Files.probeContentType(path);
         byteArrays.add(("\"" + entry.getKey() + "\"; filename=\"" + path.getFileName()
-            + "\"\nContent-Type: " + mimeType + "\n\n").getBytes(StandardCharsets.UTF_8));
+            + "\"\r\nContent-Type: " + mimeType + "\r\n\r\n").getBytes(StandardCharsets.UTF_8));
         byteArrays.add(Files.readAllBytes(path));
+        byteArrays.add("\r\n".getBytes(StandardCharsets.UTF_8));
       }
       else {
-        byteArrays.add(("\"" + entry.getKey() + "\"\n\n" + entry.getValue() + "\n")
+        byteArrays.add(("\"" + entry.getKey() + "\"\r\n\r\n" + entry.getValue() + "\r\n")
             .getBytes(StandardCharsets.UTF_8));
       }
     }
