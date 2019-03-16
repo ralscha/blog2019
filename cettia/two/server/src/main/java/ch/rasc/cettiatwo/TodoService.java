@@ -23,12 +23,11 @@ public class TodoService {
 
   private final Map<String, Todo> todos = new HashMap<>();
 
-  private final List<Object[]> cache = new CopyOnWriteArrayList<>();
-
   public TodoService(Server defaultServer) {
     this.defaultServer = defaultServer;
 
     this.defaultServer.onsocket(socket -> {
+      final List<Object[]> cache = new CopyOnWriteArrayList<>();
       socket.onopen(v -> {
         socket.send("initial",
             Todos.newBuilder().addAllTodos(this.todos.values()).build().toByteArray());
@@ -59,14 +58,14 @@ public class TodoService {
       // Disconnect Handling
       // https://cettia.io/guides/cettia-tutorial/#disconnection-handling
 
-      socket.oncache((Object[] args) -> this.cache.add(args));
+      socket.oncache((Object[] args) -> cache.add(args));
 
-      socket.onopen(v -> this.cache.forEach(args -> {
-        this.cache.remove(args);
+      socket.onopen(v -> cache.forEach(args -> {
+        cache.remove(args);
         socket.send((String) args[0], args[1], (Action<?>) args[2], (Action<?>) args[3]);
       }));
 
-      socket.ondelete(v -> this.cache.forEach(args -> System.out
+      socket.ondelete(v -> cache.forEach(args -> System.out
           .println(socket + " missed event - name: " + args[0] + ", data: " + args[1])));
 
     });
