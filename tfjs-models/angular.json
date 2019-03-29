@@ -24,7 +24,12 @@
                 "glob": "**/*",
                 "input": "src/assets",
                 "output": "assets"
-              }
+              },
+              {
+                "glob": "@(md-eye.svg|md-image.svg|ios-eye.svg|ios-image.svg|md-body.svg|ios-body.svg|md-mic.svg|ios-mic.svg)",
+                "input": "node_modules/ionicons/dist/ionicons/svg",
+                "output": "./svg"
+              }	
             ],
             "styles": [
               {
@@ -34,7 +39,8 @@
                 "input": "src/global.scss"
               }
             ],
-            "scripts": []
+            "scripts": [],
+            "es5BrowserSupport": true
           },
           "configurations": {
             "production": {

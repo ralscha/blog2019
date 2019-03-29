@@ -20,7 +20,7 @@ export class HomePage {
   detectedNumberCNN: number;
 
   private net: brain.NeuralNetwork = null;
-  private tfModel: tf.Model;
+  private tfModel: tf.LayersModel;
 
   constructor() {
     this.initBrain();
@@ -35,7 +35,7 @@ export class HomePage {
   }
 
   async initTf() {
-    this.tfModel = await tf.loadModel(`${environment.serverURL}/assets/tfjsmnist/model.json`);
+    this.tfModel = await tf.loadLayersModel(`${environment.serverURL}/assets/tfjsmnist/model.json`);
   }
 
   detect(canvas) {
