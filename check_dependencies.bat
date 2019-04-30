@@ -1,8 +1,30 @@
+cd D:\ws\blog2019\bigintjson
+call checkdep
+cd D:\ws\blog2019\cettia\one\client
+call ncu
+cd D:\ws\blog2019\cettia\one\server
+call checkdep
+cd D:\ws\blog2019\cettia\simple
+call checkdep
+cd D:\ws\blog2019\cettia\two\server
+call checkdep
+cd D:\ws\blog2019\cettia\two\client
+call ncu
+cd D:\ws\blog2019\fa
+call ncu
 cd D:\ws\blog2019\mnistjs\client
 call ncu
 cd D:\ws\blog2019\mnistjs\train
 call ncu
 cd D:\ws\blog2019\tfjs-models
 call ncu
+cd D:\ws\blog2019\java11httpclient\client
+call checkdep
+cd D:\ws\blog2019\java11httpclient\server
+call checkdep
+cd D:\ws\blog2019\sbjooqflyway
+call checkdep
+cd D:\ws\blog2019\tls-and-h2
+call checkdep
 
 pause

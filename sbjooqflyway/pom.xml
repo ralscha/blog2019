@@ -43,13 +43,13 @@
     <dependency>
       <groupId>org.apache.poi</groupId>
       <artifactId>poi</artifactId>
-      <version>4.0.1</version>
+      <version>4.1.0</version>
     </dependency>
 
     <dependency>
       <groupId>org.apache.poi</groupId>
       <artifactId>poi-ooxml</artifactId>
-      <version>4.0.1</version>
+      <version>4.1.0</version>
     </dependency>
     
     <dependency>
@@ -95,7 +95,7 @@
           <plugin>
             <groupId>org.jooq</groupId>
             <artifactId>jooq-codegen-maven</artifactId>
-
+            <version>3.11.11</version>
             <executions>
               <execution>
                 <id>generate-jooq-sources</id>
@@ -141,7 +141,7 @@
               <dependency>
                 <groupId>org.jooq</groupId>
                 <artifactId>jooq-meta-extensions</artifactId>
-                <version>3.11.9</version>
+                <version>3.11.11</version>
               </dependency>
             </dependencies>
           </plugin>

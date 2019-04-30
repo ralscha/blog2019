@@ -150,9 +150,9 @@ export class SpeechPage implements OnInit, OnDestroy {
   }
 
   drawScore() {
-    const score_text = 'Score: ' + this.score;
+    const scoreText = 'Score: ' + this.score;
     this.ctx.fillStyle = 'blue';
-    this.ctx.fillText(score_text, 145, this.height - 5);
+    this.ctx.fillText(scoreText, 145, this.height - 5);
   }
 
   initSnake() {
@@ -206,8 +206,8 @@ export class SpeechPage implements OnInit, OnDestroy {
 
     this.snake.unshift(tail);
 
-    for (let i = 0; i < this.snake.length; i++) {
-      this.drawSnake(this.snake[i].x, this.snake[i].y);
+    for (const sn of this.snake) {
+      this.drawSnake(sn.x, sn.y);
     }
 
     this.drawFood(this.food.x, this.food.y);
@@ -237,6 +237,5 @@ export class SpeechPage implements OnInit, OnDestroy {
     this.createFood();
     this.gameloop = setInterval(this.paint.bind(this), 80);
   }
-
 
 }
