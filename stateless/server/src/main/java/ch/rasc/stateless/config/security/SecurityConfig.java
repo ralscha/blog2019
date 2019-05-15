@@ -44,34 +44,31 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
   @Override
   protected void configure(HttpSecurity http) throws Exception {
     // @formatter:off
-	  http
-	      .sessionManagement()
-      	    .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-        .and()
-          .headers()
-             .contentSecurityPolicy("script-src 'self'; object-src 'none'; base-uri 'self'")
-             .and()
-        .and()
-		      .csrf().disable()
-  	      .formLogin()
-  	        .successHandler(formLoginSuccessHandler())
-  	        .failureHandler((request, response, exception) ->
-  	                        response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "UNAUTHORIZED"))
-  	        .permitAll()
-  	    .and()
-  	      .logout()
-  	        .logoutSuccessHandler((request, response, authentication) ->  response.setStatus(HttpServletResponse.SC_OK))
-  	        .deleteCookies(AuthCookieFilter.COOKIE_NAME)
-  	        .permitAll()
-  	    .and()
-		      .authorizeRequests()
-		        .anyRequest().authenticated()
-        .and()
-          .exceptionHandling()
-            .authenticationEntryPoint((request, response, authException) ->
+      http
+        .sessionManagement()
+      	.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+      .and()
+        .headers().contentSecurityPolicy("script-src 'self'; object-src 'none'; base-uri 'self'").and()
+      .and()
+        .csrf().disable()
+  	.formLogin()
+  	  .successHandler(formLoginSuccessHandler())
+  	  .failureHandler((request, response, exception) ->
+  	                  response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "UNAUTHORIZED"))
+  	  .permitAll()
+      .and()
+  	.logout()
+  	  .logoutSuccessHandler((request, response, authentication) ->  response.setStatus(HttpServletResponse.SC_OK))
+  	  .deleteCookies(AuthCookieFilter.COOKIE_NAME)
+  	  .permitAll()
+      .and()
+	  .authorizeRequests().anyRequest().authenticated()
+      .and()
+        .exceptionHandling()
+          .authenticationEntryPoint((request, response, authException) ->
                            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "UNAUTHORIZED"))
-        .and()
-          .apply(securityConfigurerAdapter());
+      .and()
+        .apply(securityConfigurerAdapter());
       // @formatter:on
   }
 
