@@ -1,0 +1,24 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Login</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+  <form #form="ngForm" (ngSubmit)="login(form.value)" novalidate>
+    <ion-list>
+      <ion-item>
+        <ion-label position="stacked">Email</ion-label>
+        <ion-input name="email" ngModel required type="text"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Password</ion-label>
+        <ion-input name="password" ngModel required type="password"></ion-input>
+      </ion-item>
+
+      <ion-button [disabled]="!form.valid" color="primary" expand="block" margin-top type="submit">Login</ion-button>
+
+    </ion-list>
+  </form>
+</ion-content>

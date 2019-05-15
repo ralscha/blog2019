@@ -1,0 +1,34 @@
+{
+  "/login": {
+    "target": "http://localhost:8080",
+    "secure": false
+  },
+  "/logout": {
+    "target": "http://localhost:8080",
+    "secure": false
+  },
+  "/authenticate": {
+    "target": "http://localhost:8080",
+    "secure": false
+  },
+  "/message": {
+    "target": "http://localhost:8080",
+    "secure": false
+  },
+  "/admin": {
+    "target": "http://localhost:8080",
+    "secure": false
+  },
+  "/disable": {
+    "target": "http://localhost:8080",
+    "secure": false
+  },
+  "/enable": {
+    "target": "http://localhost:8080",
+    "secure": false
+  },
+  "/isEnabled": {
+    "target": "http://localhost:8080",
+    "secure": false
+  }
+}

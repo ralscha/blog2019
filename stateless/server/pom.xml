@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>2.2.0.M2</version>
+		<relativePath />
+	</parent>
+	<groupId>ch.rasc</groupId>
+	<artifactId>stateless</artifactId>
+	<version>0.0.1</version>
+	<name>stateless</name>
+	<description>Stateless Authentication</description>
+
+	<properties>
+		<java.version>11</java.version>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-jooq</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.flywaydb</groupId>
+			<artifactId>flyway-core</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-configuration-processor</artifactId>
+			<optional>true</optional>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
+
+	<repositories>
+		<repository>
+			<id>spring-snapshots</id>
+			<name>Spring 
+		Snapshots</name>
+			<url>https://repo.spring.io/snapshot</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+		<repository>
+			<id>spring-milestones</id>
+			<name>Spring 
+		Milestones</name>
+			<url>https://repo.spring.io/milestone</url>
+		</repository>
+	</repositories>
+	<pluginRepositories>
+		<pluginRepository>
+			<id>spring-snapshots</id>
+			<name>Spring Snapshots</name>
+			<url>https://repo.spring.io/snapshot</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</pluginRepository>
+		<pluginRepository>
+			<id>spring-milestones</id>
+			<name>Spring Milestones</name>
+			<url>https://repo.spring.io/milestone</url>
+		</pluginRepository>
+	</pluginRepositories>
+
+	<profiles>
+		<profile>
+			<id>jooq</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.jooq</groupId>
+						<artifactId>jooq-codegen-maven</artifactId>
+						<version>3.11.11</version>
+						<executions>
+							<execution>
+								<id>generate-jooq-sources</id>
+								<phase>generate-sources</phase>
+								<goals>
+									<goal>generate</goal>
+								</goals>
+								<configuration>
+									<generator>
+										<generate>
+											<globalCatalogReferences>false</globalCatalogReferences>
+											<globalSchemaReferences>false</globalSchemaReferences>
+											<globalTableReferences>false</globalTableReferences>
+											<globalSequenceReferences>false</globalSequenceReferences>
+											<globalUDTReferences>false</globalUDTReferences>
+											<globalRoutineReferences>false</globalRoutineReferences>
+											<globalQueueReferences>false</globalQueueReferences>
+											<globalLinkReferences>false</globalLinkReferences>
+											<pojos>false</pojos>
+											<daos>false</daos>
+											<javaTimeTypes>true</javaTimeTypes>
+										</generate>
+										<database>
+											<name>org.jooq.meta.extensions.ddl.DDLDatabase</name>
+											<inputCatalog></inputCatalog>
+											<inputSchema>PUBLIC</inputSchema>
+											<outputSchemaToDefault>true</outputSchemaToDefault>
+											<outputCatalogToDefault>true</outputCatalogToDefault>
+											<properties>
+												<property>
+													<key>sort</key>
+													<value>semantic</value>
+												</property>
+												<property>
+													<key>scripts</key>
+													<value>src/main/resources/db/migration/*</value>
+												</property>
+											</properties>
+										</database>
+										<target>
+											<clean>true</clean>
+											<packageName>ch.rasc.stateless.db</packageName>
+											<directory>src/main/java</directory>
+										</target>
+									</generator>
+								</configuration>
+							</execution>
+						</executions>
+						<dependencies>
+							<dependency>
+								<groupId>org.jooq</groupId>
+								<artifactId>jooq-meta-extensions</artifactId>
+								<version>3.11.11</version>
+							</dependency>
+						</dependencies>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+</project>

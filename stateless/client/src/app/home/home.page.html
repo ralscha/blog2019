@@ -1,0 +1,23 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>
+      Stateless Authentication
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+  <h4>
+    Message from the test service:
+  </h4>
+  <h5>
+    {{message | async}}
+  </h5>
+  <ion-button (click)="logout()">Logout</ion-button>
+
+  <div margin-top *ngIf="isAdmin() | async">
+    <ion-button *ngIf="userEnabled" (click)="disable()">disable User</ion-button>
+    <ion-button *ngIf="!userEnabled" (click)="enable()">Enable User</ion-button>
+  </div>
+
+</ion-content>
