@@ -26,5 +26,8 @@ cd D:\ws\blog2019\sbjooqflyway
 call checkdep
 cd D:\ws\blog2019\tls-and-h2
 call checkdep
-
+cd D:\ws\blog2019\stateless\client
+call ncu
+cd D:\ws\blog2019\stateless\server
+call checkdep
 pause
