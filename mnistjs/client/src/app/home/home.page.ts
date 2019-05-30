@@ -2,16 +2,15 @@ import {Component, ViewChild} from '@angular/core';
 import {DrawableDirective} from '../drawable.directive';
 import * as brain from 'brain.js/browser';
 import * as tf from '@tensorflow/tfjs';
-import {environment} from '../../environments/environment';
 
 @Component({
   selector: 'app-home',
-  templateUrl: 'home.page.html',
-  styleUrls: ['home.page.scss'],
+  templateUrl: './home.page.html',
+  styleUrls: ['./home.page.scss']
 })
 export class HomePage {
 
-  @ViewChild(DrawableDirective) drawable: DrawableDirective;
+  @ViewChild(DrawableDirective, {static: false}) drawable: DrawableDirective;
 
   detectionsMLP: number[] = [];
   detectedNumberMLP: number;
@@ -35,7 +34,7 @@ export class HomePage {
   }
 
   async initTf() {
-    this.tfModel = await tf.loadLayersModel(`${environment.serverURL}/assets/tfjsmnist/model.json`);
+    this.tfModel = await tf.loadLayersModel('assets/tfjsmnist/model.json');
   }
 
   detect(canvas) {
