@@ -14,7 +14,7 @@
 
 <ion-content padding>
   <ion-list>
-    <ion-item *ngFor="let todo of todoService.todosObservable | async" (click)="editTodo(todo)">
+    <ion-item (click)="editTodo(todo)" *ngFor="let todo of todoService.todosObservable | async">
       <ion-label>{{todo.title}}</ion-label>
       <ion-icon *ngIf="todo.completed" name="checkmark-circle-outline" slot="end"></ion-icon>
     </ion-item>

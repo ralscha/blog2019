@@ -6,7 +6,6 @@ import {AppComponent} from './app.component';
 import {HomePage} from './home/home.page';
 import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
-import {HttpClientModule} from '@angular/common/http';
 import {EditPage} from './edit/edit.page';
 
 const routes: Routes = [
@@ -22,7 +21,6 @@ const routes: Routes = [
   entryComponents: [],
   imports: [BrowserModule,
     CommonModule,
-    HttpClientModule,
     FormsModule,
     IonicModule.forRoot(),
     RouterModule.forRoot(routes, {useHash: true})],

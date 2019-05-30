@@ -22,7 +22,7 @@
     "@ionic/angular": "4.4.2",
     "@tensorflow/tfjs": "1.1.2",
     "brain.js": "1.6.1",
-    "core-js": "2.6.7",
+    "core-js": "2.6.9",
     "rxjs": "6.5.2",
     "zone.js": "0.9.1"
   },
@@ -41,7 +41,7 @@
     "bread-compressor-cli": "1.0.6",
     "codelyzer": "4.5.0",
     "http-server": "0.11.1",
-    "ts-node": "8.1.1",
+    "ts-node": "8.2.0",
     "tslint": "5.16.0",
     "typescript": "3.2.4"
   },
