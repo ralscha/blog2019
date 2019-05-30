@@ -3,8 +3,8 @@ import { faHandPointLeft, faHandPointRight } from '@fortawesome/free-regular-svg
 
 @Component({
   selector: 'app-home',
-  templateUrl: 'home.page.html',
-  styleUrls: ['home.page.scss']
+  templateUrl: './home.page.html',
+  styleUrls: ['./home.page.scss']
 })
 export class HomePage {
   faHandPointLeft = faHandPointLeft;
