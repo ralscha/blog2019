@@ -6,7 +6,7 @@
     "start": "ng serve",
     "build": "ng build",
     "build-prod": "ng build --prod",
-    "serve-www": "ws --hostname localhost -d dist/app -p 1234 -o --log.format stats",
+    "serve-dist": "ws --hostname localhost -d dist/app -p 1234 -o --log.format stats",
     "lint": "ng lint",
     "pbts": "pbjs -t static-module ../server/src/main/protobuf/ChangeEvent.proto -o src/app/protos/changeevent.js && pbts --no-comments src/app/protos/changeevent.js -o src/app/protos/changeevent.d.ts"
   },

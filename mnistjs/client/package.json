@@ -7,7 +7,7 @@
     "build": "ng build",
     "build-prod": "ng build --prod",
     "postbuild-prod": "bread-compressor dist/app",
-    "serve-www": "ws --hostname localhost -d dist/app -p 1234 -o --log.format stats",
+    "serve-dist": "ws --hostname localhost -d dist/app -p 1234 -o --log.format stats",
     "lint": "ng lint"
   },
   "private": true,
