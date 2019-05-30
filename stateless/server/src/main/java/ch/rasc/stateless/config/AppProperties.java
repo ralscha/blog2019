@@ -3,7 +3,6 @@ package ch.rasc.stateless.config;
 import java.time.Duration;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.stereotype.Component;
 
 @ConfigurationProperties(prefix = "app")
 public class AppProperties {
