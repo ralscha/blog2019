@@ -10,7 +10,7 @@ import {Subscription} from 'rxjs';
 })
 export class SpeechPage implements OnInit, OnDestroy {
 
-  @ViewChild('canvas') canvas: ElementRef;
+  @ViewChild('canvas', {static: true}) canvas: ElementRef;
   private subscription: Subscription;
   private recognizer;
   private wordLabels: string[];

@@ -9,9 +9,9 @@ import {LoadingController} from '@ionic/angular';
 })
 export class PosenetPage implements OnInit {
 
-  @ViewChild('fileSelector') fileInput: ElementRef;
-  @ViewChild('canvas') canvas: ElementRef;
-  @ViewChild('canvasContainer') canvasContainer: ElementRef;
+  @ViewChild('fileSelector', {static: false}) fileInput: ElementRef;
+  @ViewChild('canvas', {static: true}) canvas: ElementRef;
+  @ViewChild('canvasContainer', {static: false}) canvasContainer: ElementRef;
   ratio: number;
   modelPromise: Promise<any>;
   private ctx: CanvasRenderingContext2D;

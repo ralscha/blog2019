@@ -8,9 +8,9 @@ import {LoadingController} from '@ionic/angular';
   styleUrls: ['./mobilenet.page.scss']
 })
 export class MobilenetPage {
-  @ViewChild('image') image: ElementRef;
+  @ViewChild('image', {static: true}) image: ElementRef;
 
-  @ViewChild('fileSelector') fileInput: ElementRef;
+  @ViewChild('fileSelector', {static: false}) fileInput: ElementRef;
 
   modelPromise: Promise<any>;
 
