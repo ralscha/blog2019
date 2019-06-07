@@ -29,7 +29,7 @@ export class AuthService {
   login(username: string, password: string): Observable<boolean> {
     const body = new HttpParams().set('username', username).set('password', password);
 
-    return this.httpClient.post(`/login`, body, {responseType: 'text'})
+    return this.httpClient.post('/login', body, {responseType: 'text'})
       .pipe(
         map(response => this.handleAuthResponse(response)),
         catchError(_ => of(false))
@@ -37,7 +37,7 @@ export class AuthService {
   }
 
   logout(): Observable<void> {
-    return this.httpClient.get<void>(`/logout`)
+    return this.httpClient.get<void>('/logout')
       .pipe(
         tap(() => this.authoritySubject.next(null))
       );

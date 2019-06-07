@@ -22,6 +22,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.DefaultSecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.logout.HttpStatusReturningLogoutSuccessHandler;
 
 import ch.rasc.stateless.config.AppProperties;
 
@@ -58,7 +59,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
   	  .permitAll()
       .and()
   	.logout()
-  	  .logoutSuccessHandler((request, response, authentication) ->  response.setStatus(HttpServletResponse.SC_OK))
+  	  .logoutSuccessHandler(new HttpStatusReturningLogoutSuccessHandler())
   	  .deleteCookies(AuthCookieFilter.COOKIE_NAME)
   	  .permitAll()
       .and()
