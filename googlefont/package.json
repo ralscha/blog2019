@@ -1,0 +1,43 @@
+{
+  "name": "googlefont",
+  "version": "0.0.1",
+  "scripts": {
+    "ng": "ng",
+    "start": "ng serve",
+    "build": "ng build",
+    "build-prod": "ng build --prod",
+    "serve-dist": "ws --hostname localhost -d dist/app -p 1234 -o --log.format stats",
+    "lint": "ng lint",
+    "dl-font-opensans": "goog-webfont-dl -o src/font-opensans.css -p assets/OpenSans -d src/assets/OpenSans -a \"Open Sans\"",
+    "dl-font-fresca": "goog-webfont-dl -o src/font-fresca.css -p assets/Fresca -d src/assets/Fresca -a Fresca",
+    "postinstall": "npm run dl-font-opensans && npm run dl-font-fresca"
+  },
+  "private": true,
+  "dependencies": {
+    "@angular/animations": "8.0.0",
+    "@angular/common": "8.0.0",
+    "@angular/compiler": "8.0.0",
+    "@angular/core": "8.0.0",
+    "@angular/forms": "8.0.0",
+    "@angular/platform-browser": "8.0.0",
+    "@angular/platform-browser-dynamic": "8.0.0",
+    "@angular/router": "8.0.0",
+    "@ionic/angular": "4.4.2",
+    "rxjs": "6.5.2",
+    "tslib": "1.9.3",
+    "zone.js": "0.9.1"
+  },
+  "devDependencies": {
+    "@angular-devkit/build-angular": "0.800.2",
+    "@angular/cli": "8.0.2",
+    "@angular/compiler-cli": "8.0.0",
+    "@angular/language-service": "8.0.0",
+    "@ionic/angular-toolkit": "1.5.1",
+    "@types/node": "12.0.7",
+    "codelyzer": "5.1.0",
+    "goog-webfont-dl": "1.0.2",
+    "local-web-server": "3.0.0",
+    "tslint": "5.17.0",
+    "typescript": "3.4.5"
+  }
+}
