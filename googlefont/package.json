@@ -24,7 +24,7 @@
     "@angular/router": "8.0.0",
     "@ionic/angular": "4.4.2",
     "rxjs": "6.5.2",
-    "tslib": "1.9.3",
+    "tslib": "1.10.0",
     "zone.js": "0.9.1"
   },
   "devDependencies": {
