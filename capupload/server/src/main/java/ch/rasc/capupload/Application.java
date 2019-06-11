@@ -13,16 +13,15 @@ import me.desair.tus.server.TusFileUploadService;
 @EnableScheduling
 public class Application {
 
-	public static final Logger logger = LoggerFactory.getLogger("ch.rasc.upload");
+  public static final Logger logger = LoggerFactory.getLogger("ch.rasc.upload");
 
-	public static void main(String[] args) {
-		SpringApplication.run(Application.class, args);
-	}
+  public static void main(String[] args) {
+    SpringApplication.run(Application.class, args);
+  }
 
-	@Bean
-	public TusFileUploadService tusFileUploadService(AppProperties appProperties) {
-		return new TusFileUploadService()
-				.withStoragePath(appProperties.getTusUploadDirectory())
-				.withUploadURI("/upload");
-	}
+  @Bean
+  public TusFileUploadService tusFileUploadService(AppProperties appProperties) {
+    return new TusFileUploadService()
+        .withStoragePath(appProperties.getTusUploadDirectory()).withUploadURI("/upload");
+  }
 }
