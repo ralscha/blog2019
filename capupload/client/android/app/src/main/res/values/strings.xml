@@ -1,0 +1,8 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">capupload</string>
+    <string name="title_activity_main">capupload</string>
+    <string name="package_name">ch.rasc.capupload</string>
+    <string name="fileprovider_authority">ch.rasc.capupload.fileprovider</string>
+    <string name="custom_url_scheme">ch.rasc.capupload</string>
+</resources>

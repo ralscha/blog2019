@@ -1,0 +1,51 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>
+      Upload
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+
+  <ion-grid>
+
+    <ion-row>
+      <ion-col>
+        <ion-item>
+          <ion-label>Upload with tus.io</ion-label>
+          <ion-toggle [(ngModel)]="tus"></ion-toggle>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col size="6">
+        <ion-button color="danger" type="button" expand="full" shape="round" size="large" (click)="takePhoto()">
+          <ion-icon name="camera"></ion-icon>
+        </ion-button>
+      </ion-col>
+      <ion-col size="6">
+        <ion-button color="secondary" type="button" expand="full" shape="round" size="large" (click)="selectPhoto()">
+          <ion-icon name="image"></ion-icon>
+        </ion-button>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col size="12">
+        <ion-text color="danger">
+          <strong>{{error}}</strong>
+        </ion-text>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col size="12">
+        <img *ngIf="photo" [src]="photo"/>
+      </ion-col>
+    </ion-row>
+
+  </ion-grid>
+
+</ion-content>
