@@ -1,0 +1,36 @@
+<div>
+  <h1>Build-Info</h1>
+</div>
+
+<h2>Server</h2>
+<ng-container *ngIf="info$ | async as info">
+  <h3>Build Info</h3>
+  <p>Name: <strong>{{info.build.name}}</strong></p>
+  <p>Group: <strong>{{info.build.group}}</strong></p>
+  <p>Artifact: <strong>{{info.build.artifact}}</strong></p>
+  <p>Version: <strong>{{info.build.version}}</strong></p>
+  <p>Time: <strong>{{info.build.time}}</strong></p>
+
+  <h3>Git Info</h3>
+  <p>Branch: <strong>{{info.git.branch}}</strong></p>
+  <p>Commit Id: <strong>{{info.git.commitId}}</strong></p>
+  <p>Short Commit Id: <strong>{{info.git.shortCommitId}}</strong></p>
+  <p>Commit Time: <strong>{{info.git.commitTime}}</strong></p>
+
+  <h3>Profile Info</h3>
+  <p>Active: <strong>{{info.profile.activeProfiles}}</strong></p>
+  <p>Default: <strong>{{info.profile.defaultProfiles}}</strong></p>
+</ng-container>
+
+<hr>
+
+<h2>Client</h2>
+
+<h3>Build Info</h3>
+<p>Version: <strong>{{clientInfo.version}}</strong></p>
+<p>Build Time: <strong>{{clientInfo.buildTimestamp | date:'medium'}}</strong></p>
+
+<h3>Git Info</h3>
+<p>Commit Id: <strong>{{clientInfo.commitId}}</strong></p>
+<p>Short Commit Id: <strong>{{clientInfo.shortCommitId}}</strong></p>
+<p>Commit Time: <strong>{{clientInfo.commitTime | date:'medium'}}</strong></p>
