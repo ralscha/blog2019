@@ -1,1 +1,1 @@
-Code for blog post: 
+Code for blog post: https://golb.hplar.ch/2019/06/expose-build-information.html
