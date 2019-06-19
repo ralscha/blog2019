@@ -36,7 +36,7 @@
     "@types/node": "12.0.8",
     "codelyzer": "5.1.0",
     "goog-webfont-dl": "1.0.2",
-    "local-web-server": "3.0.2",
+    "local-web-server": "3.0.3",
     "tslint": "5.17.0",
     "typescript": "3.4.5"
   }
