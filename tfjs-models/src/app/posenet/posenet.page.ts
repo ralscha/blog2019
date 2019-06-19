@@ -63,12 +63,14 @@ export class PosenetPage implements OnInit {
   }
 
   private async estimate(img) {
-    const imageScaleFactor = 0.5;
-    const outputStride = 16;
     const flipHorizontal = false;
 
     const model = await this.modelPromise;
-    const pose = await model.estimateSinglePose(img, imageScaleFactor, flipHorizontal, outputStride);
+    const poses = await model.estimatePoses(img, {
+      flipHorizontal,
+      decodingMethod: 'single-person'
+    });
+    const pose = poses && poses[0];
 
     if (pose && pose.keypoints) {
       for (const keypoint of pose.keypoints.filter(kp => kp.score >= 0.2)) {
@@ -80,12 +82,6 @@ export class PosenetPage implements OnInit {
         this.ctx.lineWidth = 3;
         this.ctx.strokeStyle = '#bada55';
         this.ctx.stroke();
-
-        /*
-        this.ctx.font = '10px Arial';
-        this.ctx.fillStyle = 'yellow';
-        this.ctx.fillText(keypoint.part, x, y);
-        */
       }
 
       const adjacentKeyPoints = posenet.getAdjacentKeyPoints(pose.keypoints, 0.2);
