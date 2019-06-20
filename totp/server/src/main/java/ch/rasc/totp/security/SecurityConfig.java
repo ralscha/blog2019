@@ -29,24 +29,24 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
   @Override
   protected void configure(HttpSecurity http) throws Exception {
     // @formatter:off
-	  http
-	  .csrf().disable()
-  	  .formLogin()
-  	    .successHandler((request, response, authentication) -> response.setStatus(HttpServletResponse.SC_OK))
-  	    .failureHandler((request, response, exception) -> response.sendError(HttpServletResponse.SC_UNAUTHORIZED))
-  	    .authenticationDetailsSource(this.totpWebAuthenticationDetailsSource)
-  	    .permitAll()
+       http
+	.csrf().disable()
+  	.formLogin()
+  	  .successHandler((request, response, authentication) -> response.setStatus(HttpServletResponse.SC_OK))
+  	  .failureHandler((request, response, exception) -> response.sendError(HttpServletResponse.SC_UNAUTHORIZED))
+  	  .authenticationDetailsSource(this.totpWebAuthenticationDetailsSource)
+  	  .permitAll()
   	.and()
   	  .logout()
   	    .logoutSuccessHandler(new HttpStatusReturningLogoutSuccessHandler())
   	    .deleteCookies("JSESSIONID")
   	.and()
-		  .authorizeRequests()
-		    .antMatchers("/signup", "/signup-confirm-secret").permitAll()
-		    .anyRequest().authenticated()
-    .and()
-      .exceptionHandling()
-         .authenticationEntryPoint((request, response, exception) -> response.sendError(HttpServletResponse.SC_UNAUTHORIZED));
+  	  .authorizeRequests()
+  	    .antMatchers("/signup", "/signup-confirm-secret").permitAll()
+  	    .anyRequest().authenticated()
+        .and()
+          .exceptionHandling()
+            .authenticationEntryPoint((request, response, exception) -> response.sendError(HttpServletResponse.SC_UNAUTHORIZED));
     // @formatter:on
   }
 
