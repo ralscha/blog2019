@@ -1,0 +1,22 @@
+{
+  "/authenticate": {
+    "target": "http://localhost:8080",
+    "secure": false
+  },
+  "/login": {
+    "target": "http://localhost:8080",
+    "secure": false
+  },
+  "/logout": {
+    "target": "http://localhost:8080",
+    "secure": false
+  },
+  "/signup": {
+    "target": "http://localhost:8080",
+    "secure": false
+  },
+  "/signup-confirm-secret": {
+    "target": "http://localhost:8080",
+    "secure": false
+  }
+}

@@ -1,0 +1,72 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Login</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <form #form="ngForm" (keyup.enter)="form.valid && login(form.value)"
+        (ngSubmit)="form.valid && login(form.value)" novalidate>
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+          <ion-item>
+            <ion-label position="stacked">Username</ion-label>
+            <ion-input autocomplete="username" name="username" ngModel required type="text"></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col>
+          <ion-item>
+            <ion-label position="stacked">Password</ion-label>
+            <ion-input autocomplete="current-password" name="password" ngModel required type="password"></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col>
+          <ion-item>
+            <ion-label position="stacked">Authenticator Code</ion-label>
+            <ion-input autocomplete="one-time-code" name="totpkey" ngModel type="text"></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col>
+          <ion-button [disabled]="!form.valid" color="primary" expand="block" type="submit">Login</ion-button>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col class="ion-margin-top">
+          <ion-button color="light" expand="block" routerDirection="forward" routerLink="/signup" type="button">Sign Up
+          </ion-button>
+        </ion-col>
+      </ion-row>
+
+    </ion-grid>
+
+    <ion-list>
+      <ion-item>
+        <ion-col size="4">admin</ion-col>
+        <ion-col size="4">admin</ion-col>
+        <ion-col size="4"><a [href]="qrSafeLinkAdmin"><img [src]="qrCodeAdmin"></a></ion-col>
+      </ion-item>
+      <ion-item>
+        <ion-col size="4">user</ion-col>
+        <ion-col size="4">user</ion-col>
+        <ion-col size="4"><a [href]="qrSafeLinkUser"><img [src]="qrCodeUser"></a></ion-col>
+      </ion-item>
+      <ion-item>
+        <ion-col size="4">lazy</ion-col>
+        <ion-col size="4">lazy</ion-col>
+        <ion-col size="4">N/A</ion-col>
+      </ion-item>
+    </ion-list>
+
+  </form>
+</ion-content>

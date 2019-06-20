@@ -1,0 +1,86 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/login"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Sign Up</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <form #signupForm="ngForm" (ngSubmit)="signupForm.valid && signup(username.value, password.value, totp.value)"
+        [ngFormOptions]="{updateOn: 'submit'}" novalidate>
+    <ion-grid>
+
+      <ion-row>
+        <ion-col>
+          <ion-item>
+            <ion-label position="stacked">Username</ion-label>
+            <ion-input #username="ngModel" autocapitalize="off" autocomplete="username" name="username" ngModel
+                       required spellcheck="false" type="text"></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col>
+          <ion-text *ngIf="signupForm.submitted && username.invalid" color="danger">
+            <p *ngIf="username.errors.required" class="ion-padding-start">
+              Username is required
+            </p>
+          </ion-text>
+          <ion-text *ngIf="submitError" color="danger">
+            <p *ngIf="submitError === 'usernameTaken'" class="ion-padding-start">
+              Username already registered
+            </p>
+          </ion-text>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col>
+          <ion-item>
+            <ion-label position="stacked">Password</ion-label>
+            <ion-input #password="ngModel" autocomplete="new-password" minlength="8" name="password" ngModel
+                       required type="password"></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col>
+          <ion-text *ngIf="signupForm.submitted && password.invalid" color="danger">
+            <p *ngIf="password.errors.required" class="ion-padding-start">
+              Password is required
+            </p>
+            <p *ngIf="password.errors.minlength" class="ion-padding-start">
+              Minimum length is 8 characters
+            </p>
+          </ion-text>
+          <ion-text *ngIf="submitError" color="danger">
+            <p *ngIf="submitError === 'weakPassword'" class="ion-padding-start">
+              Weak password
+            </p>
+          </ion-text>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col>
+          <ion-item>
+            <ion-label position="stacked">Enable Two-factor authentication?</ion-label>
+            <ion-checkbox #totp="ngModel" [ngModel]="true" name="totp"></ion-checkbox>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col class="ion-margin-top">
+          <ion-button expand="block" type="submit">Sign up</ion-button>
+        </ion-col>
+      </ion-row>
+
+    </ion-grid>
+  </form>
+
+</ion-content>
