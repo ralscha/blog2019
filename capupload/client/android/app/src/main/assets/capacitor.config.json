@@ -3,6 +3,5 @@
   "appName": "capupload",
   "bundledWebRuntime": false,
   "npmClient": "npm",
-  "webDir": "dist/app",
-  "windowsAndroidStudioPath": "E:\\Android\\Android Studio\\bin\\studio64.exe"
+  "webDir": "dist/app"
 }
