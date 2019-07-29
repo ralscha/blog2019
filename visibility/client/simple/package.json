@@ -1,0 +1,11 @@
+{
+  "name": "visibility",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "start": "ws -d . -p 1234 -o --log.format stats"
+  },
+  "devDependencies": {
+    "local-web-server": "3.0.7"
+  }
+}
