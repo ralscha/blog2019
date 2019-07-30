@@ -1,0 +1,203 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>
+      OCR with tesseract.js
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="clickFileSelector()">
+        <ion-icon name="camera" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ng-progress [fixed]="false" [max]="100" [meteor]="false" [min]="0" [thick]="true" color="green"></ng-progress>
+
+<ion-item>
+  <ion-label position="stacked">Language</ion-label>
+  <ion-select [(ngModel)]="language">
+    <ion-select-option value='afr'>Afrikaans</ion-select-option>
+    <ion-select-option value='amh'>Amharic</ion-select-option>
+    <ion-select-option value='ara'>Arabic</ion-select-option>
+    <ion-select-option value='asm'>Assamese</ion-select-option>
+    <ion-select-option value='aze'>Azerbaijani</ion-select-option>
+    <ion-select-option value='aze_cyrl'>Azerbaijani - Cyrillic</ion-select-option>
+    <ion-select-option value='bel'>Belarusian</ion-select-option>
+    <ion-select-option value='ben'>Bengali</ion-select-option>
+    <ion-select-option value='bod'>Tibetan</ion-select-option>
+    <ion-select-option value='bos'>Bosnian</ion-select-option>
+    <ion-select-option value='bul'>Bulgarian</ion-select-option>
+    <ion-select-option value='cat'>Catalan; Valencian</ion-select-option>
+    <ion-select-option value='ceb'>Cebuano</ion-select-option>
+    <ion-select-option value='ces'>Czech</ion-select-option>
+    <ion-select-option value='chi_sim'>Chinese - Simplified</ion-select-option>
+    <ion-select-option value='chi_tra'>Chinese - Traditional</ion-select-option>
+    <ion-select-option value='chr'>Cherokee</ion-select-option>
+    <ion-select-option value='cym'>Welsh</ion-select-option>
+    <ion-select-option value='dan'>Danish</ion-select-option>
+    <ion-select-option value='deu'>German</ion-select-option>
+    <ion-select-option value='dzo'>Dzongkha</ion-select-option>
+    <ion-select-option value='ell'>Greek, Modern (1453-)</ion-select-option>
+    <ion-select-option value='eng'>English</ion-select-option>
+    <ion-select-option value='enm'>English, Middle (1100-1500)</ion-select-option>
+    <ion-select-option value='epo'>Esperanto</ion-select-option>
+    <ion-select-option value='est'>Estonian</ion-select-option>
+    <ion-select-option value='eus'>Basque</ion-select-option>
+    <ion-select-option value='fas'>Persian</ion-select-option>
+    <ion-select-option value='fin'>Finnish</ion-select-option>
+    <ion-select-option value='fra'>French</ion-select-option>
+    <ion-select-option value='frk'>German Fraktur</ion-select-option>
+    <ion-select-option value='frm'>French, Middle (ca. 1400-1600)</ion-select-option>
+    <ion-select-option value='gle'>Irish</ion-select-option>
+    <ion-select-option value='glg'>Galician</ion-select-option>
+    <ion-select-option value='grc'>Greek, Ancient (-1453)</ion-select-option>
+    <ion-select-option value='guj'>Gujarati</ion-select-option>
+    <ion-select-option value='hat'>Haitian; Haitian Creole</ion-select-option>
+    <ion-select-option value='heb'>Hebrew</ion-select-option>
+    <ion-select-option value='hin'>Hindi</ion-select-option>
+    <ion-select-option value='hrv'>Croatian</ion-select-option>
+    <ion-select-option value='hun'>Hungarian</ion-select-option>
+    <ion-select-option value='iku'>Inuktitut</ion-select-option>
+    <ion-select-option value='ind'>Indonesian</ion-select-option>
+    <ion-select-option value='isl'>Icelandic</ion-select-option>
+    <ion-select-option value='ita'>Italian</ion-select-option>
+    <ion-select-option value='ita_old'>Italian - Old</ion-select-option>
+    <ion-select-option value='jav'>Javanese</ion-select-option>
+    <ion-select-option value='jpn'>Japanese</ion-select-option>
+    <ion-select-option value='kan'>Kannada</ion-select-option>
+    <ion-select-option value='kat'>Georgian</ion-select-option>
+    <ion-select-option value='kat_old'>Georgian - Old</ion-select-option>
+    <ion-select-option value='kaz'>Kazakh</ion-select-option>
+    <ion-select-option value='khm'>Central Khmer</ion-select-option>
+    <ion-select-option value='kir'>Kirghiz; Kyrgyz</ion-select-option>
+    <ion-select-option value='kor'>Korean</ion-select-option>
+    <ion-select-option value='kur'>Kurdish</ion-select-option>
+    <ion-select-option value='lao'>Lao</ion-select-option>
+    <ion-select-option value='lat'>Latin</ion-select-option>
+    <ion-select-option value='lav'>Latvian</ion-select-option>
+    <ion-select-option value='lit'>Lithuanian</ion-select-option>
+    <ion-select-option value='mal'>Malayalam</ion-select-option>
+    <ion-select-option value='mar'>Marathi</ion-select-option>
+    <ion-select-option value='mkd'>Macedonian</ion-select-option>
+    <ion-select-option value='mlt'>Maltese</ion-select-option>
+    <ion-select-option value='msa'>Malay</ion-select-option>
+    <ion-select-option value='mya'>Burmese</ion-select-option>
+    <ion-select-option value='nep'>Nepali</ion-select-option>
+    <ion-select-option value='nld'>Dutch; Flemish</ion-select-option>
+    <ion-select-option value='nor'>Norwegian</ion-select-option>
+    <ion-select-option value='ori'>Oriya</ion-select-option>
+    <ion-select-option value='pan'>Panjabi; Punjabi</ion-select-option>
+    <ion-select-option value='pol'>Polish</ion-select-option>
+    <ion-select-option value='por'>Portuguese</ion-select-option>
+    <ion-select-option value='pus'>Pushto; Pashto</ion-select-option>
+    <ion-select-option value='ron'>Romanian; Moldavian; Moldovan</ion-select-option>
+    <ion-select-option value='rus'>Russian</ion-select-option>
+    <ion-select-option value='san'>Sanskrit</ion-select-option>
+    <ion-select-option value='sin'>Sinhala; Sinhalese</ion-select-option>
+    <ion-select-option value='slk'>Slovak</ion-select-option>
+    <ion-select-option value='slv'>Slovenian</ion-select-option>
+    <ion-select-option value='spa'>Spanish; Castilian</ion-select-option>
+    <ion-select-option value='spa_old'>Spanish; Castilian - Old</ion-select-option>
+    <ion-select-option value='sqi'>Albanian</ion-select-option>
+    <ion-select-option value='srp'>Serbian</ion-select-option>
+    <ion-select-option value='srp_latn'>Serbian - Latin</ion-select-option>
+    <ion-select-option value='swa'>Swahili</ion-select-option>
+    <ion-select-option value='swe'>Swedish</ion-select-option>
+    <ion-select-option value='syr'>Syriac</ion-select-option>
+    <ion-select-option value='tam'>Tamil</ion-select-option>
+    <ion-select-option value='tel'>Telugu</ion-select-option>
+    <ion-select-option value='tgk'>Tajik</ion-select-option>
+    <ion-select-option value='tgl'>Tagalog</ion-select-option>
+    <ion-select-option value='tha'>Thai</ion-select-option>
+    <ion-select-option value='tir'>Tigrinya</ion-select-option>
+    <ion-select-option value='tur'>Turkish</ion-select-option>
+    <ion-select-option value='uig'>Uighur; Uyghur</ion-select-option>
+    <ion-select-option value='ukr'>Ukrainian</ion-select-option>
+    <ion-select-option value='urd'>Urdu</ion-select-option>
+    <ion-select-option value='uzb'>Uzbek</ion-select-option>
+    <ion-select-option value='uzb_cyrl'>Uzbek - Cyrillic</ion-select-option>
+    <ion-select-option value='vie'>Vietnamese</ion-select-option>
+    <ion-select-option value='yid'>Yiddish</ion-select-option>
+  </ion-select>
+</ion-item>
+
+
+<div #canvasContainer class="canvasContainer" text-center>
+  <canvas #canvas></canvas>
+</div>
+
+<ion-content class="ion-padding">
+
+  <input #fileSelector (change)="onFileChange($event)" accept="image/*" style="display: none;"
+         type="file">
+
+  <ion-grid class="ion-no-margin">
+    <ion-row>
+      <ion-col size="9">{{progressStatus}}</ion-col>
+      <ion-col class="ion-text-right" size="3">{{progress | percent:'1.1-1'}}</ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ion-card *ngIf="result" class="ion-no-margin ion-margin-bottom">
+    <ion-card-header>Text Confidence: {{result.confidence | number:'1.2-2'}} %</ion-card-header>
+    <ion-card-content>{{result.text}}</ion-card-content>
+  </ion-card>
+
+  <div *ngIf="result" class="table-container mat-elevation-z1">
+    <table [dataSource]="result.lines" mat-table>
+      <ng-container matColumnDef="text">
+        <th *matHeaderCellDef mat-header-cell>Line</th>
+        <td *matCellDef="let line" mat-cell> {{line.text}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="confidence">
+        <th *matHeaderCellDef mat-header-cell>Confidence</th>
+        <td *matCellDef="let line" mat-cell> {{line.confidence | number:'1.2-2'}} %</td>
+      </ng-container>
+
+      <tr *matHeaderRowDef="elementColumns; sticky: true" mat-header-row></tr>
+      <tr (click)="onLineClick(line)" *matRowDef="let line; columns: elementColumns;"
+          [ngClass]="{'highlight': selectedLine === line}"
+          mat-row></tr>
+    </table>
+  </div>
+
+  <div *ngIf="words" class="table-container mat-elevation-z1 ion-margin-top">
+    <table [dataSource]="words" mat-table>
+
+      <ng-container matColumnDef="text">
+        <th *matHeaderCellDef mat-header-cell>Word</th>
+        <td *matCellDef="let word" mat-cell> {{word.text}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="confidence">
+        <th *matHeaderCellDef mat-header-cell>Confidence</th>
+        <td *matCellDef="let word" mat-cell> {{word.confidence | number:'1.2-2'}} %</td>
+      </ng-container>
+
+      <tr *matHeaderRowDef="elementColumns; sticky: true" mat-header-row></tr>
+      <tr (click)="onWordClick(word)" *matRowDef="let word; columns: elementColumns;"
+          [ngClass]="{'highlight': selectedWord == word}"
+          mat-row></tr>
+    </table>
+  </div>
+
+  <div *ngIf="symbols" class="table-container mat-elevation-z1 ion-margin-top">
+    <table [dataSource]="symbols" mat-table>
+
+      <ng-container matColumnDef="text">
+        <th *matHeaderCellDef mat-header-cell>Symbol</th>
+        <td *matCellDef="let symbol" mat-cell> {{symbol.text}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="confidence">
+        <th *matHeaderCellDef mat-header-cell>Confidence</th>
+        <td *matCellDef="let symbol" mat-cell> {{symbol.confidence | number:'1.2-2'}} %</td>
+      </ng-container>
+
+      <tr *matHeaderRowDef="elementColumns; sticky: true" mat-header-row></tr>
+      <tr (click)="onSymbolClick(symbol)" *matRowDef="let symbol; columns: elementColumns;"
+          [ngClass]="{'highlight': selectedSymbol == symbol}" mat-row></tr>
+    </table>
+  </div>
+</ion-content>
