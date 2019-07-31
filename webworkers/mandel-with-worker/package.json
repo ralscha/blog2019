@@ -1,0 +1,10 @@
+{
+  "name": "mandel-with-worker",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "ws -d . -p 1234"
+  },
+  "devDependencies": {
+    "local-web-server": "3.0.7"
+  }
+}

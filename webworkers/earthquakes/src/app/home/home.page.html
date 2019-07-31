@@ -1,0 +1,34 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      Earthquakes
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-virtual-scroll [hidden]="earthquakes.length == 0" [items]="earthquakes" approxItemHeight='128px'>
+    <ion-item *virtualItem="let earthquake">
+      <ion-label>
+        <ion-row>
+          <ion-col size="3">
+            <h1 class="magnitude">{{earthquake.mag | number:'1.1-1'}}</h1>
+          </ion-col>
+          <ion-col size="9" text-right>
+            <p>{{earthquake.time | date:'MMM d HH:mm:ss'}}</p>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <h2>{{earthquake.place}}</h2>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <p>Depth: {{earthquake.depth | number}} km</p>
+          </ion-col>
+        </ion-row>
+      </ion-label>
+    </ion-item>
+  </ion-virtual-scroll>
+</ion-content>
