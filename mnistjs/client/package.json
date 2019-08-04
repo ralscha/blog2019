@@ -20,11 +20,11 @@
     "@angular/platform-browser-dynamic": "8.2.0",
     "@angular/router": "8.2.0",
     "@ionic/angular": "4.7.1",
-    "@tensorflow/tfjs": "1.2.5",
+    "@tensorflow/tfjs": "1.2.6",
     "brain.js": "1.6.1",
     "rxjs": "6.5.2",
     "tslib": "1.10.0",
-    "zone.js": "0.10.0"
+    "zone.js": "0.10.1"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "0.802.0",
@@ -32,7 +32,7 @@
     "@angular/compiler-cli": "8.2.0",
     "@angular/language-service": "8.2.0",
     "@ionic/angular-toolkit": "2.0.0",
-    "@types/node": "12.6.8",
+    "@types/node": "12.6.9",
     "acorn": "6.2.1",
     "bread-compressor-cli": "1.0.7",
     "codelyzer": "5.1.0",

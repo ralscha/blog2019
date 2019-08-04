@@ -27,7 +27,7 @@
     "rxjs": "6.5.2",
     "tslib": "1.10.0",
     "tus-js-client": "1.7.1",
-    "zone.js": "0.10.0"
+    "zone.js": "0.10.1"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "0.802.0",
@@ -36,7 +36,7 @@
     "@angular/language-service": "8.2.0",
     "@capacitor/cli": "1.1.1",
     "@ionic/angular-toolkit": "2.0.0",
-    "@types/node": "12.6.8",
+    "@types/node": "12.6.9",
     "codelyzer": "5.1.0",
     "local-web-server": "3.0.7",
     "tslint": "5.18.0",
