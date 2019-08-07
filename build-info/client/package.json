@@ -29,11 +29,11 @@
     "@angular/cli": "8.2.0",
     "@angular/compiler-cli": "8.2.0",
     "@angular/language-service": "8.2.0",
-    "@types/node": "12.6.9",
+    "@types/node": "12.7.0",
     "codelyzer": "5.1.0",
     "local-web-server": "3.0.7",
-    "replace-in-file": "4.1.1",
-    "simple-git": "^1.113.0",
+    "replace-in-file": "4.1.2",
+    "simple-git": "1.124.0",
     "tslint": "5.18.0",
     "typescript": "3.4.5"
   }
