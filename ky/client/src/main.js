@@ -223,4 +223,12 @@ async function customDefaults() {
 	console.log(body);
 }
 
+async function downloadProgress() {
+	await ky.get('http://localhost:8080/download', {
+		onDownloadProgress: (progress, chunk) => {
+			console.log(`${progress.percent * 100}% - ${progress.transferredBytes} of ${progress.totalBytes} bytes`);
+		}
+	});
+}
+
 demo();
