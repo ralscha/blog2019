@@ -35,7 +35,7 @@
     "@ionic/angular-toolkit": "2.0.0",
     "@types/node": "12.7.1",
     "codelyzer": "5.1.0",
-    "goog-webfont-dl": "1.0.2",
+    "goog-webfont-dl": "1.0.3",
     "local-web-server": "3.0.7",
     "tslint": "5.18.0",
     "typescript": "3.4.5"
