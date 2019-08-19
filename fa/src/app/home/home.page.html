@@ -139,4 +139,9 @@
     <input type='range' min="0" max="360" [value]="magicLevel" (input)="magicLevel=$event.target.value"/>
   </div>
 
+  <div>
+     <fa-icon size="5x" [icon]="['fas', 'bell']" [styles]="dynamicStyle()"></fa-icon>
+     <fa-icon size="5x" [icon]="['far', 'bell']" [styles]="{'color': color}"></fa-icon>
+  </div>
+
 </ion-content>
