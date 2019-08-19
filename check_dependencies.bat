@@ -66,12 +66,14 @@ cd D:\ws\blog2019\uploadtus\client
 call ncu
 cd D:\ws\blog2019\uploadtus\server
 call checkdep
-cd D:\ws\blog2019\visibility\client
+cd D:\ws\blog2019\visibility\client\simple
 call ncu
-cd D:\ws\blog2019\visibility\server
-call checkdep
+cd D:\ws\blog2019\visibility\client\visibility.js
+call ncu
 cd D:\ws\blog2019\webocr
 call ncu
+cd D:\ws\blog2019\webpush
+call checkdep
 cd D:\ws\blog2019\webworkers\angular
 call ncu
 cd D:\ws\blog2019\webworkers\angular-comlink
