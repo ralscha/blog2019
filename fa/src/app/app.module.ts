@@ -9,28 +9,12 @@ import {FaIconLibrary, FontAwesomeModule} from '@fortawesome/angular-fontawesome
 import {FormsModule} from '@angular/forms';
 import {HttpClientModule} from '@angular/common/http';
 import {
-  faAsterisk,
-  faBell as faSolidBell,
-  faCircle,
-  faCloud,
-  faCog,
-  faEnvelopeOpen,
-  faHandPointLeft,
-  faMobile,
-  faMoon,
-  faPlay,
-  faSkating,
-  faSkiing,
-  faSkiingNordic,
-  faSmileBeam as faSmileBeanSolid,
-  faSmileWink as faSmileWinkSolid,
-  faSnowboarding,
-  faSpinner,
-  faSquare,
-  faStar,
-  faSun,
-  faSwimmer,
-  faSync
+  faAsterisk, faBell as faSolidBell, faCircle, faCloud,
+  faCog, faEnvelopeOpen, faHandPointLeft, faMobile, faMoon,
+  faPlay, faSkating, faSkiing, faSkiingNordic,
+  faSmileBeam as faSmileBeanSolid, faSmileWink as faSmileWinkSolid,
+  faSnowboarding, faSpinner, faSquare, faStar, faSun,
+  faSwimmer, faSync, faBan, faCamera
 } from '@fortawesome/free-solid-svg-icons';
 import {faBell as faRegularBell, faSmileBeam, faSmileWink} from '@fortawesome/free-regular-svg-icons';
 // import {fas} from '@fortawesome/free-solid-svg-icons';
@@ -62,8 +46,8 @@ export class AppModule {
       faSmileWink, faSmileBeam, faEnvelopeOpen, faCloud,
       faMobile, faSquare, faSpinner, faCircle,
       faSync, faPlay, faSun, faMoon, faStar,
-      faHandPointLeft, faAsterisk, faCog, faSkating, 
+      faHandPointLeft, faAsterisk, faCog, faSkating,
       faSkiing, faSkiingNordic, faSnowboarding, faSwimmer,
-      faSolidBell, faRegularBell);
+      faSolidBell, faRegularBell, faCamera, faBan);
   }
 }

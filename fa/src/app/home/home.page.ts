@@ -14,6 +14,10 @@ export class HomePage implements OnInit, OnDestroy {
   magicLevel = 0;
 
   color = 'red';
+  stroke = 'red';
+  strokeWidth = 0;
+  opacity = 1;
+
   private interval: number;
 
   ngOnDestroy(): void {
@@ -21,14 +25,25 @@ export class HomePage implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.interval = setInterval(() => this.color = this.randomColor(), 1000);
+    this.interval = setInterval(() => {
+      this.color = this.randomColor();
+      this.stroke = this.randomColor();
+      this.strokeWidth = this.randomWidth();
+      this.opacity = Math.random();
+    }, 1000);
   }
 
   dynamicStyle() {
     return {
+      opacity: Math.random(),
       color: this.randomColor(),
-      stroke: this.randomColor()
+      stroke: this.randomColor(),
+      'stroke-width': this.randomWidth() + 'px'
     };
+  }
+
+  private randomWidth(): number {
+    return Math.floor(Math.random() * 30) + 1;
   }
 
   private randomColor(): string {
