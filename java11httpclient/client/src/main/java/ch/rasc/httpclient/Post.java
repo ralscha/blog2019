@@ -25,7 +25,7 @@ public class Post {
     var request = HttpRequest.newBuilder()
             				.POST(BodyPublishers.ofString("this is a text"))
             				.uri(URI.create("https://localhost:8443/uppercase"))
-            				.header("Conent-Type", "text/plain")
+            				.header("Content-Type", "text/plain")
             				.build();
 
     return client.sendAsync(request, BodyHandlers.ofString())
