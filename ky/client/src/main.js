@@ -1,10 +1,10 @@
 import ky from 'ky';
 
 async function demo() {
-  bodyMethods();
+  // bodyMethods();
   // error();
   // timeout();
-  // retry();
+  retry();
   // postBody();
   // abort();
   // hooks();
