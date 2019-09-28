@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.jooq.DSLContext;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -33,14 +33,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
   private static final DateTimeFormatter COOKIE_DATE_FORMATTER = DateTimeFormatter
       .ofPattern("EEE, dd-MMM-yyyy HH:mm:ss z");
 
-  @Autowired
-  private AppProperties appProperties;
+  private final AppProperties appProperties;
 
-  @Autowired
-  private CryptoService cryptoService;
+  private final CryptoService cryptoService;
 
-  @Autowired
-  private AuthCookieFilter authCookieFilter;
+  private final AuthCookieFilter authCookieFilter;
+
+  public SecurityConfig(AppProperties appProperties, CryptoService cryptoService,
+      DSLContext dsl) {
+    this.appProperties = appProperties;
+    this.cryptoService = cryptoService;
+    this.authCookieFilter = new AuthCookieFilter(dsl, cryptoService);
+  }
 
   @Override
   protected void configure(HttpSecurity http) throws Exception {

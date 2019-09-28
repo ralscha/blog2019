@@ -22,12 +22,10 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsChecker;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Component;
 import org.springframework.web.filter.GenericFilterBean;
 
 import ch.rasc.stateless.db.tables.records.AppUserRecord;
 
-@Component
 public class AuthCookieFilter extends GenericFilterBean {
 
   public final static String COOKIE_NAME = "X-authentication";
