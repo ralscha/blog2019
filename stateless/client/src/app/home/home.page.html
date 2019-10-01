@@ -15,7 +15,7 @@
   </h5>
   <ion-button (click)="logout()">Logout</ion-button>
 
-  <div margin-top *ngIf="isAdmin() | async">
+  <div class="ion-margin-top" *ngIf="isAdmin() | async">
     <ion-button *ngIf="userEnabled" (click)="disable()">disable User</ion-button>
     <ion-button *ngIf="!userEnabled" (click)="enable()">Enable User</ion-button>
   </div>

@@ -15,4 +15,9 @@ public class SubscriptionEndpoint {
     return this.endpoint;
   }
 
+  @Override
+  public String toString() {
+    return "SubscriptionEndpoint [endpoint=" + this.endpoint + "]";
+  }
+
 }
