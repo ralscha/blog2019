@@ -7,6 +7,7 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletResponse;
@@ -31,7 +32,7 @@ import ch.rasc.stateless.config.AppProperties;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
   private static final DateTimeFormatter COOKIE_DATE_FORMATTER = DateTimeFormatter
-      .ofPattern("EEE, dd-MMM-yyyy HH:mm:ss z");
+					.ofPattern("EEE, dd MMM yyyy HH:mm:ss 'GMT'").localizedBy(Locale.ENGLISH);
 
   private final AppProperties appProperties;
 
