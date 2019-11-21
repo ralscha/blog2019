@@ -2,8 +2,8 @@ export const environment = {
   production: true,
   serverURL: 'http://localhost:8080',
   version: '0.0.1',
-  buildTimestamp: 1574332443,
-  shortCommitId: '0bbab1a',
-  commitId: '0bbab1a4141954d72539b15168a0900dd9e744d3',
-  commitTime: 1572488837
+  buildTimestamp: 1574332806,
+  shortCommitId: 'fe134c5',
+  commitId: 'fe134c57526b06f46a5388cccf25a6f0c3ad3edf',
+  commitTime: 1574332494
 };
