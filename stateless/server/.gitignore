@@ -29,3 +29,4 @@ HELP.md
 .vscode/
 /keys
 /db/
+/h2-1.4.200.jar

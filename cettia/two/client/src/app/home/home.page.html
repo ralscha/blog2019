@@ -12,7 +12,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content padding>
+<ion-content class="ion-padding">
   <ion-list>
     <ion-item (click)="editTodo(todo)" *ngFor="let todo of todoService.todosObservable | async">
       <ion-label>{{todo.title}}</ion-label>

@@ -15,13 +15,13 @@
       <ion-select-option value="mobilenet_v1">Mobilenet v1</ion-select-option>
     </ion-select>
   </ion-item>
-  <div text-center class="canvasContainer" #canvasContainer>
+  <div class="ion-text-center canvasContainer" #canvasContainer>
     <canvas #canvas></canvas>
   </div>
 </ion-content>
 
-<ion-footer text-center>
+<ion-footer class="ion-text-center">
   <input #fileSelector type="file" accept="image/*" (change)="onFileChange($event)"
          style="display: none;">
-  <ion-button (click)="clickFileSelector()" text-center>Select File ...</ion-button>
+  <ion-button (click)="clickFileSelector()" class="ion-text-center">Select File ...</ion-button>
 </ion-footer>

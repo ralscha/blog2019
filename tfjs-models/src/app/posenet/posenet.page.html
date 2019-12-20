@@ -5,13 +5,13 @@
 </ion-header>
 
 <ion-content #content>
-  <div text-center class="canvasContainer" #canvasContainer>
+  <div class="ion-text-center canvasContainer" #canvasContainer>
     <canvas #canvas></canvas>
   </div>
 </ion-content>
 
-<ion-footer text-center>
+<ion-footer class="ion-text-center">
   <input #fileSelector type="file" accept="image/*" (change)="onFileCange($event)"
          style="display: none;">
-  <ion-button (click)="clickFileSelector()" text-center>Select File ...</ion-button>
+  <ion-button (click)="clickFileSelector()" class="ion-text-center">Select File ...</ion-button>
 </ion-footer>

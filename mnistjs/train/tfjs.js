@@ -1,6 +1,5 @@
 const mnist = require('./mnist');
-const tf = require('@tensorflow/tfjs');
-require('@tensorflow/tfjs-node');
+const tf = require('@tensorflow/tfjs-node');
 
 // https://github.com/tensorflow/tfjs-examples/blob/master/mnist/index.js
 function createConvModel() {

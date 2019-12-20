@@ -197,13 +197,13 @@ async function hooks() {
 
   const hooks = {
     beforeRequest: [
-      (input, options) => {
+      (request, options) => {
         console.log('before request');
         options.headers.set('x-api-key', '1111');
       }
     ],
     afterResponse: [
-      (input, options, response) => {
+      (request, options, response) => {
         console.log('after response');
         console.log(response);
         // return different response

@@ -4,8 +4,8 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content padding>
-  <div text-center>
+<ion-content class="ion-padding">
+  <div class="ion-text-center">
     <img #image>
   </div>
 
@@ -16,8 +16,8 @@
   </ul>
 </ion-content>
 
-<ion-footer text-center>
+<ion-footer class="ion-text-center">
   <input #fileSelector type="file" accept="image/*" (change)="onFileCange($event)"
          style="display: none;">
-  <ion-button (click)="clickFileSelector()" text-center>Select File ...</ion-button>
+  <ion-button (click)="clickFileSelector()" class="ion-text-center">Select File ...</ion-button>
 </ion-footer>
