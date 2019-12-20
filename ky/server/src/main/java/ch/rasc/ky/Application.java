@@ -124,6 +124,7 @@ public class Application {
 		response.addHeader(HttpHeaders.CONTENT_LENGTH, "1000000");
 		response.addHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_OCTET_STREAM_VALUE);
 		Random rand = new Random();
+		@SuppressWarnings("resource")
 		ServletOutputStream outputStream = response.getOutputStream();
 
 		for (int i = 0; i < 100; i++) {
