@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.2.0.RELEASE</version>
+		<version>2.2.2.RELEASE</version>
 		<relativePath />
 	</parent>
 	<groupId>ch.rasc</groupId>
@@ -33,6 +33,17 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-jooq</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>com.github.ben-manes.caffeine</groupId>
+			<artifactId>caffeine</artifactId>
+		</dependency>
+
+		<dependency>
+		    <groupId>org.bouncycastle</groupId>
+		    <artifactId>bcprov-jdk15on</artifactId>
+		    <version>1.64</version>
 		</dependency>
 
 		<dependency>
@@ -69,7 +80,7 @@
 					<plugin>
 						<groupId>org.jooq</groupId>
 						<artifactId>jooq-codegen-maven</artifactId>
-						<version>3.12.2</version>
+						<version>3.12.3</version>
 						<executions>
 							<execution>
 								<id>generate-jooq-sources</id>
@@ -122,7 +133,7 @@
 							<dependency>
 								<groupId>org.jooq</groupId>
 								<artifactId>jooq-meta-extensions</artifactId>
-								<version>3.12.2</version>
+								<version>3.12.3</version>
 							</dependency>
 						</dependencies>
 					</plugin>
