@@ -1,5 +1,5 @@
 import {AfterViewInit, ChangeDetectorRef, Component, ElementRef, ViewChild} from '@angular/core';
-import Tesseract from 'tesseract.js';
+import {createWorker, RecognizeResult} from 'tesseract.js';
 import {NgProgressComponent} from '@ngx-progressbar/core';
 
 @Component({
@@ -9,10 +9,10 @@ import {NgProgressComponent} from '@ngx-progressbar/core';
 })
 export class HomePage implements AfterViewInit {
 
-  @ViewChild('fileSelector', {static: false}) fileInput: ElementRef;
-  @ViewChild('canvas', {static: false}) canvas: ElementRef;
-  @ViewChild('canvasContainer', {static: false}) canvasContainer: ElementRef;
-  @ViewChild(NgProgressComponent, {static: false}) progressBar: NgProgressComponent;
+  @ViewChild('fileSelector') fileInput: ElementRef;
+  @ViewChild('canvas') canvas: ElementRef;
+  @ViewChild('canvasContainer') canvasContainer: ElementRef;
+  @ViewChild(NgProgressComponent) progressBar: NgProgressComponent;
 
   result: any;
   words: any[];
@@ -40,12 +40,18 @@ export class HomePage implements AfterViewInit {
     this.fileInput.nativeElement.click();
   }
 
-  onFileChange(event) {
+  async onFileChange(event) {
     this.selectedFile = event.target.files[0];
 
-    const worker = new Tesseract.TesseractWorker({
-      workerPath: 'tesseract-200alpha13/worker.min.js',
-      corePath: 'tesseract-200alpha13/tesseract-core.wasm.js'
+    const worker = createWorker({
+      workerPath: 'tesseract-201/worker.min.js',
+      corePath: 'tesseract-201/tesseract-core.wasm.js',
+      logger: progress => {
+        this.progressStatus = progress.status;
+        this.progress = progress.progress;
+        this.progressBar.set(progress.progress * 100);
+        this.changeDetectionRef.markForCheck();
+      }
     });
     this.progressStatus = '';
     this.progress = null;
@@ -57,30 +63,23 @@ export class HomePage implements AfterViewInit {
     this.selectedWord = null;
     this.selectedSymbol = null;
 
-    worker.detect(this.selectedFile).progress(progressEvent => {
-      this.progressStatus = progressEvent.status;
-      this.progress = progressEvent.progress;
-    }).then(result => {
-      console.log(result);
-    });
+    await worker.load();
+    await worker.loadLanguage(this.language);
+    await worker.initialize(this.language);
 
     this.progressBar.set(0);
 
     worker
-      .recognize(this.selectedFile, this.language)
-      .progress(progressEvent => {
-        this.progressStatus = progressEvent.status;
-        this.progress = progressEvent.progress;
-
-        this.progressBar.set(progressEvent.progress * 100);
-        this.changeDetectionRef.detectChanges();
-      })
+      .recognize(this.selectedFile)
       .catch(error => {
+        console.log(error);
         this.progressStatus = error;
         this.progress = null;
       })
       .then(result => {
-        this.result = result;
+        if (result) {
+          this.result = (result as RecognizeResult).data;
+        }
         worker.terminate();
       })
       .finally(() => {
