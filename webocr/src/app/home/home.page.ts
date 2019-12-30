@@ -43,16 +43,6 @@ export class HomePage implements AfterViewInit {
   async onFileChange(event) {
     this.selectedFile = event.target.files[0];
 
-    const worker = createWorker({
-      workerPath: 'tesseract-201/worker.min.js',
-      corePath: 'tesseract-201/tesseract-core.wasm.js',
-      logger: progress => {
-        this.progressStatus = progress.status;
-        this.progress = progress.progress;
-        this.progressBar.set(progress.progress * 100);
-        this.changeDetectionRef.markForCheck();
-      }
-    });
     this.progressStatus = '';
     this.progress = null;
 
@@ -63,36 +53,55 @@ export class HomePage implements AfterViewInit {
     this.selectedWord = null;
     this.selectedSymbol = null;
 
+    this.image = new Image();
+    this.image.onload = () => this.drawImageScaled(this.image);
+    this.image.src = URL.createObjectURL(this.selectedFile);
+
+    /*
+    const worker = createWorker({
+      logger: progress => {
+        this.progressStatus = progress.status;
+        this.progress = progress.progress;
+        this.progressBar.set(progress.progress * 100);
+        this.changeDetectionRef.markForCheck();
+      }
+    });
+     */
+    const worker = createWorker({
+      workerPath: 'tesseract-201/worker.min.js',
+      corePath: 'tesseract-201/tesseract-core.wasm.js',
+      logger: progress => {
+        this.progressStatus = progress.status;
+        this.progress = progress.progress;
+        this.progressBar.set(progress.progress * 100);
+        this.changeDetectionRef.markForCheck();
+      }
+    });
+
     await worker.load();
     await worker.loadLanguage(this.language);
     await worker.initialize(this.language);
 
     this.progressBar.set(0);
 
-    worker
-      .recognize(this.selectedFile)
-      .catch(error => {
-        console.log(error);
-        this.progressStatus = error;
-        this.progress = null;
-      })
-      .then(result => {
-        if (result) {
-          this.result = (result as RecognizeResult).data;
-        }
-        worker.terminate();
-      })
-      .finally(() => {
-        this.progressBar.complete();
-        this.progressStatus = null;
-        this.progress = null;
-      });
+    try {
+      const result = await worker.recognize(this.selectedFile);
+      if (result) {
+        this.result = (result as RecognizeResult).data;
+      }
+      await worker.terminate();
+    } catch (e) {
+      console.log(e);
+      this.progressStatus = e;
+      this.progress = null;
+    } finally {
+      this.progressBar.complete();
+      this.progressStatus = null;
+      this.progress = null;
+    }
 
-    this.image = new Image();
-    this.image.onload = async () => {
-      this.drawImageScaled(this.image);
-    };
-    this.image.src = URL.createObjectURL(this.selectedFile);
+    // reset file input
+    event.target.value = null;
   }
 
   redrawImage() {
