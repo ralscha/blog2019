@@ -27,7 +27,7 @@ public class Client {
     Path testFile = Paths.get("test.jpg");
     if (!Files.exists(testFile)) {
       var request = HttpRequest.newBuilder()
-          .uri(URI.create("https://picsum.photos/id/970/2000/2000")).build();
+          .uri(URI.create("https://i.picsum.photos/id/970/2000/2000.jpg")).build();
       httpClient.send(request, BodyHandlers.ofFile(testFile));
     }
 
