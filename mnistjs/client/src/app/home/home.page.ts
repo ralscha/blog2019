@@ -10,7 +10,7 @@ import * as tf from '@tensorflow/tfjs';
 })
 export class HomePage {
 
-  @ViewChild(DrawableDirective, {static: false}) drawable: DrawableDirective;
+  @ViewChild(DrawableDirective) drawable: DrawableDirective;
 
   detectionsMLP: number[] = [];
   detectedNumberMLP: number;

@@ -9,7 +9,7 @@ export class AppComponent implements AfterViewInit, OnDestroy {
   duration = '';
   progress = '0 %';
 
-  @ViewChild('myCanvas', {static: false})
+  @ViewChild('myCanvas')
   myCanvasRef: ElementRef;
   private ctx: CanvasRenderingContext2D;
 
