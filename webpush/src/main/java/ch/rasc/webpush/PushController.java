@@ -37,6 +37,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import ch.rasc.webpush.dto.Notification;
 import ch.rasc.webpush.dto.PushMessage;
 import ch.rasc.webpush.dto.Subscription;
 import ch.rasc.webpush.dto.SubscriptionEndpoint;
@@ -49,6 +50,8 @@ public class PushController {
   private final CryptoService cryptoService;
 
   private final Map<String, Subscription> subscriptions = new ConcurrentHashMap<>();
+
+  private final Map<String, Subscription> subscriptionsAngular = new ConcurrentHashMap<>();
 
   private String lastNumbersAPIFact = "";
 
@@ -74,20 +77,44 @@ public class PushController {
     return this.serverKeys.getPublicKeyUncompressed();
   }
 
+  @GetMapping(path = "/publicSigningKeyBase64")
+  public String publicSigningKeyBase64() {
+    return this.serverKeys.getPublicKeyBase64();
+  }
+
   @PostMapping("/subscribe")
   @ResponseStatus(HttpStatus.CREATED)
   public void subscribe(@RequestBody Subscription subscription) {
     this.subscriptions.put(subscription.getEndpoint(), subscription);
   }
 
+  @PostMapping("/subscribeAngular")
+  @ResponseStatus(HttpStatus.CREATED)
+  public void subscribeAngular(@RequestBody Subscription subscription) {
+    System.out.println("subscribe: " + subscription);
+    this.subscriptionsAngular.put(subscription.getEndpoint(), subscription);
+  }
+
   @PostMapping("/unsubscribe")
-  public void unsubscribe(@RequestBody SubscriptionEndpoint subscription) {
+  public void unsubscribe(@RequestBody SubscriptionEndpoint subscription) {    
     this.subscriptions.remove(subscription.getEndpoint());
+  }
+
+  @PostMapping("/unsubscribeAngular")
+  @ResponseStatus(HttpStatus.NO_CONTENT)
+  public void unsubscribeAngular(@RequestBody SubscriptionEndpoint subscription) {
+    System.out.println("unsubscribe: " + subscription);
+    this.subscriptionsAngular.remove(subscription.getEndpoint());
   }
 
   @PostMapping("/isSubscribed")
   public boolean isSubscribed(@RequestBody SubscriptionEndpoint subscription) {
     return this.subscriptions.containsKey(subscription.getEndpoint());
+  }
+
+  @PostMapping("/isSubscribedAngular")
+  public boolean isSubscribedAngular(@RequestBody SubscriptionEndpoint subscription) {
+    return this.subscriptionsAngular.containsKey(subscription.getEndpoint());
   }
 
   @GetMapping(path = "/lastNumbersAPIFact")
@@ -97,6 +124,10 @@ public class PushController {
 
   @Scheduled(fixedDelay = 20_000)
   public void numberFact() {
+    if (this.subscriptions.isEmpty()) {
+      return;
+    }
+
     try {
       HttpResponse<String> response = this.httpClient.send(
           HttpRequest.newBuilder(URI.create("http://numbersapi.com/random/date")).build(),
@@ -114,6 +145,10 @@ public class PushController {
 
   @Scheduled(fixedDelay = 30_000)
   public void chuckNorrisJoke() {
+    if (this.subscriptions.isEmpty() && this.subscriptionsAngular.isEmpty()) {
+      return;
+    }
+
     try {
       HttpResponse<String> response = this.httpClient.send(HttpRequest
           .newBuilder(URI.create("https://api.icndb.com/jokes/random")).build(),
@@ -127,8 +162,15 @@ public class PushController {
         int id = (int) value.get("id");
         String joke = (String) value.get("joke");
 
-        sendPushMessageToAllSubscribers(
+        sendPushMessageToAllSubscribers(this.subscriptions,
             new PushMessage("Chuck Norris Joke: " + id, joke));
+
+        Notification notification = new Notification("Chuck Norris Joke: " + id);
+        notification.setBody(joke);
+        notification.setIcon("assets/chuck.png");
+
+        sendPushMessageToAllSubscribers(this.subscriptionsAngular,
+            Map.of("notification", notification));
       }
     }
     catch (IOException | InterruptedException e) {
@@ -147,12 +189,12 @@ public class PushController {
     failedSubscriptions.forEach(this.subscriptions::remove);
   }
 
-  private void sendPushMessageToAllSubscribers(PushMessage message)
-      throws JsonProcessingException {
+  private void sendPushMessageToAllSubscribers(Map<String, Subscription> subs,
+      Object message) throws JsonProcessingException {
 
     Set<String> failedSubscriptions = new HashSet<>();
 
-    for (Subscription subscription : this.subscriptions.values()) {
+    for (Subscription subscription : subs.values()) {
       try {
         byte[] result = this.cryptoService.encrypt(
             this.objectMapper.writeValueAsString(message),
@@ -170,7 +212,7 @@ public class PushController {
       }
     }
 
-    failedSubscriptions.forEach(this.subscriptions::remove);
+    failedSubscriptions.forEach(subs::remove);
   }
 
   /**

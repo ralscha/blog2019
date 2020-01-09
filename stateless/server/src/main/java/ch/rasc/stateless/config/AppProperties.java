@@ -2,22 +2,33 @@ package ch.rasc.stateless.config;
 
 import java.time.Duration;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.Length;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.stereotype.Component;
+import org.springframework.validation.annotation.Validated;
 
 @ConfigurationProperties(prefix = "app")
+@Component
+@Validated
 public class AppProperties {
   private boolean secureCookie;
 
+  @NotEmpty
+  @Length(min = 3, max = 3)
+  private String instanceNo;
+
+  @NotNull
   private Duration cookieMaxAge;
 
-  private String keyPath;
-
-  public boolean isSecureCookie() {
-    return this.secureCookie;
+  public String getInstanceNo() {
+    return this.instanceNo;
   }
 
-  public void setSecureCookie(boolean secureCookie) {
-    this.secureCookie = secureCookie;
+  public void setInstanceNo(String instanceNo) {
+    this.instanceNo = instanceNo;
   }
 
   public Duration getCookieMaxAge() {
@@ -28,12 +39,12 @@ public class AppProperties {
     this.cookieMaxAge = cookieMaxAge;
   }
 
-  public String getKeyPath() {
-    return this.keyPath;
+  public boolean isSecureCookie() {
+    return this.secureCookie;
   }
 
-  public void setKeyPath(String keyPath) {
-    this.keyPath = keyPath;
+  public void setSecureCookie(boolean secureCookie) {
+    this.secureCookie = secureCookie;
   }
 
 }

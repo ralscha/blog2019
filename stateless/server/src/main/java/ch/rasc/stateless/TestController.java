@@ -6,10 +6,11 @@ import org.jooq.DSLContext;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+
+import ch.rasc.stateless.config.security.AppUserDetail;
 
 @RestController
 public class TestController {
@@ -22,8 +23,8 @@ public class TestController {
 
   @GetMapping("/message")
   @PreAuthorize("isAuthenticated()")
-  public String message(@AuthenticationPrincipal UserDetails user) {
-    if ("admin@test.com".equals(user.getUsername())) {
+  public String message(@AuthenticationPrincipal AppUserDetail user) {
+    if ("admin@test.com".equals(user.getEmail())) {
       return "This is a message for the administrator";
     }
     return "This is a message for all users";

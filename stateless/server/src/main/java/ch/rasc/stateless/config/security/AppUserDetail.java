@@ -1,81 +1,42 @@
 package ch.rasc.stateless.config.security;
 
-import java.util.Collection;
-import java.util.Collections;
+import java.util.Objects;
+import java.util.Set;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import ch.rasc.stateless.db.tables.records.AppUserRecord;
 
-public class JooqUserDetails implements UserDetails {
+public class AppUserDetail {
 
-  private static final long serialVersionUID = 1L;
+  private final Long appUserId;
 
-  private final Collection<GrantedAuthority> authorities;
-
-  private final String username;
-
-  private final String password;
+  private final String email;
 
   private final boolean enabled;
 
-  private final Long userDbId;
+  private final Set<GrantedAuthority> authorities;
 
-  private final boolean locked;
-
-  private final boolean expired;
-
-  public JooqUserDetails(AppUserRecord user) {
-    this.userDbId = user.getId();
-
-    this.username = user.getEmail();
-    this.password = user.getPasswordHash();
-    this.enabled = user.getEnabled() != null ? user.getEnabled().booleanValue() : false;
-
-    this.expired = false;
-    this.locked = false;
-
-    this.authorities = Collections
-        .singleton(new SimpleGrantedAuthority(user.getAuthority()));
+  public AppUserDetail(AppUserRecord user) {
+    this.appUserId = user.getId();
+    this.email = user.getEmail();
+    this.authorities = Set.of(new SimpleGrantedAuthority(user.getAuthority()));
+    this.enabled = Objects.requireNonNullElse(user.getEnabled(), false);
   }
 
-  @Override
-  public Collection<GrantedAuthority> getAuthorities() {
+  public Long getAppUserId() {
+    return this.appUserId;
+  }
+
+  public String getEmail() {
+    return this.email;
+  }
+
+  public Set<GrantedAuthority> getAuthorities() {
     return this.authorities;
   }
 
-  @Override
-  public String getPassword() {
-    return this.password;
-  }
-
-  @Override
-  public String getUsername() {
-    return this.username;
-  }
-
-  public Long getUserDbId() {
-    return this.userDbId;
-  }
-
-  @Override
-  public boolean isAccountNonExpired() {
-    return !this.expired;
-  }
-
-  @Override
-  public boolean isAccountNonLocked() {
-    return !this.locked;
-  }
-
-  @Override
-  public boolean isCredentialsNonExpired() {
-    return true;
-  }
-
-  @Override
   public boolean isEnabled() {
     return this.enabled;
   }

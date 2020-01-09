@@ -1,1 +1,0 @@
-Source code for the blog post: https://golb.hplar.ch/2019/06/totp-spring-security.html
