@@ -13,7 +13,7 @@
     "shx": "0.3.2"
   },
   "dependencies": {
-    "ky": "0.16.1"
+    "ky": "0.16.2"
   },
   "browserslist": [
     "last 1 Chrome versions"
