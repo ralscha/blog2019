@@ -37,11 +37,11 @@ public class Get {
     List<HttpRequest> requests = paths.stream()
         .map(path -> "https://localhost:8443" + path)
         .map(URI::create)
-        .map(HttpRequest::newBuilder)
-        .map(requestBuilder -> requestBuilder.build())        
+        .map(uri -> HttpRequest.newBuilder(uri).build())
         .collect(Collectors.toList());
         
-       
+ 
+    
     CompletableFuture<?>[] responses = requests.stream()
         .map(request -> client.sendAsync(request, BodyHandlers.ofString())
             .thenApply(HttpResponse::body)

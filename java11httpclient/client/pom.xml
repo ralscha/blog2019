@@ -10,7 +10,7 @@
 		<dependency>
 			<groupId>org.eclipse</groupId>
 			<artifactId>yasson</artifactId>
-			<version>1.0.5</version>
+			<version>1.0.6</version>
 		</dependency>
 		<dependency>
 			<groupId>org.glassfish</groupId>
@@ -31,7 +31,7 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.8.1</version>
 				<configuration>
-					<release>11</release>
+					<release>13</release>
 				</configuration>
 			</plugin>
 		</plugins>
