@@ -9,7 +9,7 @@
     <version>2.2.4.RELEASE</version>
     <relativePath />
   </parent>
-  
+
   <groupId>ch.rasc</groupId>
   <artifactId>sbjooqflyway</artifactId>
   <version>0.0.1</version>
@@ -36,8 +36,8 @@
     </dependency>
 
     <dependency>
-        <groupId>org.mariadb.jdbc</groupId>
-        <artifactId>mariadb-java-client</artifactId>
+      <groupId>org.mariadb.jdbc</groupId>
+      <artifactId>mariadb-java-client</artifactId>
     </dependency>
 
     <dependency>
@@ -56,7 +56,30 @@
       <groupId>com.univocity</groupId>
       <artifactId>univocity-parsers</artifactId>
       <version>2.8.4</version>
-    </dependency>    
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-test</artifactId>
+      <scope>test</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>org.junit.vintage</groupId>
+          <artifactId>junit-vintage-engine</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>junit</groupId>
+          <artifactId>junit</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+
+    <dependency>
+      <groupId>com.h2database</groupId>
+      <artifactId>h2</artifactId>
+      <scope>test</scope>
+    </dependency>
+
   </dependencies>
 
   <build>
@@ -117,7 +140,7 @@
                       <inputSchema>PUBLIC</inputSchema>
                       <outputSchemaToDefault>true</outputSchemaToDefault>
                       <outputCatalogToDefault>true</outputCatalogToDefault>
-                      <properties>                    
+                      <properties>
                         <property>
                           <key>sort</key>
                           <value>semantic</value>
