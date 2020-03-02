@@ -12,7 +12,7 @@ const routes: Routes = [
         children: [
           {
             path: '',
-            loadChildren: '../mobilenet/mobilenet.module#MobilenetPageModule'
+            loadChildren: () => import('../mobilenet/mobilenet.module').then(m => m.MobilenetPageModule)
           }
         ]
       },
@@ -21,7 +21,7 @@ const routes: Routes = [
         children: [
           {
             path: '',
-            loadChildren: '../object-detection/object-detection.module#ObjectDetectionPageModule'
+            loadChildren: () => import('../object-detection/object-detection.module').then(m => m.ObjectDetectionPageModule)
           }
         ]
       },
@@ -30,7 +30,7 @@ const routes: Routes = [
         children: [
           {
             path: '',
-            loadChildren: '../posenet/posenet.module#PosenetPageModule'
+            loadChildren: () => import('../posenet/posenet.module').then(m => m.PosenetPageModule)
           }
         ]
       },
@@ -39,7 +39,7 @@ const routes: Routes = [
         children: [
           {
             path: '',
-            loadChildren: '../speech/speech.module#SpeechPageModule'
+            loadChildren: () => import('../speech/speech.module').then(m => m.SpeechPageModule)
           }
         ]
       },

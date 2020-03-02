@@ -10,7 +10,7 @@ import {LoadingController} from '@ionic/angular';
 export class MobilenetPage {
   @ViewChild('image', {static: true}) image: ElementRef;
 
-  @ViewChild('fileSelector', {static: false}) fileInput: ElementRef;
+  @ViewChild('fileSelector') fileInput: ElementRef;
 
   modelPromise: Promise<any>;
 

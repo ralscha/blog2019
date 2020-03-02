@@ -12,9 +12,9 @@ export class ObjectDetectionPage implements OnInit {
 
   baseModel = 'lite_mobilenet_v2';
 
-  @ViewChild('fileSelector', {static: false}) fileInput: ElementRef;
+  @ViewChild('fileSelector') fileInput: ElementRef;
   @ViewChild('canvas', {static: true}) canvas: ElementRef;
-  @ViewChild('canvasContainer', {static: false}) canvasContainer: ElementRef;
+  @ViewChild('canvasContainer') canvasContainer: ElementRef;
 
   private ratio: number;
   private readonly modelPromise: Promise<ObjectDetection>;
