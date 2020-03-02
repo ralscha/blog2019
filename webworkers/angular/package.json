@@ -32,6 +32,6 @@
     "codelyzer": "5.2.1",
     "local-web-server": "4.0.0",
     "tslint": "6.0.0",
-    "typescript": "3.7.5"
+    "typescript": "3.8.3"
   }
 }
