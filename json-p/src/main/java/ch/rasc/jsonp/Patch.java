@@ -2,12 +2,12 @@ package ch.rasc.jsonp;
 
 import java.io.StringReader;
 
-import javax.json.Json;
-import javax.json.JsonException;
-import javax.json.JsonObject;
-import javax.json.JsonPatch;
-import javax.json.JsonReader;
-import javax.json.JsonValue;
+import jakarta.json.Json;
+import jakarta.json.JsonException;
+import jakarta.json.JsonObject;
+import jakarta.json.JsonPatch;
+import jakarta.json.JsonReader;
+import jakarta.json.JsonValue;
 
 public class Patch {
 

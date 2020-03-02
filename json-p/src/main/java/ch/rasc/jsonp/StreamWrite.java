@@ -2,8 +2,8 @@ package ch.rasc.jsonp;
 
 import java.util.Map;
 
-import javax.json.Json;
-import javax.json.stream.JsonGenerator;
+import jakarta.json.Json;
+import jakarta.json.stream.JsonGenerator;
 
 public class StreamWrite {
   public static void main(String[] args) {
