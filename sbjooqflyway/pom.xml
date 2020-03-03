@@ -118,7 +118,7 @@
           <plugin>
             <groupId>org.jooq</groupId>
             <artifactId>jooq-codegen-maven</artifactId>
-            <version>3.12.3</version>
+            <version>3.13.1</version>
             <executions>
               <execution>
                 <id>generate-jooq-sources</id>
@@ -164,7 +164,7 @@
               <dependency>
                 <groupId>org.jooq</groupId>
                 <artifactId>jooq-meta-extensions</artifactId>
-                <version>3.12.3</version>
+                <version>3.13.1</version>
               </dependency>
             </dependencies>
           </plugin>
