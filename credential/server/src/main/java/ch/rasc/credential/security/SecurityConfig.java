@@ -24,9 +24,9 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-  @Override
-  protected void configure(HttpSecurity http) throws Exception {
-  // @formatter:off
+	@Override
+	protected void configure(HttpSecurity http) throws Exception {
+	// @formatter:off
 	  http
 		.csrf().disable()
 	  .cors()
@@ -45,35 +45,36 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     .exceptionHandling()
       .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED));
     // @formatter:on
-  }
+	}
 
-  @Autowired
-  public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-    auth.inMemoryAuthentication().withUser("admin").password("{noop}admin")
-        .authorities("ADMIN").and().withUser("user").password("{noop}user")
-        .authorities("USER");
-  }
+	@Autowired
+	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+		auth.inMemoryAuthentication().withUser("admin").password("{noop}admin")
+				.authorities("ADMIN").and().withUser("user").password("{noop}user")
+				.authorities("USER");
+	}
 
-  @Bean
-  public ErrorAttributes errorAttributes() {
-    return new DefaultErrorAttributes() {
-      @Override
-      public Map<String, Object> getErrorAttributes(WebRequest webRequest,
-          boolean includeStackTrace) {
-        return null;
-      }
-    };
-  }
+	@Bean
+	public ErrorAttributes errorAttributes() {
+		return new DefaultErrorAttributes() {
+			@Override
+			public Map<String, Object> getErrorAttributes(WebRequest webRequest,
+					boolean includeStackTrace) {
+				return null;
+			}
+		};
+	}
 
-  @SuppressWarnings("null")
-  @Bean
-  CorsConfigurationSource corsConfigurationSource() {
-    CorsConfiguration configuration = new CorsConfiguration();
-    configuration.setAllowedOrigins(List.of("http://localhost:8100"));
-    configuration.setAllowedMethods(List.of("GET", "POST"));
-    configuration.setAllowCredentials(true);
-    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-    source.registerCorsConfiguration("/**", configuration);
-    return source;
-  }
+	@SuppressWarnings("null")
+	@Bean
+	CorsConfigurationSource corsConfigurationSource() {
+		CorsConfiguration configuration = new CorsConfiguration();
+		configuration.setAllowedOrigins(
+				List.of("http://localhost:8100", "http://localhost:1234"));
+		configuration.setAllowedMethods(List.of("GET", "POST"));
+		configuration.setAllowCredentials(true);
+		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+		source.registerCorsConfiguration("/**", configuration);
+		return source;
+	}
 }
