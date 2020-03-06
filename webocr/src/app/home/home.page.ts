@@ -68,8 +68,8 @@ export class HomePage implements AfterViewInit {
     });
      */
     const worker = createWorker({
-      workerPath: 'tesseract-201/worker.min.js',
-      corePath: 'tesseract-201/tesseract-core.wasm.js',
+      workerPath: 'tesseract-202/worker.min.js',
+      corePath: 'tesseract-202/tesseract-core.wasm.js',
       logger: progress => {
         this.progressStatus = progress.status;
         this.progress = progress.progress;

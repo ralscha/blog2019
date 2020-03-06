@@ -29,12 +29,12 @@
               {
                 "glob": "worker.min.js",
                 "input": "node_modules/tesseract.js/dist/",
-                "output": "./tesseract-201"
+                "output": "./tesseract-202"
               },
               {
                 "glob": "tesseract-core.wasm.js",
                 "input": "node_modules/tesseract.js-core/",
-                "output": "./tesseract-201"
+                "output": "./tesseract-202"
               }
             ],
             "styles": [
