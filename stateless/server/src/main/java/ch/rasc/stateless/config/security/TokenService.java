@@ -33,8 +33,7 @@ public class TokenService {
       }
 
       long r1 = this.random.nextLong();
-
-			return this.instanceNo + Long.toString(r0, 36) + Long.toString(r1, 36) + COUNTER.getAndIncrement();
+      return this.instanceNo + Long.toString(r0, 36) + Long.toString(r1, 36) + COUNTER.getAndIncrement();
     }
   }
 
