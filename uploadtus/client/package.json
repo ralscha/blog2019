@@ -24,7 +24,7 @@
     "rxjs": "6.5.4",
     "tslib": "1.11.1",
     "tus-js-client": "1.8.0",
-    "zone.js": "0.10.2"
+    "zone.js": "0.10.3"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "0.900.6",
