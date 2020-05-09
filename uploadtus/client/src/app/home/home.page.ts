@@ -1,6 +1,6 @@
 import {ChangeDetectorRef, Component, ViewChild} from '@angular/core';
 import * as RecordRTC from 'recordrtc';
-import tus from 'tus-js-client';
+import {Upload} from 'tus-js-client';
 import {ToastController} from '@ionic/angular';
 import {environment} from '../../environments/environment';
 
@@ -76,7 +76,7 @@ export class HomePage {
   private uploadFile(file: File) {
     this.uploadProgress = 0;
 
-    const upload = new tus.Upload(file, {
+    const upload = new Upload(file, {
       endpoint: `${environment.serverURL}/upload`,
       retryDelays: [0, 3000, 6000, 12000, 24000],
       chunkSize: 20000,

@@ -6,7 +6,7 @@ import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
 import {environment} from '../../environments/environment';
 import {catchError, finalize} from 'rxjs/operators';
 import {throwError} from 'rxjs';
-import tus from 'tus-js-client';
+import {Upload} from 'tus-js-client';
 
 @Component({
   selector: 'app-home',
@@ -93,7 +93,7 @@ export class HomePage {
     await this.loading.present();
 
     const blob = await fetch(webPath).then(r => r.blob());
-    const upload = new tus.Upload(blob, {
+    const upload = new Upload(blob, {
       endpoint: `${environment.serverUrl}/upload`,
       retryDelays: [0, 3000, 6000, 12000, 24000],
       chunkSize: 512 * 1024,

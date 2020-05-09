@@ -12,7 +12,7 @@
     "shx": "0.3.2"
   },
   "dependencies": {
-    "comlink": "4.2.0"
+    "comlink": "4.3.0"
   },
   "browserslist": [
     "last 2 Chrome versions"
