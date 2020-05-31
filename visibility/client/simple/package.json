@@ -6,6 +6,6 @@
     "start": "ws -d . -p 1234 -o --log.format stats"
   },
   "devDependencies": {
-    "local-web-server": "4.0.0"
+    "local-web-server": "4.2.0"
   }
 }
