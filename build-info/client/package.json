@@ -33,7 +33,7 @@
     "codelyzer": "6.0.0-next.1",
     "local-web-server": "4.2.1",
     "replace-in-file": "6.1.0",
-    "simple-git": "2.9.0",
+    "simple-git": "2.11.0",
     "tslint": "6.1.2",
     "typescript": "3.9.5"
   }
