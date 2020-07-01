@@ -16,7 +16,7 @@ export class HomePage implements OnInit, OnDestroy {
   color = 'red';
   stroke = 'red';
   strokeWidth = 0;
-  opacity = 1;
+  opacity = '1';
 
   private interval: number;
 
@@ -29,13 +29,13 @@ export class HomePage implements OnInit, OnDestroy {
       this.color = this.randomColor();
       this.stroke = this.randomColor();
       this.strokeWidth = this.randomWidth();
-      this.opacity = Math.random();
+      this.opacity = '' + Math.random();
     }, 1000);
   }
 
   dynamicStyle() {
     return {
-      opacity: Math.random(),
+      opacity: '' + Math.random(),
       color: this.randomColor(),
       stroke: this.randomColor(),
       'stroke-width': this.randomWidth() + 'px'
@@ -48,5 +48,9 @@ export class HomePage implements OnInit, OnDestroy {
 
   private randomColor(): string {
     return '#' + (0x1000000 + (Math.random()) * 0xffffff).toString(16).substr(1, 6);
+  }
+
+  updateMagicLevel($event: Event) {
+    this.magicLevel = parseInt(($event.target as HTMLInputElement).value, 10);
   }
 }

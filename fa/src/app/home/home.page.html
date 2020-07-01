@@ -34,9 +34,9 @@
   </div>
   <div>
     <fa-icon [icon]="['fas', 'snowboarding']" size="3x"></fa-icon>
-    <fa-icon [icon]="['fas', 'snowboarding']" size="3x" rotate="90"></fa-icon>
-    <fa-icon [icon]="['fas', 'snowboarding']" size="3x" rotate="180"></fa-icon>
-    <fa-icon [icon]="['fas', 'snowboarding']" size="3x" rotate="270"></fa-icon>
+    <fa-icon [icon]="['fas', 'snowboarding']" size="3x" [rotate]="90"></fa-icon>
+    <fa-icon [icon]="['fas', 'snowboarding']" size="3x" [rotate]="180"></fa-icon>
+    <fa-icon [icon]="['fas', 'snowboarding']" size="3x" [rotate]="270"></fa-icon>
   </div>
   <div>
     <fa-icon [icon]="['fas', 'swimmer']" size="3x" flip="horizontal"></fa-icon>
@@ -136,7 +136,7 @@
 
   <div>
     <fa-icon size="5x" [icon]="['fas', 'hand-point-left']" transform="rotate-{{magicLevel}}"></fa-icon>
-    <input type='range' min="0" max="360" [value]="magicLevel" (input)="magicLevel=$event.target.value"/>
+    <input type='range' min="0" max="360" [value]="magicLevel" (input)="updateMagicLevel($event)"/>
   </div>
 
   <div>

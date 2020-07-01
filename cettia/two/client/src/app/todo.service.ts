@@ -63,7 +63,7 @@ export class TodoService {
     if (deleted) {
       this.todosSubject.next([...this.todos.values()]);
 
-      const changeEvent = ChangeEvent.create({change: ChangeEvent.ChangeType.DELETE, todo: todo});
+      const changeEvent = ChangeEvent.create({change: ChangeEvent.ChangeType.DELETE, todo});
       const buffer = ChangeEvent.encode(changeEvent).finish();
       this.socket.send('update', buffer);
     }
@@ -77,7 +77,7 @@ export class TodoService {
       changeType = ChangeEvent.ChangeType.INSERT;
     }
 
-    const changeEvent = ChangeEvent.create({change: changeType, todo: todo});
+    const changeEvent = ChangeEvent.create({change: changeType, todo});
     const buffer = ChangeEvent.encode(changeEvent).finish();
     this.socket.send('update', buffer);
 

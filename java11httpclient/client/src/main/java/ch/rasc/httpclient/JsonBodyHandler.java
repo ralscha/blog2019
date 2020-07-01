@@ -4,8 +4,8 @@ import java.io.ByteArrayInputStream;
 import java.net.http.HttpResponse;
 import java.net.http.HttpResponse.BodySubscribers;
 
-import javax.json.bind.Jsonb;
-import javax.json.bind.JsonbBuilder;
+import jakarta.json.bind.Jsonb;
+import jakarta.json.bind.JsonbBuilder;
 
 public class JsonBodyHandler<T> implements HttpResponse.BodyHandler<T> {
   private final Jsonb jsonb;
