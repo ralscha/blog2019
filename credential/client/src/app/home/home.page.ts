@@ -12,7 +12,7 @@ export class HomePage {
               private readonly navCtrl: NavController) {
   }
 
-  async logout() {
+  async logout(): Promise<void> {
     this.authService.logout().subscribe(() => this.navCtrl.navigateRoot('/login'));
   }
 

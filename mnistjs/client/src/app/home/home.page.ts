@@ -1,5 +1,6 @@
 import {Component, ViewChild} from '@angular/core';
 import {DrawableDirective} from '../drawable.directive';
+// @ts-ignore
 import * as brain from 'brain.js/browser';
 import * as tf from '@tensorflow/tfjs';
 
@@ -10,39 +11,43 @@ import * as tf from '@tensorflow/tfjs';
 })
 export class HomePage {
 
-  @ViewChild(DrawableDirective) drawable: DrawableDirective;
+  @ViewChild(DrawableDirective) drawable!: DrawableDirective;
 
   detectionsMLP: number[] = [];
-  detectedNumberMLP: number;
+  detectedNumberMLP: number | null = null;
 
-  detectionsCNN: Float32Array = null;
-  detectedNumberCNN: number;
+  detectionsCNN: Float32Array | null = null;
+  detectedNumberCNN: number | null = null;
 
   private net: brain.NeuralNetwork = null;
-  private tfModel: tf.LayersModel;
+  private tfModel!: tf.LayersModel;
 
   constructor() {
     this.initBrain();
     this.initTf();
   }
 
-  async initBrain() {
+  async initBrain(): Promise<void> {
     const response = await fetch('assets/model.json');
     const brainModel = await response.json();
     this.net = new brain.NeuralNetwork();
     this.net.fromJSON(brainModel);
   }
 
-  async initTf() {
+  async initTf(): Promise<void> {
     this.tfModel = await tf.loadLayersModel('assets/tfjsmnist/model.json');
   }
 
-  detect(canvas) {
+  // tslint:disable-next-line:no-any
+  detect(canvas: any): void {
     const canvasCopy = document.createElement('canvas');
     canvasCopy.width = 28;
     canvasCopy.height = 28;
 
     const copyContext = canvasCopy.getContext('2d');
+    if (!copyContext) {
+      throw new Error('can\'t get 2d context');
+    }
 
     const ratioX = canvas.width / 28;
     const ratioY = canvas.height / 28;
@@ -80,7 +85,7 @@ export class HomePage {
 
   }
 
-  erase() {
+  erase(): void {
     this.detectionsMLP = [];
     this.detectedNumberMLP = null;
     this.detectionsCNN = null;
@@ -89,7 +94,7 @@ export class HomePage {
     this.drawable.clear();
   }
 
-  maxScore(obj: { [key: number]: number }) {
+  maxScore(obj: { [key: number]: number }): number {
     let maxKey = 0;
     let maxValue = 0;
 

@@ -1,6 +1,6 @@
 import {Component, ElementRef, ViewChild} from '@angular/core';
-import * as mobilenet from '@tensorflow-models/mobilenet';
 import {LoadingController} from '@ionic/angular';
+import {load, MobileNet} from '@tensorflow-models/mobilenet';
 
 @Component({
   selector: 'app-mobilenet',
@@ -8,28 +8,29 @@ import {LoadingController} from '@ionic/angular';
   styleUrls: ['./mobilenet.page.scss']
 })
 export class MobilenetPage {
-  @ViewChild('image', {static: true}) image: ElementRef;
+  @ViewChild('image', {static: true}) image!: ElementRef;
 
-  @ViewChild('fileSelector') fileInput: ElementRef;
+  @ViewChild('fileSelector') fileInput!: ElementRef;
 
-  modelPromise: Promise<any>;
+  modelPromise: Promise<MobileNet>;
 
-  predictions: Promise<Array<{ className: string; probability: number }>>;
+  predictions: Promise<Array<{ className: string; probability: number }>> | null = null;
 
   constructor(private readonly loadingController: LoadingController) {
-    this.modelPromise = mobilenet.load();
+    this.modelPromise = load();
   }
 
-  clickFileSelector() {
+  clickFileSelector(): void {
     this.fileInput.nativeElement.click();
   }
 
-  onFileCange(event) {
+  onFileCange(event: Event): void {
+    // @ts-ignore
     this.image.nativeElement.src = URL.createObjectURL(event.target.files[0]);
     this.predict();
   }
 
-  private async predict() {
+  private async predict(): Promise<void> {
     this.predictions = null;
 
     const loading = await this.loadingController.create({

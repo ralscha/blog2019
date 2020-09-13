@@ -14,11 +14,11 @@ export class HomePage {
               readonly todoService: TodoService) {
   }
 
-  addTodo() {
+  addTodo(): void {
     this.navCtrl.navigateForward(['edit']);
   }
 
-  editTodo(todo: ITodo) {
+  editTodo(todo: ITodo): void {
     this.navCtrl.navigateForward(['edit', todo.id]);
   }
 

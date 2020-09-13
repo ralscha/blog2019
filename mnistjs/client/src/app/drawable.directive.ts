@@ -7,10 +7,10 @@ import {Platform} from '@ionic/angular';
 export class DrawableDirective implements OnInit {
 
   @Output() newImage = new EventEmitter();
-  private ctx: CanvasRenderingContext2D;
-  private canvas: HTMLCanvasElement;
-  private lastX: number;
-  private lastY: number;
+  private ctx!: CanvasRenderingContext2D | null;
+  private canvas!: HTMLCanvasElement;
+  private lastX: number | null = null;
+  private lastY: number | null = null;
   private minX = Number.MAX_SAFE_INTEGER;
   private minY = Number.MAX_SAFE_INTEGER;
   private maxX = 0;
@@ -21,7 +21,7 @@ export class DrawableDirective implements OnInit {
               private readonly platform: Platform) {
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.canvas = this.el.nativeElement as HTMLCanvasElement;
     this.ctx = this.canvas.getContext('2d');
     this.renderer.setAttribute(this.canvas, 'width', '' + Math.min(300, this.platform.width() / 1.5));
@@ -30,7 +30,7 @@ export class DrawableDirective implements OnInit {
 
   @HostListener('touchend', ['$event'])
   @HostListener('mouseup', ['$event'])
-  up(e) {
+  up(): void {
     this.newImage.emit(this.getImgData());
     this.drawing = false;
   }
@@ -38,7 +38,8 @@ export class DrawableDirective implements OnInit {
   @HostListener('touchstart', ['$event'])
   @HostListener('touchenter', ['$event'])
   @HostListener('mousedown', ['$event'])
-  down(e) {
+  // tslint:disable-next-line:no-any
+  down(e: any): void {
     this.drawing = true;
 
     const rect = this.canvas.getBoundingClientRect();
@@ -53,9 +54,16 @@ export class DrawableDirective implements OnInit {
 
   @HostListener('touchmove', ['$event'])
   @HostListener('mousemove', ['$event'])
-  move(e) {
+  // tslint:disable-next-line:no-any
+  move(e: any): void {
     if (!this.drawing) {
       return;
+    }
+    if (!this.ctx) {
+      throw new Error('ctx not set');
+    }
+    if (!this.lastX || !this.lastY) {
+      throw new Error('last x/y not set');
     }
 
     this.ctx.beginPath();
@@ -87,7 +95,11 @@ export class DrawableDirective implements OnInit {
     this.ctx.stroke();
   }
 
-  clear() {
+  clear(): void {
+    if (!this.ctx) {
+      throw new Error('ctx not set');
+    }
+
     this.drawing = false;
     this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
     this.minX = Number.MAX_SAFE_INTEGER;
@@ -96,7 +108,7 @@ export class DrawableDirective implements OnInit {
     this.maxY = 0;
   }
 
-  getDrawingBox() {
+  getDrawingBox(): [number, number, number, number] {
     return [this.minX, this.minY, this.maxX, this.maxY];
   }
 

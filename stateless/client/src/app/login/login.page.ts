@@ -15,7 +15,7 @@ export class LoginPage {
               private readonly messagesService: MessagesService) {
   }
 
-  async login({email, password}: { email: string, password: string }) {
+  async login({email, password}: { email: string, password: string }): Promise<void> {
     const loading = await this.messagesService.showLoading('Logging in');
 
     this.authService.login(email, password)
@@ -31,7 +31,7 @@ export class LoginPage {
       }, _ => this.showLoginFailedToast());
   }
 
-  private showLoginFailedToast() {
+  private showLoginFailedToast(): void {
     this.messagesService.showErrorToast('Login failed');
   }
 

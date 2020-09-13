@@ -9,12 +9,30 @@ import {FaIconLibrary, FontAwesomeModule} from '@fortawesome/angular-fontawesome
 import {FormsModule} from '@angular/forms';
 import {HttpClientModule} from '@angular/common/http';
 import {
-  faAsterisk, faBell as faSolidBell, faCircle, faCloud,
-  faCog, faEnvelopeOpen, faHandPointLeft, faMobile, faMoon,
-  faPlay, faSkating, faSkiing, faSkiingNordic,
-  faSmileBeam as faSmileBeanSolid, faSmileWink as faSmileWinkSolid,
-  faSnowboarding, faSpinner, faSquare, faStar, faSun,
-  faSwimmer, faSync, faBan, faCamera
+  faAsterisk,
+  faBan,
+  faBell as faSolidBell,
+  faCamera,
+  faCircle,
+  faCloud,
+  faCog,
+  faEnvelopeOpen,
+  faHandPointLeft,
+  faMobile,
+  faMoon,
+  faPlay,
+  faSkating,
+  faSkiing,
+  faSkiingNordic,
+  faSmileBeam as faSmileBeanSolid,
+  faSmileWink as faSmileWinkSolid,
+  faSnowboarding,
+  faSpinner,
+  faSquare,
+  faStar,
+  faSun,
+  faSwimmer,
+  faSync
 } from '@fortawesome/free-solid-svg-icons';
 import {faBell as faRegularBell, faSmileBeam, faSmileWink} from '@fortawesome/free-regular-svg-icons';
 // import {fas} from '@fortawesome/free-solid-svg-icons';

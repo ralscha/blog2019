@@ -11,12 +11,12 @@ import {Subscription} from 'rxjs';
 export class HomePage implements OnInit, OnDestroy {
 
   earthquakes: Earthquake[] = [];
-  subscription: Subscription;
+  subscription!: Subscription;
 
   constructor(private readonly earthquakeService: EarthquakeService) {
   }
 
-  async ngOnInit() {
+  async ngOnInit(): Promise<void> {
     this.subscription = this.earthquakeService.change$.subscribe(async () => {
       this.earthquakes = await this.earthquakeService.fetchAll();
     });

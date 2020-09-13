@@ -1,5 +1,5 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import * as posenet from '@tensorflow-models/posenet';
+import {getAdjacentKeyPoints, load, PoseNet} from '@tensorflow-models/posenet';
 import {LoadingController} from '@ionic/angular';
 
 @Component({
@@ -9,22 +9,23 @@ import {LoadingController} from '@ionic/angular';
 })
 export class PosenetPage implements OnInit {
 
-  @ViewChild('fileSelector') fileInput: ElementRef;
-  @ViewChild('canvas', {static: true}) canvas: ElementRef;
-  @ViewChild('canvasContainer') canvasContainer: ElementRef;
-  ratio: number;
-  modelPromise: Promise<any>;
-  private ctx: CanvasRenderingContext2D;
+  @ViewChild('fileSelector') fileInput!: ElementRef;
+  @ViewChild('canvas', {static: true}) canvas!: ElementRef;
+  @ViewChild('canvasContainer') canvasContainer!: ElementRef;
+  ratio: number | null = null;
+  modelPromise: Promise<PoseNet>;
+  private ctx!: CanvasRenderingContext2D;
 
   constructor(private readonly loadingController: LoadingController) {
-    this.modelPromise = posenet.load();
+    this.modelPromise = load();
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.ctx = this.canvas.nativeElement.getContext('2d');
   }
 
-  onFileCange(event) {
+  onFileCange(event: Event): void {
+    // @ts-ignore
     const url = URL.createObjectURL(event.target.files[0]);
     const img = new Image();
     img.onload = async () => {
@@ -34,16 +35,17 @@ export class PosenetPage implements OnInit {
       });
       await loading.present();
       await this.estimate(img);
-      loading.dismiss();
+      await loading.dismiss();
     };
     img.src = url;
   }
 
-  clickFileSelector() {
+  clickFileSelector(): void {
     this.fileInput.nativeElement.click();
   }
 
-  drawImageScaled(img) {
+  // tslint:disable-next-line:no-any
+  drawImageScaled(img: any): void {
     const width = this.canvasContainer.nativeElement.clientWidth;
     const height = this.canvasContainer.nativeElement.clientHeight;
 
@@ -62,7 +64,8 @@ export class PosenetPage implements OnInit {
       0, 0, img.width * this.ratio, img.height * this.ratio);
   }
 
-  private async estimate(img) {
+  // tslint:disable-next-line:no-any
+  private async estimate(img: any): Promise<void> {
     const flipHorizontal = false;
 
     const model = await this.modelPromise;
@@ -72,7 +75,7 @@ export class PosenetPage implements OnInit {
     });
     const pose = poses && poses[0];
 
-    if (pose && pose.keypoints) {
+    if (pose && pose.keypoints && this.ratio) {
       for (const keypoint of pose.keypoints.filter(kp => kp.score >= 0.2)) {
         const x = keypoint.position.x * this.ratio;
         const y = keypoint.position.y * this.ratio;
@@ -84,17 +87,19 @@ export class PosenetPage implements OnInit {
         this.ctx.stroke();
       }
 
-      const adjacentKeyPoints = posenet.getAdjacentKeyPoints(pose.keypoints, 0.2);
+      const adjacentKeyPoints = getAdjacentKeyPoints(pose.keypoints, 0.2);
       adjacentKeyPoints.forEach(keypoints => this.drawSegment(keypoints[0].position, keypoints[1].position));
     }
   }
 
-  private drawSegment({y: ay, x: ax}, {y: by, x: bx}) {
-    this.ctx.beginPath();
-    this.ctx.moveTo(ax * this.ratio, ay * this.ratio);
-    this.ctx.lineTo(bx * this.ratio, by * this.ratio);
-    this.ctx.lineWidth = 2;
-    this.ctx.strokeStyle = '#bada55';
-    this.ctx.stroke();
+  private drawSegment({y: ay, x: ax}: { y: number, x: number }, {y: by, x: bx}: { y: number, x: number }): void {
+    if (this.ratio) {
+      this.ctx.beginPath();
+      this.ctx.moveTo(ax * this.ratio, ay * this.ratio);
+      this.ctx.lineTo(bx * this.ratio, by * this.ratio);
+      this.ctx.lineWidth = 2;
+      this.ctx.strokeStyle = '#bada55';
+      this.ctx.stroke();
+    }
   }
 }

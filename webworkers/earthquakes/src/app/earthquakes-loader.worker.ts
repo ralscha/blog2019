@@ -1,3 +1,4 @@
+// @ts-ignore
 import Papa from 'papaparse';
 import {Earthquake, EarthquakeDb} from './earthquake-db';
 import * as Comlink from 'comlink';
@@ -9,7 +10,7 @@ class EarthquakesLoader {
     this.db = new EarthquakeDb();
   }
 
-  async load(url: string) {
+  async load(url: string): Promise<void> {
     const response = await fetch(url);
     const text = await response.text();
     const data = Papa.parse(text, {header: true});
@@ -34,7 +35,7 @@ class EarthquakesLoader {
     });
   }
 
-  async deleteOldRecords() {
+  async deleteOldRecords(): Promise<void> {
     const thirtyDaysAgo = Date.now() - (30 * 24 * 60 * 60 * 1000);
     await this.db.earthquakes.where('time').below(thirtyDaysAgo).delete();
   }

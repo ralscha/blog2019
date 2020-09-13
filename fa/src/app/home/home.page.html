@@ -17,13 +17,13 @@
   </div>
 
   <ion-button>
-    <fa-icon slot="start" [icon]="faHandPointLeft"></fa-icon>
+    <fa-icon [icon]="faHandPointLeft" slot="start"></fa-icon>
     Left Icon
   </ion-button>
 
   <ion-button>
     Right Icon
-    <fa-icon slot="end" [icon]="faHandPointRight"></fa-icon>
+    <fa-icon [icon]="faHandPointRight" slot="end"></fa-icon>
   </ion-button>
 
   <div>
@@ -34,28 +34,28 @@
   </div>
   <div>
     <fa-icon [icon]="['fas', 'snowboarding']" size="3x"></fa-icon>
-    <fa-icon [icon]="['fas', 'snowboarding']" size="3x" [rotate]="90"></fa-icon>
-    <fa-icon [icon]="['fas', 'snowboarding']" size="3x" [rotate]="180"></fa-icon>
-    <fa-icon [icon]="['fas', 'snowboarding']" size="3x" [rotate]="270"></fa-icon>
+    <fa-icon [icon]="['fas', 'snowboarding']" [rotate]="90" size="3x"></fa-icon>
+    <fa-icon [icon]="['fas', 'snowboarding']" [rotate]="180" size="3x"></fa-icon>
+    <fa-icon [icon]="['fas', 'snowboarding']" [rotate]="270" size="3x"></fa-icon>
   </div>
   <div>
-    <fa-icon [icon]="['fas', 'swimmer']" size="3x" flip="horizontal"></fa-icon>
-    <fa-icon [icon]="['fas', 'swimmer']" size="3x" flip="vertical"></fa-icon>
-    <fa-icon [icon]="['fas', 'swimmer']" size="3x" flip="both"></fa-icon>
+    <fa-icon [icon]="['fas', 'swimmer']" flip="horizontal" size="3x"></fa-icon>
+    <fa-icon [icon]="['fas', 'swimmer']" flip="vertical" size="3x"></fa-icon>
+    <fa-icon [icon]="['fas', 'swimmer']" flip="both" size="3x"></fa-icon>
   </div>
   <div>
-    <fa-icon [icon]="['fas', 'asterisk']" size="6x" [spin]="true"></fa-icon>
-    <fa-icon [icon]="['fas', 'cog']" size="6x" [pulse]="true"></fa-icon>
+    <fa-icon [icon]="['fas', 'asterisk']" [spin]="true" size="6x"></fa-icon>
+    <fa-icon [icon]="['fas', 'cog']" [pulse]="true" size="6x"></fa-icon>
   </div>
 
   <div>
-    <fa-icon size="6x" [icon]="['fas', 'sync']" [spin]="syncRunning"></fa-icon>
+    <fa-icon [icon]="['fas', 'sync']" [spin]="syncRunning" size="6x"></fa-icon>
     <ion-button (click)="syncRunning = true" [disabled]="syncRunning">Start</ion-button>
     <ion-button (click)="syncRunning = false" [disabled]="!syncRunning">Stop</ion-button>
   </div>
 
   <div>
-    <fa-icon size="6x" [icon]="['fas', 'swimmer']" transform="shrink-10 down-4" [mask]="['fas', 'circle']"></fa-icon>
+    <fa-icon [icon]="['fas', 'swimmer']" [mask]="['fas', 'circle']" size="6x" transform="shrink-10 down-4"></fa-icon>
   </div>
 
   <div>
@@ -79,19 +79,19 @@
     </ul>
     <ul>
       <li>
-        <fa-icon [icon]="['fas', 'swimmer']" [fixedWidth]="true" size="2x"></fa-icon>
+        <fa-icon [fixedWidth]="true" [icon]="['fas', 'swimmer']" size="2x"></fa-icon>
         Swimmer
       </li>
       <li>
-        <fa-icon [icon]="['fas', 'snowboarding']" [fixedWidth]="true" size="2x"></fa-icon>
+        <fa-icon [fixedWidth]="true" [icon]="['fas', 'snowboarding']" size="2x"></fa-icon>
         Snowboarding
       </li>
       <li>
-        <fa-icon [icon]="['fas', 'skiing']" [fixedWidth]="true" size="2x"></fa-icon>
+        <fa-icon [fixedWidth]="true" [icon]="['fas', 'skiing']" size="2x"></fa-icon>
         Skiing
       </li>
       <li>
-        <fa-icon [icon]="['fas', 'skiing-nordic']" [fixedWidth]="true" size="2x"></fa-icon>
+        <fa-icon [fixedWidth]="true" [icon]="['fas', 'skiing-nordic']" size="2x"></fa-icon>
         Skiing Nordic
       </li>
     </ul>
@@ -99,14 +99,14 @@
 
   <ion-card>
     <ion-card-content>
-      <fa-icon [icon]="['fas', 'asterisk']" [border]="true" size="2x" pull="left"></fa-icon>
+      <fa-icon [border]="true" [icon]="['fas', 'asterisk']" pull="left" size="2x"></fa-icon>
       Lorem ipsum dolor sit amet, ei cum possit denique, debet mundi sit ne.
     </ion-card-content>
   </ion-card>
 
   <ion-card>
     <ion-card-content>
-      <fa-icon [icon]="['fas', 'asterisk']" [border]="true" size="2x" pull="right"></fa-icon>
+      <fa-icon [border]="true" [icon]="['fas', 'asterisk']" pull="right" size="2x"></fa-icon>
       Lorem ipsum dolor sit amet, ei cum possit denique, debet mundi sit ne.
     </ion-card-content>
   </ion-card>
@@ -135,21 +135,21 @@
   </div>
 
   <div>
-    <fa-icon size="5x" [icon]="['fas', 'hand-point-left']" transform="rotate-{{magicLevel}}"></fa-icon>
-    <input type='range' min="0" max="360" [value]="magicLevel" (input)="updateMagicLevel($event)"/>
+    <fa-icon [icon]="['fas', 'hand-point-left']" size="5x" transform="rotate-{{magicLevel}}"></fa-icon>
+    <input (input)="updateMagicLevel($event)" [value]="magicLevel" max="360" min="0" type='range'/>
   </div>
 
   <div>
     <fa-stack size="5x">
       <fa-icon [icon]="['fas', 'camera']" stackItemSize="1x"></fa-icon>
-      <fa-icon [icon]="['fas', 'ban']" style="color:Tomato" stackItemSize="2x"></fa-icon>
+      <fa-icon [icon]="['fas', 'ban']" stackItemSize="2x" style="color:Tomato"></fa-icon>
     </fa-stack>
   </div>
 
   <div>
-    <fa-icon size="5x" [icon]="['fas', 'bell']" [styles]="dynamicStyle()"></fa-icon>
-    <fa-icon size="5x" [icon]="['far', 'bell']"
-             [styles]="{'color': color, 'stroke': stroke, 'stroke-width': strokeWidth + 'px', 'opacity': opacity}"></fa-icon>
+    <fa-icon [icon]="['fas', 'bell']" [styles]="dynamicStyle()" size="5x"></fa-icon>
+    <fa-icon [icon]="['far', 'bell']" [styles]="{'color': color, 'stroke': stroke, 'stroke-width': strokeWidth + 'px', 'opacity': opacity}"
+             size="5x"></fa-icon>
   </div>
 
 </ion-content>

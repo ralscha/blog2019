@@ -8,7 +8,7 @@ import {catchError, map, tap} from 'rxjs/operators';
 })
 export class AuthService {
 
-  private readonly authoritySubject = new BehaviorSubject<string>(null);
+  private readonly authoritySubject = new BehaviorSubject<string | null>(null);
   readonly authority$ = this.authoritySubject.asObservable();
 
   constructor(private readonly httpClient: HttpClient) {
@@ -22,7 +22,7 @@ export class AuthService {
       );
   }
 
-  isLoggedIn() {
+  isLoggedIn(): boolean {
     return this.authoritySubject.getValue() !== null;
   }
 

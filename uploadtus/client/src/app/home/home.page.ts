@@ -1,4 +1,5 @@
 import {ChangeDetectorRef, Component, ViewChild} from '@angular/core';
+// @ts-ignore
 import * as RecordRTC from 'recordrtc';
 import {Upload} from 'tus-js-client';
 import {ToastController} from '@ionic/angular';
@@ -12,14 +13,15 @@ import {environment} from '../../environments/environment';
 export class HomePage {
   recording = false;
   uploadProgress = 0;
-  @ViewChild('videoElement', {static: true}) videoElement;
+  // tslint:disable-next-line:no-any
+  @ViewChild('videoElement', {static: true}) videoElement!: any;
   private recordRTC: RecordRTC;
 
   constructor(private readonly toastCtrl: ToastController,
               private readonly changeDetectionRef: ChangeDetectorRef) {
   }
 
-  start() {
+  start(): void {
     this.recording = true;
     navigator.mediaDevices.getUserMedia({video: true, audio: false})
       .then(async (stream) => {
@@ -33,10 +35,10 @@ export class HomePage {
       .catch(err => console.log('An error occurred! ' + err));
   }
 
-  stop() {
+  stop(): void {
     this.recording = false;
     if (this.recordRTC) {
-      this.recordRTC.stopRecording(_ => {
+      this.recordRTC.stopRecording(() => {
         const recordedBlob = this.recordRTC.getBlob();
         this.uploadVideo(recordedBlob);
       });
@@ -46,18 +48,19 @@ export class HomePage {
     this.videoElement.nativeElement.srcObject = null;
   }
 
-  takeSnapshot() {
+  takeSnapshot(): void {
     const canvas = document.createElement('canvas');
     canvas.width = 1280;
     canvas.height = 960;
 
     const ctx = canvas.getContext('2d');
-    ctx.drawImage(this.videoElement.nativeElement, 0, 0, canvas.width, canvas.height);
-
-    canvas.toBlob(this.uploadSnapshot.bind(this), 'image/jpeg', 1);
+    if (ctx) {
+      ctx.drawImage(this.videoElement.nativeElement, 0, 0, canvas.width, canvas.height);
+      canvas.toBlob(this.uploadSnapshot.bind(this), 'image/jpeg', 1);
+    }
   }
 
-  private uploadVideo(blob: Blob) {
+  private uploadVideo(blob: Blob): void {
     const f = new File([blob], `video_${Date.now()}.webm`, {
       type: 'video/webm'
     });
@@ -65,15 +68,17 @@ export class HomePage {
     this.uploadFile(f);
   }
 
-  private uploadSnapshot(blob: Blob) {
-    const f = new File([blob], `snapshot_${Date.now()}.jpg`, {
-      type: 'image/jpeg'
-    });
+  private uploadSnapshot(blob: Blob | null): void {
+    if (blob) {
+      const f = new File([blob], `snapshot_${Date.now()}.jpg`, {
+        type: 'image/jpeg'
+      });
 
-    this.uploadFile(f);
+      this.uploadFile(f);
+    }
   }
 
-  private uploadFile(file: File) {
+  private uploadFile(file: File): void {
     this.uploadProgress = 0;
 
     const upload = new Upload(file, {

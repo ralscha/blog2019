@@ -36,16 +36,18 @@ export class AuthGuard implements CanActivate {
   }
 
   private tryAutoSignIn(): Observable<boolean> {
-    if (!(window as any).PasswordCredential) {
+    // @ts-ignore
+    if (!window.PasswordCredential) {
       return of(false);
     }
 
-    return fromPromise((navigator as any).credentials.get({password: true}))
+    // @ts-ignore
+    return fromPromise(navigator.credentials.get({password: true}))
       .pipe(
         mergeMap(cred => {
             if (cred) {
-              const c = cred as any;
-              return this.authService.login(c.name, c.password);
+              // @ts-ignore
+              return this.authService.login(cred.name, cred.password);
             }
             return of(false);
           }

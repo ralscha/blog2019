@@ -1,5 +1,5 @@
 import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import * as speechCommands from '@tensorflow-models/speech-commands';
+import {create} from '@tensorflow-models/speech-commands';
 import {NavigationEnd, Router} from '@angular/router';
 import {Subscription} from 'rxjs';
 
@@ -10,37 +10,39 @@ import {Subscription} from 'rxjs';
 })
 export class SpeechPage implements OnInit, OnDestroy {
 
-  @ViewChild('canvas', {static: true}) canvas: ElementRef;
-  private subscription: Subscription;
+  @ViewChild('canvas', {static: true}) canvas!: ElementRef;
+  private subscription!: Subscription;
   private recognizer;
-  private wordLabels: string[];
-  private ctx: CanvasRenderingContext2D;
+  private wordLabels!: string[];
+  private ctx!: CanvasRenderingContext2D;
 
   private snakeSize = 10;
   private width = 300;
   private height = 350;
   private score = 0;
-  private snake;
-  private food;
-  private direction: string;
-  private gameloop;
+  private snake: { x: number, y: number }[] = [];
+  private food!: { x: number, y: number };
+  private direction: string | null = null;
+  private gameloop: number | null = null;
 
   private whitelistWords = ['down', 'go', 'left', 'right', 'stop', 'up'];
   private whitelistIndex: number[] = [];
 
   constructor(private readonly router: Router) {
-    this.recognizer = speechCommands.create('BROWSER_FFT');
+    this.recognizer = create('BROWSER_FFT');
     this.recognizer.ensureModelLoaded().then(() => {
       this.wordLabels = this.recognizer.wordLabels();
+      // @ts-ignore
       this.whitelistIndex = this.wordLabels.map((value, index) => {
         if (this.whitelistWords.indexOf(value) !== -1) {
           return index;
         }
+        return undefined;
       }).filter(value => value !== undefined);
     });
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.onEnter();
 
     this.subscription = this.router.events.subscribe(event => {
@@ -68,10 +70,11 @@ export class SpeechPage implements OnInit, OnDestroy {
     this.subscription.unsubscribe();
   }
 
-  start() {
-    this.recognizer.listen(result => {
+  start(): void {
+    this.recognizer.listen(async result => {
 
-      const ix = result.scores.reduce((bestIndexSoFar, currentValue, currentIndex) => {
+      // @ts-ignore
+      const ix: number = result.scores.reduce((bestIndexSoFar: number, currentValue: number, currentIndex: number) => {
         if (this.whitelistIndex.indexOf(currentIndex) !== -1) {
           return currentValue > result.scores[bestIndexSoFar] ? currentIndex : bestIndexSoFar;
         }
@@ -121,41 +124,41 @@ export class SpeechPage implements OnInit, OnDestroy {
     });
   }
 
-  stop() {
+  stop(): void {
     if (this.recognizer.isListening()) {
       this.recognizer.stopListening();
       this.stopGame();
     }
   }
 
-  stopGame() {
+  stopGame(): void {
     if (this.gameloop) {
       clearInterval(this.gameloop);
       this.gameloop = null;
     }
   }
 
-  drawSnake(x, y) {
+  drawSnake(x: number, y: number): void {
     this.ctx.fillStyle = 'green';
     this.ctx.fillRect(x * this.snakeSize, y * this.snakeSize, this.snakeSize, this.snakeSize);
     this.ctx.strokeStyle = 'darkgreen';
     this.ctx.strokeRect(x * this.snakeSize, y * this.snakeSize, this.snakeSize, this.snakeSize);
   }
 
-  drawFood(x, y) {
+  drawFood(x: number, y: number): void {
     this.ctx.fillStyle = 'yellow';
     this.ctx.fillRect(x * this.snakeSize, y * this.snakeSize, this.snakeSize, this.snakeSize);
     this.ctx.fillStyle = 'red';
     this.ctx.fillRect(x * this.snakeSize + 1, y * this.snakeSize + 1, this.snakeSize - 2, this.snakeSize - 2);
   }
 
-  drawScore() {
+  drawScore(): void {
     const scoreText = 'Score: ' + this.score;
     this.ctx.fillStyle = 'blue';
     this.ctx.fillText(scoreText, 145, this.height - 5);
   }
 
-  initSnake() {
+  initSnake(): void {
     const length = 4;
     this.snake = [];
     for (let i = length - 1; i >= 0; i--) {
@@ -163,7 +166,7 @@ export class SpeechPage implements OnInit, OnDestroy {
     }
   }
 
-  paint() {
+  paint(): void {
     this.ctx.fillStyle = 'lightgrey';
     this.ctx.fillRect(0, 0, this.width, this.height);
     this.ctx.strokeStyle = 'black';
@@ -192,7 +195,7 @@ export class SpeechPage implements OnInit, OnDestroy {
       snakeX = 0;
     }
 
-    let tail;
+    let tail: { x: number, y: number } | undefined;
     if (snakeX === this.food.x && snakeY === this.food.y) {
       tail = {x: snakeX, y: snakeY};
       this.score++;
@@ -200,11 +203,15 @@ export class SpeechPage implements OnInit, OnDestroy {
       this.createFood();
     } else {
       tail = this.snake.pop();
-      tail.x = snakeX;
-      tail.y = snakeY;
+      if (tail) {
+        tail.x = snakeX;
+        tail.y = snakeY;
+      }
     }
 
-    this.snake.unshift(tail);
+    if (tail) {
+      this.snake.unshift(tail);
+    }
 
     for (const sn of this.snake) {
       this.drawSnake(sn.x, sn.y);
@@ -214,7 +221,7 @@ export class SpeechPage implements OnInit, OnDestroy {
     this.drawScore();
   }
 
-  createFood() {
+  createFood(): void {
     this.food = {
       x: Math.floor((Math.random() * 30) + 1),
       y: Math.floor((Math.random() * 30) + 1)
@@ -231,11 +238,11 @@ export class SpeechPage implements OnInit, OnDestroy {
     }
   }
 
-  init() {
+  init(): void {
     this.direction = 'down';
     this.initSnake();
     this.createFood();
-    this.gameloop = setInterval(this.paint.bind(this), 80);
+    this.gameloop = window.setInterval(this.paint.bind(this), 80);
   }
 
 }

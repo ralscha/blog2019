@@ -1,3 +1,4 @@
+// tslint:disable:no-any
 import * as $protobuf from 'protobufjs';
 
 export interface ITodo {
@@ -90,6 +91,7 @@ export class ChangeEvent implements IChangeEvent {
   public toJSON(): { [k: string]: any };
 }
 
+// tslint:disable-next-line:no-namespace
 export namespace ChangeEvent {
 
   enum ChangeType {

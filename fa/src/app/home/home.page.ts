@@ -18,7 +18,7 @@ export class HomePage implements OnInit, OnDestroy {
   strokeWidth = 0;
   opacity = '1';
 
-  private interval: number;
+  private interval!: number;
 
   ngOnDestroy(): void {
     clearInterval(this.interval);
@@ -33,7 +33,7 @@ export class HomePage implements OnInit, OnDestroy {
     }, 1000);
   }
 
-  dynamicStyle() {
+  dynamicStyle(): { color: string; 'stroke-width': string; opacity: string; stroke: string } {
     return {
       opacity: '' + Math.random(),
       color: this.randomColor(),
@@ -42,15 +42,15 @@ export class HomePage implements OnInit, OnDestroy {
     };
   }
 
+  updateMagicLevel($event: Event): void {
+    this.magicLevel = parseInt(($event.target as HTMLInputElement).value, 10);
+  }
+
   private randomWidth(): number {
     return Math.floor(Math.random() * 30) + 1;
   }
 
   private randomColor(): string {
     return '#' + (0x1000000 + (Math.random()) * 0xffffff).toString(16).substr(1, 6);
-  }
-
-  updateMagicLevel($event: Event) {
-    this.magicLevel = parseInt(($event.target as HTMLInputElement).value, 10);
   }
 }

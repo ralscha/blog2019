@@ -1,7 +1,7 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import * as cocoSsd from '@tensorflow-models/coco-ssd';
-import {ObjectDetection} from '@tensorflow-models/coco-ssd';
+import {load, ObjectDetection, ObjectDetectionBaseModel} from '@tensorflow-models/coco-ssd';
 import {LoadingController} from '@ionic/angular';
+import '@tensorflow/tfjs-backend-webgl';
 
 @Component({
   selector: 'app-object-detection',
@@ -10,38 +10,40 @@ import {LoadingController} from '@ionic/angular';
 })
 export class ObjectDetectionPage implements OnInit {
 
-  baseModel = 'lite_mobilenet_v2';
+  baseModel: ObjectDetectionBaseModel = 'lite_mobilenet_v2';
 
-  @ViewChild('fileSelector') fileInput: ElementRef;
-  @ViewChild('canvas', {static: true}) canvas: ElementRef;
-  @ViewChild('canvasContainer') canvasContainer: ElementRef;
+  @ViewChild('fileSelector') fileInput!: ElementRef;
+  @ViewChild('canvas', {static: true}) canvas!: ElementRef;
+  @ViewChild('canvasContainer') canvasContainer!: ElementRef;
 
-  private ratio: number;
-  private readonly modelPromise: Promise<ObjectDetection>;
-  private ctx: CanvasRenderingContext2D;
-  private url: string = null;
+  private ratio: number | null = null;
+  private modelPromise: Promise<ObjectDetection>;
+  private ctx!: CanvasRenderingContext2D;
+  private url: string | null = null;
 
   constructor(private readonly loadingController: LoadingController) {
-    this.modelPromise = cocoSsd.load();
+    this.modelPromise = load({base: this.baseModel});
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.ctx = this.canvas.nativeElement.getContext('2d');
   }
 
-  baseModelChange(event) {
-    this.baseModel = event.detail.value;
+  baseModelChange(event: Event): void {
+    this.baseModel = (event as CustomEvent).detail.value;
+    this.modelPromise = load({base: this.baseModel});
     if (this.url) {
       this.detect(this.url);
     }
   }
 
-  onFileChange(event) {
+  onFileChange(event: Event): void {
+    // @ts-ignore
     this.url = URL.createObjectURL(event.target.files[0]);
     this.detect(this.url);
   }
 
-  detect(url: string) {
+  detect(url: string): void {
     const img = new Image();
     img.onload = async () => {
       this.drawImageScaled(img);
@@ -53,6 +55,10 @@ export class ObjectDetectionPage implements OnInit {
       const model = await this.modelPromise;
       const predictions = await model.detect(img);
       console.log(predictions);
+
+      if (this.ratio === null) {
+        throw new Error('ratio not set');
+      }
 
       for (const prediction of predictions) {
         const [x, y, width, height] = prediction.bbox;
@@ -77,11 +83,12 @@ export class ObjectDetectionPage implements OnInit {
     img.src = url;
   }
 
-  clickFileSelector() {
+  clickFileSelector(): void {
     this.fileInput.nativeElement.click();
   }
 
-  drawImageScaled(img) {
+  // tslint:disable-next-line:no-any
+  drawImageScaled(img: any): void {
     const width = this.canvasContainer.nativeElement.clientWidth;
     const height = this.canvasContainer.nativeElement.clientHeight;
 

@@ -1,5 +1,5 @@
 import {AfterViewInit, ChangeDetectorRef, Component, ElementRef, ViewChild} from '@angular/core';
-import {createWorker, RecognizeResult} from 'tesseract.js';
+import {createWorker, Line, Page, Symbol as TesseractSymbol, Word} from 'tesseract.js';
 import {NgProgressComponent} from '@ngx-progressbar/core';
 
 @Component({
@@ -9,25 +9,26 @@ import {NgProgressComponent} from '@ngx-progressbar/core';
 })
 export class HomePage implements AfterViewInit {
 
-  @ViewChild('fileSelector') fileInput: ElementRef;
-  @ViewChild('canvas') canvas: ElementRef;
-  @ViewChild('canvasContainer') canvasContainer: ElementRef;
-  @ViewChild(NgProgressComponent) progressBar: NgProgressComponent;
+  @ViewChild('fileSelector') fileInput!: ElementRef;
+  @ViewChild('canvas') canvas!: ElementRef;
+  @ViewChild('canvasContainer') canvasContainer!: ElementRef;
+  @ViewChild(NgProgressComponent) progressBar!: NgProgressComponent;
 
-  result: any;
-  words: any[];
-  symbols: any[];
-  selectedLine = null;
-  selectedWord = null;
-  selectedSymbol = null;
+  result: Page | null = null;
+  words: Word[] | null = null;
+  symbols: TesseractSymbol[] | null = null;
+  selectedLine: Line | null = null;
+  selectedWord: Word | null = null;
+  selectedSymbol: TesseractSymbol | null = null;
   elementColumns: string[] = ['text', 'confidence'];
-  progressStatus: string;
-  progress: number;
+  progressStatus: string | null = null;
+  progress: number | null = null;
   language = 'eng';
-  private ctx: CanvasRenderingContext2D;
-  private selectedFile: File;
-  private image: any;
-  private ratio: number;
+  private ctx!: CanvasRenderingContext2D;
+  private selectedFile: File | null = null;
+  // tslint:disable-next-line:no-any
+  private image: any | null = null;
+  private ratio: number | null = null;
 
   constructor(private readonly changeDetectionRef: ChangeDetectorRef) {
   }
@@ -36,11 +37,12 @@ export class HomePage implements AfterViewInit {
     this.ctx = this.canvas.nativeElement.getContext('2d');
   }
 
-  clickFileSelector() {
+  clickFileSelector(): void {
     this.fileInput.nativeElement.click();
   }
 
-  async onFileChange(event) {
+  async onFileChange(event: Event): Promise<void> {
+    // @ts-ignore
     this.selectedFile = event.target.files[0];
 
     this.progressStatus = '';
@@ -85,13 +87,16 @@ export class HomePage implements AfterViewInit {
     this.progressBar.set(0);
 
     try {
-      const result = await worker.recognize(this.selectedFile);
-      if (result) {
-        this.result = (result as RecognizeResult).data;
+      if (this.selectedFile) {
+        const recognizeResult = await worker.recognize(this.selectedFile);
+        if (recognizeResult) {
+          this.result = recognizeResult.data;
+        } else {
+          this.result = null;
+        }
+        await worker.terminate();
       }
-      await worker.terminate();
     } catch (e) {
-      console.log(e);
       this.progressStatus = e;
       this.progress = null;
     } finally {
@@ -101,18 +106,23 @@ export class HomePage implements AfterViewInit {
     }
 
     // reset file input
+    // @ts-ignore
     event.target.value = null;
   }
 
-  redrawImage() {
+  redrawImage(): void {
     if (this.image) {
       this.drawImageScaled(this.image);
     }
   }
 
-  drawBBox(bbox: { x0: number, x1: number, y0: number, y1: number }) {
+  drawBBox(bbox: { x0: number, x1: number, y0: number, y1: number }): void {
     if (bbox) {
       this.redrawImage();
+
+      if (this.ratio === null) {
+        throw new Error('ratio not set');
+      }
 
       this.ctx.beginPath();
       this.ctx.moveTo(bbox.x0 * this.ratio, bbox.y0 * this.ratio);
@@ -126,7 +136,7 @@ export class HomePage implements AfterViewInit {
     }
   }
 
-  onLineClick(line) {
+  onLineClick(line: Line): void {
     this.words = line.words;
 
     this.drawBBox(line.bbox);
@@ -137,7 +147,7 @@ export class HomePage implements AfterViewInit {
     this.selectedSymbol = null;
   }
 
-  onWordClick(word) {
+  onWordClick(word: Word): void {
     this.symbols = word.symbols;
 
     this.drawBBox(word.bbox);
@@ -146,13 +156,14 @@ export class HomePage implements AfterViewInit {
     this.selectedSymbol = null;
   }
 
-  onSymbolClick(symbol) {
+  onSymbolClick(symbol: TesseractSymbol): void {
     this.drawBBox(symbol.bbox);
 
     this.selectedSymbol = symbol;
   }
 
-  private drawImageScaled(img) {
+  // tslint:disable-next-line:no-any
+  private drawImageScaled(img: any): void {
     const width = this.canvasContainer.nativeElement.clientWidth;
     const height = this.canvasContainer.nativeElement.clientHeight;
 

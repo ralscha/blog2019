@@ -1,5 +1,5 @@
 import {AfterViewInit, Component, ElementRef, OnDestroy, ViewChild} from '@angular/core';
-import * as Comlink from 'comlink';
+import {wrap} from 'comlink';
 
 @Component({
   selector: 'app-root',
@@ -11,8 +11,8 @@ export class AppComponent implements AfterViewInit, OnDestroy {
   progress = '0 %';
 
   @ViewChild('myCanvas')
-  myCanvasRef: ElementRef;
-  private ctx: CanvasRenderingContext2D;
+  myCanvasRef!: ElementRef;
+  private ctx!: CanvasRenderingContext2D;
 
   private readonly maxIteration = 20000;
   private readonly numberOfWorkers = 4;
@@ -20,11 +20,12 @@ export class AppComponent implements AfterViewInit, OnDestroy {
   private workX = 0;
   private workY = 0;
   private endCounter = 0;
-  private computeMandelbrotSetMethods: any;
-  private workers: Worker[];
-  private height: number;
-  private width: number;
-  private totalPixels: number;
+  // tslint:disable-next-line:no-any
+  private computeMandelbrotSetMethods!: any[];
+  private workers!: Worker[];
+  private height!: number;
+  private width!: number;
+  private totalPixels!: number;
 
   ngAfterViewInit(): void {
     const myCanvas = this.myCanvasRef.nativeElement;
@@ -37,7 +38,7 @@ export class AppComponent implements AfterViewInit, OnDestroy {
     this.workers = [];
     for (let w = 0; w < this.numberOfWorkers; w++) {
       this.workers[w] = new Worker('./mandelbrot.worker', {type: 'module'});
-      this.computeMandelbrotSetMethods[w] = Comlink.wrap(this.workers[w]);
+      this.computeMandelbrotSetMethods[w] = wrap(this.workers[w]);
     }
   }
 
@@ -47,7 +48,7 @@ export class AppComponent implements AfterViewInit, OnDestroy {
     }
   }
 
-  async startCalculation() {
+  async startCalculation(): Promise<void> {
     this.ctx.clearRect(0, 0, this.width, this.height);
     this.duration = 'working...';
     performance.clearMarks();
@@ -71,7 +72,8 @@ export class AppComponent implements AfterViewInit, OnDestroy {
     this.progress = '100 %';
   }
 
-  async work(computeMandelbrotSetMethod) {
+  // tslint:disable-next-line:no-any
+  async work(computeMandelbrotSetMethod: any): Promise<void> {
     while (this.workY < this.height) {
       const result = await computeMandelbrotSetMethod({
         startX: this.workX,

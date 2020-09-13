@@ -1,11 +1,11 @@
 import {Component} from '@angular/core';
 import {LoadingController, ToastController} from '@ionic/angular';
 import {HttpClient} from '@angular/common/http';
-import {CameraResultType, CameraSource, FileReadResult, Plugins} from '@capacitor/core';
+import {CameraResultType, CameraSource, Plugins} from '@capacitor/core';
 import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
 import {environment} from '../../environments/environment';
 import {catchError, finalize} from 'rxjs/operators';
-import {throwError} from 'rxjs';
+import {Observable, throwError} from 'rxjs';
 import {Upload} from 'tus-js-client';
 
 @Component({
@@ -16,10 +16,10 @@ import {Upload} from 'tus-js-client';
 export class HomePage {
 
   public tus = false;
+  public error: string | null = null;
+  photo: SafeResourceUrl | null = null;
   private counter = 0;
-  public error: string;
-  private loading: any;
-  photo: SafeResourceUrl;
+  private loading: HTMLIonLoadingElement | null = null;
 
   constructor(private readonly http: HttpClient,
               private readonly sanitizer: DomSanitizer,
@@ -27,25 +27,29 @@ export class HomePage {
               private readonly toastCtrl: ToastController) {
   }
 
-  async takePhoto() {
+  async takePhoto(): Promise<void> {
     const ab = await this.getPhoto(CameraSource.Camera);
-    if (this.tus) {
-      await this.uploadTus(ab);
-    } else {
-      await this.uploadAll(ab);
+    if (ab) {
+      if (this.tus) {
+        await this.uploadTus(ab);
+      } else {
+        await this.uploadAll(ab);
+      }
     }
   }
 
-  async selectPhoto() {
+  async selectPhoto(): Promise<void> {
     const ab = await this.getPhoto(CameraSource.Photos);
-    if (this.tus) {
-      await this.uploadTus(ab);
-    } else {
-      await this.uploadAll(ab);
+    if (ab) {
+      if (this.tus) {
+        await this.uploadTus(ab);
+      } else {
+        await this.uploadAll(ab);
+      }
     }
   }
 
-  private async getPhoto(source: CameraSource) {
+  private async getPhoto(source: CameraSource): Promise<string | undefined> {
     const image = await Plugins.Camera.getPhoto({
       quality: 90,
       allowEditing: false,
@@ -53,21 +57,13 @@ export class HomePage {
       source
     });
 
-    this.photo = this.sanitizer.bypassSecurityTrustResourceUrl(image && (image.webPath));
+    if (image.webPath) {
+      this.photo = this.sanitizer.bypassSecurityTrustResourceUrl(image.webPath);
+    }
     return image.webPath;
   }
 
-  private readFile(webPath: string): Promise<FileReadResult> {
-    try {
-      return Plugins.Filesystem.readFile({
-        path: webPath
-      });
-    } catch (e) {
-      console.log(e);
-    }
-  }
-
-  private async uploadAll(webPath: string) {
+  private async uploadAll(webPath: string): Promise<void> {
     this.loading = await this.loadingCtrl.create({
       message: 'Uploading...'
     });
@@ -80,12 +76,12 @@ export class HomePage {
     this.http.post<boolean>(`${environment.serverUrl}/uploadAll`, formData)
       .pipe(
         catchError(e => this.handleError(e)),
-        finalize(() => this.loading.dismiss())
+        finalize(() => this.loading?.dismiss())
       )
       .subscribe(ok => this.showToast(ok));
   }
 
-  private async uploadTus(webPath: string) {
+  private async uploadTus(webPath: string): Promise<void> {
 
     this.loading = await this.loadingCtrl.create({
       message: 'Uploading...'
@@ -102,18 +98,18 @@ export class HomePage {
       },
       onError: () => {
         this.showToast(false);
-        this.loading.dismiss();
+        this.loading?.dismiss();
       },
       onSuccess: () => {
         this.showToast(true);
-        this.loading.dismiss();
+        this.loading?.dismiss();
       }
     });
 
     upload.start();
   }
 
-  private async showToast(ok: boolean) {
+  private async showToast(ok: boolean): Promise<void> {
     if (ok) {
       const toast = await this.toastCtrl.create({
         message: 'Upload successful',
@@ -131,7 +127,8 @@ export class HomePage {
     }
   }
 
-  private handleError(error: any) {
+  // tslint:disable-next-line:no-any
+  private handleError(error: any): Observable<never> {
     const errMsg = error.message ? error.message : error.toString();
     this.error = errMsg;
     return throwError(errMsg);

@@ -10,8 +10,8 @@ export class AppComponent implements AfterViewInit, OnDestroy {
   progress = '0 %';
 
   @ViewChild('myCanvas')
-  myCanvasRef: ElementRef;
-  private ctx: CanvasRenderingContext2D;
+  myCanvasRef!: ElementRef;
+  private ctx!: CanvasRenderingContext2D;
 
   private readonly maxIteration = 20000;
   private readonly numberOfWorkers = 4;
@@ -19,10 +19,10 @@ export class AppComponent implements AfterViewInit, OnDestroy {
   private workX = 0;
   private workY = 0;
   private endCounter = 0;
-  private workers: Worker[];
-  private height: number;
-  private width: number;
-  private totalPixels: number;
+  private workers!: Worker[];
+  private height!: number;
+  private width!: number;
+  private totalPixels!: number;
 
   ngAfterViewInit(): void {
     const myCanvas = this.myCanvasRef.nativeElement;
@@ -58,7 +58,7 @@ export class AppComponent implements AfterViewInit, OnDestroy {
     this.drawMandelbrotSet();
   }
 
-  drawMandelbrotSet() {
+  drawMandelbrotSet(): void {
     for (let w = 0; w < this.numberOfWorkers; w++) {
       this.workers[w].postMessage({
         startX: this.workX,
@@ -78,7 +78,7 @@ export class AppComponent implements AfterViewInit, OnDestroy {
   }
 
 
-  private handleWorkerMessage(worker: Worker, message: MessageEvent) {
+  private handleWorkerMessage(worker: Worker, message: MessageEvent): void {
     const data = message.data;
     for (const point of data) {
       this.ctx.fillRect(point[0], point[1], 1, 1);

@@ -11,7 +11,7 @@ import {catchError, concatMap, filter, map, take} from 'rxjs/operators';
   styleUrls: ['./home.page.scss']
 })
 export class HomePage implements OnInit {
-  message: Observable<string>;
+  message!: Observable<string>;
   userEnabled = false;
 
   constructor(private readonly authService: AuthService,
@@ -19,7 +19,7 @@ export class HomePage implements OnInit {
               private readonly httpClient: HttpClient) {
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.message = this.httpClient.get('/message', {responseType: 'text'})
       .pipe(catchError(error => of('Error: ' + JSON.stringify(error))));
 
@@ -33,7 +33,7 @@ export class HomePage implements OnInit {
       .subscribe(flag => this.userEnabled = flag, err => console.log(err));
   }
 
-  logout() {
+  logout(): void {
     this.authService.logout().subscribe(() => this.navCtrl.navigateRoot('/login'));
   }
 
@@ -41,11 +41,11 @@ export class HomePage implements OnInit {
     return this.authService.authority$.pipe(map(authority => authority === 'ADMIN'));
   }
 
-  enable() {
+  enable(): void {
     this.httpClient.get<void>('/enable').subscribe(() => this.userEnabled = true, error => console.log('enable: ' + error));
   }
 
-  disable() {
+  disable(): void {
     this.httpClient.get<void>('/disable').subscribe(() => this.userEnabled = false, error => console.log('disable: ' + error));
   }
 

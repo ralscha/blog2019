@@ -7,7 +7,7 @@
 </ion-header>
 
 <ion-content class="ion-padding ion-text-center">
-  <canvas appDrawable (newImage)="detect($event)"></canvas>
+  <canvas (newImage)="detect($event)" appDrawable></canvas>
   <div>
     <ion-button (click)="erase()">Erase</ion-button>
   </div>

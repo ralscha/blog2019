@@ -11,7 +11,7 @@ export class LoginPage {
   constructor(private readonly authService: AuthService) {
   }
 
-  login(username: string, password: string) {
+  login(username: string, password: string): void {
     this.authService.login(username, password).subscribe(() => {
     });
   }

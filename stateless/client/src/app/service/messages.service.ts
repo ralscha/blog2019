@@ -10,7 +10,7 @@ export class MessagesService {
               private readonly loadingCtrl: LoadingController) {
   }
 
-  async showLoading(message: string = 'Working') {
+  async showLoading(message: string = 'Working'): Promise<HTMLIonLoadingElement> {
     const loading = await this.loadingCtrl.create({
       spinner: 'bubbles',
       message: `${message} ...`
@@ -19,7 +19,7 @@ export class MessagesService {
     return loading;
   }
 
-  async showErrorToast(message: string = 'Unexpected error occurred') {
+  async showErrorToast(message: string = 'Unexpected error occurred'): Promise<void> {
     const toast = await this.toastCtrl.create({
       message,
       duration: 4000,

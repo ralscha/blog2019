@@ -22,7 +22,7 @@ export class EarthquakeService {
     this.db = new EarthquakeDb();
   }
 
-  async initProvider() {
+  async initProvider(): Promise<void> {
     const lastUpdate = localStorage.getItem('lastUpdate');
     let url = null;
 

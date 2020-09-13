@@ -33,7 +33,7 @@ export class AuthService {
   }
 
   login(username: string, password: string): Observable<boolean> {
-    let loading;
+    let loading: HTMLIonLoadingElement;
 
     return fromPromise(this.loadingCtrl.create({
       spinner: 'bubbles',
@@ -65,20 +65,22 @@ export class AuthService {
     return this.loggedIn;
   }
 
-  private async storePassword(username: string, password: string): Promise<any> {
-    if (!(window as any).PasswordCredential) {
-      return Promise.resolve();
+  private async storePassword(username: string, password: string): Promise<Credential | null> {
+    // @ts-ignore
+    if (!window.PasswordCredential) {
+      return Promise.resolve(null);
     }
 
-    const cred = new (window as any).PasswordCredential({
+    // @ts-ignore
+    const cred = new window.PasswordCredential({
       id: username,
       password,
       name: username
     });
-    return (navigator as any).credentials.store(cred);
+    return navigator.credentials.store(cred);
   }
 
-  private async showError() {
+  private async showError(): Promise<void> {
     const toast = await this.toastCtrl.create({
       message: 'Login failed',
       duration: 4000,

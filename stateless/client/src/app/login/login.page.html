@@ -9,15 +9,16 @@
     <ion-list>
       <ion-item>
         <ion-label position="stacked">Email</ion-label>
-        <ion-input name="email" ngModel [required]="true" type="text"></ion-input>
+        <ion-input [required]="true" name="email" ngModel type="text"></ion-input>
       </ion-item>
 
       <ion-item>
         <ion-label position="stacked">Password</ion-label>
-        <ion-input name="password" ngModel [required]="true" type="password"></ion-input>
+        <ion-input [required]="true" name="password" ngModel type="password"></ion-input>
       </ion-item>
 
-      <ion-button [disabled]="!form.valid" color="primary" expand="block" class="ion-margin-top" type="submit">Login</ion-button>
+      <ion-button [disabled]="!form.valid" class="ion-margin-top" color="primary" expand="block" type="submit">Login
+      </ion-button>
 
     </ion-list>
   </form>
