@@ -13,7 +13,7 @@ import {ClientInfo} from './model/client-info';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  info$: Observable<{ build: BuildInfo, git: GitInfo, profile: ProfileInfo }>;
+  info$!: Observable<{ build: BuildInfo, git: GitInfo, profile: ProfileInfo }>;
   clientInfo: ClientInfo;
 
   constructor(private readonly httpClient: HttpClient) {
