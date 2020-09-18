@@ -95,7 +95,7 @@ public class Application {
             asityHandlerFunction)
         .and(RouterFunctions.route(RequestPredicates.GET("/"),
             request -> ServerResponse.ok().contentType(MediaType.TEXT_HTML)
-                .syncBody(indexHtml)))
+                .bodyValue(indexHtml)))
         .and(RouterFunctions.resources("/**", new ClassPathResource("static/")));
   }
 
