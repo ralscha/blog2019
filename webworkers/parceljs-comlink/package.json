@@ -9,7 +9,7 @@
   },
   "devDependencies": {
     "parcel-bundler": "1.12.4",
-    "shx": "0.3.2"
+    "shx": "0.3.3"
   },
   "dependencies": {
     "comlink": "4.3.0"
