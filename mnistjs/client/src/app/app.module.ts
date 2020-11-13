@@ -14,7 +14,7 @@ const routes: Routes = [
 @NgModule({
   declarations: [AppComponent, HomePage, DrawableDirective],
   entryComponents: [],
-  imports: [BrowserModule, IonicModule.forRoot(), RouterModule.forRoot(routes, {useHash: true})],
+  imports: [BrowserModule, IonicModule.forRoot(), RouterModule.forRoot(routes, { useHash: true, relativeLinkResolution: 'legacy' })],
   providers: [
     {provide: RouteReuseStrategy, useClass: IonicRouteStrategy}
   ],
