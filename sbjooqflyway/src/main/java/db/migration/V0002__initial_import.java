@@ -31,15 +31,13 @@ public class V0002__initial_import extends BaseJavaMigration {
 
       List<String[]> rows = parser.parseAll(is);
 
-      try (DSLContext dsl = using(context.getConnection())) {
-        for (String[] row : rows) {
-          dsl.insertInto(table("employee"), field("user_name"), field("birth_date"),
-              field("first_name"), field("last_name"), field("gender"),
-              field("hire_date"))
-              .values(row[0], DSL.cast(row[1], Date.class), row[2], row[3], row[4],
-                  DSL.cast(row[5], Date.class))
-              .execute();
-        }
+      DSLContext dsl = using(context.getConnection());
+      for (String[] row : rows) {
+        dsl.insertInto(table("employee"), field("user_name"), field("birth_date"),
+            field("first_name"), field("last_name"), field("gender"), field("hire_date"))
+            .values(row[0], DSL.cast(row[1], Date.class), row[2], row[3], row[4],
+                DSL.cast(row[5], Date.class))
+            .execute();
       }
     }
   }

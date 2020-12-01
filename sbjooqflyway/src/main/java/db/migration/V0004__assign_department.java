@@ -40,29 +40,23 @@ public class V0004__assign_department extends BaseJavaMigration {
       }
     }
 
-    try (DSLContext dsl = using(context.getConnection())) {
-      for (Map.Entry<String, String> entry : userToDepartment.entrySet()) {
-        dsl.update(table("employee"))
-            .set(field("department_id", Integer.class), 
-                 select(field("id", Integer.class))
-                 .from(table("department"))
-                 .where(field("no", String.class).eq(entry.getValue())).limit(1).asField())
-            .where(field("user_name", String.class).eq(entry.getKey())).execute();
-      }
-
-      int employeesWithUnsetDep = dsl.selectCount()
-          .from(table("employee"))
-          .innerJoin(table("department"))
-          .on(field("department.id", Integer.class)
-              .equal(field("employee.department_id", Integer.class)))
-          .where(field("department.no", String.class).eq("dddd"))
-          .fetchOne(0, Integer.class);
-
-      if (employeesWithUnsetDep == 0) {
-        dsl.delete(table("department")).where(field("no").eq("dddd")).execute();
-      }
-
+    DSLContext dsl = using(context.getConnection());
+    for (Map.Entry<String, String> entry : userToDepartment.entrySet()) {
+      dsl.update(table("employee")).set(field("department_id", Integer.class),
+          select(field("id", Integer.class)).from(table("department"))
+              .where(field("no", String.class).eq(entry.getValue())).limit(1).asField())
+          .where(field("user_name", String.class).eq(entry.getKey())).execute();
     }
 
+    int employeesWithUnsetDep = dsl.selectCount().from(table("employee"))
+        .innerJoin(table("department"))
+        .on(field("department.id", Integer.class)
+            .equal(field("employee.department_id", Integer.class)))
+        .where(field("department.no", String.class).eq("dddd"))
+        .fetchOne(0, Integer.class);
+
+    if (employeesWithUnsetDep == 0) {
+      dsl.delete(table("department")).where(field("no").eq("dddd")).execute();
+    }
   }
 }
