@@ -23,21 +23,17 @@ public class V0002__initial_import extends BaseJavaMigration {
   @Override
   public void migrate(Context context) throws Exception {
 
-    try (DSLContext dsl = using(context.getConnection())) {
+    DSLContext dsl = using(context.getConnection());
+    dsl.transaction(txConf -> {
+      var txdsl = DSL.using(txConf);
+      txdsl
+          .insertInto(table("APP_USER"), field("ID"), field("EMAIL"),
+              field("PASSWORD_HASH"), field("AUTHORITY"), field("ENABLED"))
+          .values(1, "admin@test.com", this.passwordEncoder.encode("admin"), "ADMIN",
+              true)
+          .values(2, "user@test.com", this.passwordEncoder.encode("user"), "USER", true)
+          .execute();
 
-      dsl.transaction(txConf -> {
-        try (var txdsl = DSL.using(txConf)) {
-          txdsl
-              .insertInto(table("APP_USER"), field("ID"), field("EMAIL"),
-                  field("PASSWORD_HASH"), field("AUTHORITY"), field("ENABLED"))
-              .values(1, "admin@test.com", this.passwordEncoder.encode("admin"), "ADMIN",
-                  true)
-              .values(2, "user@test.com", this.passwordEncoder.encode("user"), "USER",
-                  true)
-              .execute();
-        }
-      });
-    }
-
+    });
   }
 }
