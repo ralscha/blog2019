@@ -11,7 +11,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import com.hazelcast.config.Config;
 import com.hazelcast.core.HazelcastInstance;
-import com.hazelcast.core.IMap;
+import com.hazelcast.map.IMap;
 
 import io.github.bucket4j.Bandwidth;
 import io.github.bucket4j.Bucket;

@@ -29,32 +29,29 @@ public class V0002__initial_import extends BaseJavaMigration {
 
     List<EarthquakeImport> earthquakes = readEarthquakes();
 
-    try (DSLContext dsl = using(context.getConnection())) {
+    DSLContext dsl = using(context.getConnection());
 
-      dsl.transaction(txConf -> {
-        try (var txdsl = DSL.using(txConf)) {
+    dsl.transaction(txConf -> {
+      var txdsl = DSL.using(txConf);
 
-          try (var insert = txdsl.insertInto(EARTHQUAKE, EARTHQUAKE.EARTHQUAKE_ID,
-              EARTHQUAKE.LATITUDE, EARTHQUAKE.LONGITUDE, EARTHQUAKE.MAG, EARTHQUAKE.DEPTH,
-              EARTHQUAKE.PLACE, EARTHQUAKE.TIME)) {
+      try (var insert = txdsl.insertInto(EARTHQUAKE, EARTHQUAKE.EARTHQUAKE_ID,
+          EARTHQUAKE.LATITUDE, EARTHQUAKE.LONGITUDE, EARTHQUAKE.MAG, EARTHQUAKE.DEPTH,
+          EARTHQUAKE.PLACE, EARTHQUAKE.TIME)) {
 
-            for (EarthquakeImport earthquake : earthquakes) {
-              if (earthquake.getMag() != null) {
+        for (EarthquakeImport earthquake : earthquakes) {
+          if (earthquake.getMag() != null) {
 
-                insert.values(earthquake.getId(), earthquake.getLatitude(),
-                    earthquake.getLongitude(), earthquake.getMag(), earthquake.getDepth(),
-                    earthquake.getPlace(), earthquake.getTime().toInstant()
-                        .atZone(ZoneId.systemDefault()).toLocalDateTime());
-              }
-
-            }
-            insert.execute();
+            insert.values(earthquake.getId(), earthquake.getLatitude(),
+                earthquake.getLongitude(), earthquake.getMag(), earthquake.getDepth(),
+                earthquake.getPlace(), earthquake.getTime().toInstant()
+                    .atZone(ZoneId.systemDefault()).toLocalDateTime());
           }
 
         }
-      });
-    }
+        insert.execute();
+      }
 
+    });
   }
 
   private static List<EarthquakeImport> readEarthquakes()
