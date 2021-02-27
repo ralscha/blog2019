@@ -18,6 +18,11 @@
       <version>5.10.0.202012080955-r</version>
     </dependency>
     <dependency>
+      <groupId>org.eclipse.jgit</groupId>
+      <artifactId>org.eclipse.jgit.ssh.jsch</artifactId>
+      <version>5.10.0.202012080955-r</version>
+    </dependency>
+    <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-jdk14</artifactId>
       <version>1.7.25</version>
