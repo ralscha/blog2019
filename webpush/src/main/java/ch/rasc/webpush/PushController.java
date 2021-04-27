@@ -96,7 +96,7 @@ public class PushController {
   }
 
   @PostMapping("/unsubscribe")
-  public void unsubscribe(@RequestBody SubscriptionEndpoint subscription) {    
+  public void unsubscribe(@RequestBody SubscriptionEndpoint subscription) {
     this.subscriptions.remove(subscription.getEndpoint());
   }
 
@@ -245,7 +245,8 @@ public class PushController {
           .header("Content-Encoding", "aes128gcm");
     }
     else {
-      httpRequestBuilder.POST(BodyPublishers.noBody());
+      httpRequestBuilder.POST(BodyPublishers.ofString(""));
+      httpRequestBuilder.header("Content-Length", "0");
     }
 
     HttpRequest request = httpRequestBuilder.uri(endpointURI).header("TTL", "180")
