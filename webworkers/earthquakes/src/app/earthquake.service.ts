@@ -48,7 +48,7 @@ export class EarthquakeService {
     }
 
     if (url !== null) {
-      const EarthquakesLoader = Comlink.wrap(new Worker('./earthquakes-loader.worker', {type: 'module'}));
+      const EarthquakesLoader = Comlink.wrap(new Worker(new URL('./earthquakes-loader.worker', import.meta.url), {type: 'module'}));
       // @ts-ignore
       const earthquakesLoader = await new EarthquakesLoader();
 

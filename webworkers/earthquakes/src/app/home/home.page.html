@@ -7,7 +7,7 @@
 </ion-header>
 
 <ion-content>
-  <ion-virtual-scroll [approxItemHeight]="128" [hidden]="earthquakes.length == 0" [items]="earthquakes">
+  <ion-virtual-scroll [approxItemHeight]="128" [hidden]="earthquakes.length === 0" [items]="earthquakes">
     <ion-item *virtualItem="let earthquake">
       <ion-label>
         <ion-row>

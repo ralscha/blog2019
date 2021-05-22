@@ -33,7 +33,7 @@ export class AppComponent implements AfterViewInit, OnDestroy {
 
     this.workers = [];
     for (let w = 0; w < this.numberOfWorkers; w++) {
-      this.workers[w] = new Worker('./mandelbrot.worker', {type: 'module'});
+      this.workers[w] = new Worker(new URL('./mandelbrot.worker', import.meta.url), {type: 'module'});
       this.workers[w].addEventListener('message', message => this.handleWorkerMessage(this.workers[w], message));
     }
   }

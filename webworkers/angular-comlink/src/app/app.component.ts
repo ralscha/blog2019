@@ -20,7 +20,7 @@ export class AppComponent implements AfterViewInit, OnDestroy {
   private workX = 0;
   private workY = 0;
   private endCounter = 0;
-  // tslint:disable-next-line:no-any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private computeMandelbrotSetMethods!: any[];
   private workers!: Worker[];
   private height!: number;
@@ -37,7 +37,7 @@ export class AppComponent implements AfterViewInit, OnDestroy {
     this.computeMandelbrotSetMethods = [];
     this.workers = [];
     for (let w = 0; w < this.numberOfWorkers; w++) {
-      this.workers[w] = new Worker('./mandelbrot.worker', {type: 'module'});
+      this.workers[w] = new Worker(new URL('./mandelbrot.worker', import.meta.url), {type: 'module'});
       this.computeMandelbrotSetMethods[w] = wrap(this.workers[w]);
     }
   }
@@ -72,7 +72,7 @@ export class AppComponent implements AfterViewInit, OnDestroy {
     this.progress = '100 %';
   }
 
-  // tslint:disable-next-line:no-any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   async work(computeMandelbrotSetMethod: any): Promise<void> {
     while (this.workY < this.height) {
       const result = await computeMandelbrotSetMethod({
