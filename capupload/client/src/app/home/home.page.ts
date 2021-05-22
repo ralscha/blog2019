@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {LoadingController, ToastController} from '@ionic/angular';
 import {HttpClient} from '@angular/common/http';
-import {CameraResultType, CameraSource, Plugins} from '@capacitor/core';
+import {Camera, CameraResultType, CameraSource} from '@capacitor/camera';
 import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
 import {environment} from '../../environments/environment';
 import {catchError, finalize} from 'rxjs/operators';
@@ -50,7 +50,7 @@ export class HomePage {
   }
 
   private async getPhoto(source: CameraSource): Promise<string | undefined> {
-    const image = await Plugins.Camera.getPhoto({
+    const image = await Camera.getPhoto({
       quality: 90,
       allowEditing: false,
       resultType: CameraResultType.Uri,
@@ -127,7 +127,7 @@ export class HomePage {
     }
   }
 
-  // tslint:disable-next-line:no-any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private handleError(error: any): Observable<never> {
     const errMsg = error.message ? error.message : error.toString();
     this.error = errMsg;

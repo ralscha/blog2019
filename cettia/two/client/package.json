@@ -5,7 +5,7 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
-    "build-prod": "ng build --prod",
+    "build-prod": "ng build --configuration production",
     "serve-dist": "ws --hostname localhost -d dist/app -p 1234 -o --log.format stats",
     "lint": "ng lint",
     "pbts": "pbjs -t static-module ../server/src/main/protobuf/ChangeEvent.proto -o src/app/protos/changeevent.js && pbts --no-comments src/app/protos/changeevent.js -o src/app/protos/changeevent.d.ts"
@@ -26,7 +26,7 @@
     "rxjs": "7.1.0",
     "tslib": "2.2.0",
     "uuid": "8.3.2",
-    "zone.js": "~0.11.4"
+    "zone.js": "0.11.4"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "12.0.1",
@@ -42,7 +42,7 @@
     "@types/uuid": "8.3.0",
     "@typescript-eslint/eslint-plugin": "4.24.0",
     "@typescript-eslint/parser": "4.24.0",
-    "eslint": "^7.27.0",
+    "eslint": "7.27.0",
     "local-web-server": "4.2.1",
     "typescript": "4.2.4"
   }

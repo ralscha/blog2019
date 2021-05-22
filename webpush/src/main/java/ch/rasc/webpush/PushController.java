@@ -246,7 +246,7 @@ public class PushController {
     }
     else {
       httpRequestBuilder.POST(BodyPublishers.ofString(""));
-      httpRequestBuilder.header("Content-Length", "0");
+      // httpRequestBuilder.header("Content-Length", "0");
     }
 
     HttpRequest request = httpRequestBuilder.uri(endpointURI).header("TTL", "180")
