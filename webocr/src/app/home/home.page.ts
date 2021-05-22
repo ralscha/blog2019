@@ -26,7 +26,7 @@ export class HomePage implements AfterViewInit {
   language = 'eng';
   private ctx!: CanvasRenderingContext2D;
   private selectedFile: File | null = null;
-  // tslint:disable-next-line:no-any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private image: any | null = null;
   private ratio: number | null = null;
 
@@ -162,7 +162,7 @@ export class HomePage implements AfterViewInit {
     this.selectedSymbol = symbol;
   }
 
-  // tslint:disable-next-line:no-any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private drawImageScaled(img: any): void {
     const width = this.canvasContainer.nativeElement.clientWidth;
     const height = this.canvasContainer.nativeElement.clientHeight;

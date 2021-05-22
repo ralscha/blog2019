@@ -15,15 +15,15 @@ export class TodoService {
   private todosSubject = new BehaviorSubject<ITodo[]>([]);
   public todosObservable = this.todosSubject.asObservable();
 
-  // tslint:disable-next-line:no-any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private socket: any = null;
-  // tslint:disable-next-line:no-any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private cache: any = [];
 
   constructor() {
     this.socket = cettia.open(environment.SERVER_URL);
 
-    // tslint:disable-next-line:no-any
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     this.socket.on('initial', (msg: any) => {
       const initialTodos = Todos.decode(msg);
       for (const todo of initialTodos.todos) {
@@ -34,7 +34,7 @@ export class TodoService {
       this.todosSubject.next([...this.todos.values()]);
     });
 
-    // tslint:disable-next-line:no-any
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     this.socket.on('update', (msg: any) => {
       const changeEvent = ChangeEvent.decode(msg);
       const todo = changeEvent.todo;
@@ -50,7 +50,7 @@ export class TodoService {
       }
     });
 
-    // tslint:disable-next-line:no-any
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     this.socket.on('cache', (args: any) => this.cache.push(args));
 
     this.socket.on('open', () => {

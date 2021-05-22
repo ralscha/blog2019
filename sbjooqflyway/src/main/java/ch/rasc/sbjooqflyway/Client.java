@@ -37,9 +37,10 @@ public class Client {
     newEmployee.setGender("M");
     newEmployee.setFirstName("John");
     newEmployee.setLastName("Doe");
-    newEmployee.setUserName("jdoe3");
+    newEmployee.setUserName("jdoe4");
     newEmployee.setBirthDate(LocalDate.of(1986, 12, 11));
     newEmployee.setHireDate(LocalDate.of(2014, 1, 1));
+    newEmployee.setDepartmentId(1);
     String json = objectMapper.writeValueAsString(newEmployee);
     response = client.send(
         HttpRequest.newBuilder().POST(BodyPublishers.ofString(json))

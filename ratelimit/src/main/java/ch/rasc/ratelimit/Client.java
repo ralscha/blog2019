@@ -23,10 +23,10 @@ public class Client {
   private final static HttpClient httpClient = HttpClient.newHttpClient();
 
   public static void main(String[] args) throws InterruptedException {
-    // top1Client();
+    top1Client();
     // topNClient();
     // lastClient();
-    placeClient();
+    // placeClient();
     // depthClient();
     // magClient();
     // bucketClient();

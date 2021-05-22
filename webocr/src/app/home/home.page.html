@@ -177,7 +177,7 @@
 
       <tr *matHeaderRowDef="elementColumns; sticky: true" mat-header-row></tr>
       <tr (click)="onWordClick(word)" *matRowDef="let word; columns: elementColumns;"
-          [ngClass]="{'highlight': selectedWord == word}"
+          [ngClass]="{'highlight': selectedWord === word}"
           mat-row></tr>
     </table>
   </div>
@@ -197,7 +197,7 @@
 
       <tr *matHeaderRowDef="elementColumns; sticky: true" mat-header-row></tr>
       <tr (click)="onSymbolClick(symbol)" *matRowDef="let symbol; columns: elementColumns;"
-          [ngClass]="{'highlight': selectedSymbol == symbol}" mat-row></tr>
+          [ngClass]="{'highlight': selectedSymbol === symbol}" mat-row></tr>
     </table>
   </div>
 </ion-content>

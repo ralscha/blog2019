@@ -15,7 +15,7 @@
 		<dependency>
 			<groupId>org.glassfish</groupId>
 			<artifactId>jakarta.json</artifactId>
-			<version>2.0.0</version>
+			<version>2.0.1</version>
 		</dependency>
 		<dependency>
 		   <groupId>io.mikael</groupId>
@@ -31,7 +31,7 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.8.1</version>
 				<configuration>
-					<release>13</release>
+					<release>16</release>
 				</configuration>
 			</plugin>
 		</plugins>

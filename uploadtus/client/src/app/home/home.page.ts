@@ -13,7 +13,7 @@ import {environment} from '../../environments/environment';
 export class HomePage {
   recording = false;
   uploadProgress = 0;
-  // tslint:disable-next-line:no-any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   @ViewChild('videoElement', {static: true}) videoElement!: any;
   private recordRTC: RecordRTC;
 

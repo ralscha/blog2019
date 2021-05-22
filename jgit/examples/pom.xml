@@ -7,20 +7,20 @@
   <version>0.0.1</version>
 
   <properties>
-    <maven.compiler.target>11</maven.compiler.target>
-    <maven.compiler.source>11</maven.compiler.source>
+    <maven.compiler.target>16</maven.compiler.target>
+    <maven.compiler.source>16</maven.compiler.source>
   </properties>
 
   <dependencies>
     <dependency>
       <groupId>org.eclipse.jgit</groupId>
       <artifactId>org.eclipse.jgit</artifactId>
-      <version>5.11.0.202103091610-r</version>
+      <version>5.11.1.202105131744-r</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse.jgit</groupId>
       <artifactId>org.eclipse.jgit.ssh.jsch</artifactId>
-      <version>5.11.0.202103091610-r</version>
+      <version>5.11.1.202105131744-r</version>
     </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>

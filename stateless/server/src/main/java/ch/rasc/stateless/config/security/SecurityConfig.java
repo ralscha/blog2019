@@ -3,8 +3,6 @@ package ch.rasc.stateless.config.security;
 import static ch.rasc.stateless.db.tables.AppSession.APP_SESSION;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -20,9 +18,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
-import org.springframework.security.crypto.password.DelegatingPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.logout.HeaderWriterLogoutHandler;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
@@ -49,14 +44,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     return authentication -> {
       throw new AuthenticationServiceException("Cannot authenticate " + authentication);
     };
-  }
-
-  @Bean
-  public PasswordEncoder passwordEncoder() {
-    String defaultEncodingId = "argon2";
-    Map<String, PasswordEncoder> encoders = new HashMap<>();
-    encoders.put(defaultEncodingId, new Argon2PasswordEncoder(16, 32, 8, 1 << 16, 4));
-    return new DelegatingPasswordEncoder(defaultEncodingId, encoders);
   }
 
   @Override

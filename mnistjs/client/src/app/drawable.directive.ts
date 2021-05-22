@@ -38,7 +38,7 @@ export class DrawableDirective implements OnInit {
   @HostListener('touchstart', ['$event'])
   @HostListener('touchenter', ['$event'])
   @HostListener('mousedown', ['$event'])
-  // tslint:disable-next-line:no-any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   down(e: any): void {
     this.drawing = true;
 
@@ -54,7 +54,7 @@ export class DrawableDirective implements OnInit {
 
   @HostListener('touchmove', ['$event'])
   @HostListener('mousemove', ['$event'])
-  // tslint:disable-next-line:no-any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   move(e: any): void {
     if (!this.drawing) {
       return;

@@ -1,13 +1,10 @@
 package ch.rasc.credential.security;
 
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.web.servlet.error.DefaultErrorAttributes;
-import org.springframework.boot.web.servlet.error.ErrorAttributes;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
@@ -16,7 +13,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.logout.HttpStatusReturningLogoutSuccessHandler;
-import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -52,17 +48,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		auth.inMemoryAuthentication().withUser("admin").password("{noop}admin")
 				.authorities("ADMIN").and().withUser("user").password("{noop}user")
 				.authorities("USER");
-	}
-
-	@Bean
-	public ErrorAttributes errorAttributes() {
-		return new DefaultErrorAttributes() {
-			@Override
-			public Map<String, Object> getErrorAttributes(WebRequest webRequest,
-					boolean includeStackTrace) {
-				return null;
-			}
-		};
 	}
 
 	@SuppressWarnings("null")

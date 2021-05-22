@@ -1,4 +1,4 @@
-// tslint:disable:no-any
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import * as $protobuf from 'protobufjs';
 
 export interface ITodo {
@@ -91,7 +91,7 @@ export class ChangeEvent implements IChangeEvent {
   public toJSON(): { [k: string]: any };
 }
 
-// tslint:disable-next-line:no-namespace
+// eslint-disable-next-line @typescript-eslint/no-namespace
 export namespace ChangeEvent {
 
   enum ChangeType {

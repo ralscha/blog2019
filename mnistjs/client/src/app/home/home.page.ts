@@ -38,7 +38,7 @@ export class HomePage {
     this.tfModel = await tf.loadLayersModel('assets/tfjsmnist/model.json');
   }
 
-  // tslint:disable-next-line:no-any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   detect(canvas: any): void {
     const canvasCopy = document.createElement('canvas');
     canvasCopy.width = 28;

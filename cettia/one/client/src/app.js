@@ -1,8 +1,14 @@
-import echarts from 'echarts/lib/echarts';
-import 'echarts/lib/chart/pie';
-import 'echarts/lib/chart/gauge';
-import 'echarts/lib/chart/line';
-import 'echarts/lib/chart/bar';
+import * as echarts from 'echarts/core';
+import {BarChart, GaugeChart, LineChart, PieChart} from 'echarts/charts';
+import {LegendComponent, TitleComponent, TooltipComponent, GridComponent } from 'echarts/components';
+import {CanvasRenderer} from 'echarts/renderers';
+
+echarts.use(
+  [BarChart, LineChart, GaugeChart, PieChart, TitleComponent,
+    TooltipComponent, LegendComponent, GridComponent, CanvasRenderer]
+);
+
+
 import cettia from 'cettia-client/cettia-bundler';
 
 const pieChartNames = ['one', 'two', 'three', 'four', 'five'];

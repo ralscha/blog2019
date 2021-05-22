@@ -1,10 +1,9 @@
 import {Injectable} from '@angular/core';
-import {Observable, of} from 'rxjs';
+import {Observable, of, from} from 'rxjs';
 import {environment} from '../environments/environment';
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {catchError, finalize, mapTo, switchMap, tap} from 'rxjs/operators';
 import {LoadingController, NavController, ToastController} from '@ionic/angular';
-import {fromPromise} from 'rxjs/internal-compatibility';
 
 @Injectable({
   providedIn: 'root'
@@ -25,7 +24,7 @@ export class AuthService {
     }).pipe(
       tap(() => this.loggedIn = true),
       mapTo(true),
-      catchError(error => {
+      catchError(() => {
         this.loggedIn = false;
         return of(false);
       })
@@ -35,12 +34,14 @@ export class AuthService {
   login(username: string, password: string): Observable<boolean> {
     let loading: HTMLIonLoadingElement;
 
-    return fromPromise(this.loadingCtrl.create({
+    return from(this.loadingCtrl.create({
       spinner: 'bubbles',
       message: `Logging in ...`
     })).pipe(
       tap(c => {
+        // @ts-ignore
         loading = c;
+        // @ts-ignore
         c.present();
       }),
       switchMap(() => this.submitLogin(username, password)),
@@ -96,7 +97,7 @@ export class AuthService {
     }).pipe(
       tap(() => this.loggedIn = true),
       mapTo(true),
-      catchError(error => {
+      catchError(() => {
         this.loggedIn = false;
         return of(false);
       })

@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 import io.mikael.urlbuilder.UrlBuilder;
 import jakarta.json.Json;
@@ -36,31 +37,38 @@ public class File {
     HttpResponse<Path> response = client.send(request, BodyHandlers.ofFile(localFile));
     System.out.println(response);
 
-    String virusTotalApiKey = "b3a4addb86c82979c20c3a469576e6ae81ba4d4bf3ab36d107a4f9cea5bf70bf";
+    String virusTotalApiKey = "......................";
 
     Map<Object, Object> data = new LinkedHashMap<>();
-    data.put("apikey", virusTotalApiKey);
     data.put("file", localFile);
     String boundary = new BigInteger(256, new Random()).toString();
 
     request = HttpRequest.newBuilder()
-              .header("Content-Type", "multipart/form-data;boundary=" + boundary)
-              .POST(ofMimeMultipartData(data, boundary))
-              .uri(URI.create("https://www.virustotal.com/vtapi/v2/file/scan"))
-              .build();
+        .header("Content-Type", "multipart/form-data;boundary=" + boundary)
+        .header("x-apikey", virusTotalApiKey).POST(ofMimeMultipartData(data, boundary))
+        .uri(URI.create("https://www.virustotal.com/api/v3/files")).build();
 
     HttpResponse<String> vtResponse = client.send(request, BodyHandlers.ofString());
 
     try (JsonReader jsonReader = Json.createReader(new StringReader(vtResponse.body()))) {
       JsonObject jobj = jsonReader.readObject();
-      String resource = jobj.getString("resource");
-      URI uri = UrlBuilder.fromString("https://www.virustotal.com/vtapi/v2/file/report")
-          .addParameter("apikey", virusTotalApiKey).addParameter("resource", resource)
+      String analysisId = jobj.getJsonObject("data").get("id").toString().replace("\"", "");
+      URI uri = UrlBuilder
+          .fromString("https://www.virustotal.com/api/v3/analyses/" + analysisId)
           .toUri();
 
-      HttpResponse<String> status = client.send(HttpRequest.newBuilder(uri).build(),
+      HttpResponse<String> status = client.send(
+          HttpRequest.newBuilder(uri).header("x-apikey", virusTotalApiKey).build(),
           BodyHandlers.ofString());
+
+      System.out.println(status.body());
       
+      TimeUnit.MINUTES.sleep(2);
+      
+      status = client.send(
+          HttpRequest.newBuilder(uri).header("x-apikey", virusTotalApiKey).build(),
+          BodyHandlers.ofString());
+
       System.out.println(status.body());
     }
   }
@@ -77,7 +85,8 @@ public class File {
         var path = (Path) entry.getValue();
         String mimeType = Files.probeContentType(path);
         byteArrays.add(("\"" + entry.getKey() + "\"; filename=\"" + path.getFileName()
-            + "\"\r\nContent-Type: " + mimeType + "\r\n\r\n").getBytes(StandardCharsets.UTF_8));
+            + "\"\r\nContent-Type: " + mimeType + "\r\n\r\n")
+                .getBytes(StandardCharsets.UTF_8));
         byteArrays.add(Files.readAllBytes(path));
         byteArrays.add("\r\n".getBytes(StandardCharsets.UTF_8));
       }

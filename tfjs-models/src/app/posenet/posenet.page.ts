@@ -44,7 +44,7 @@ export class PosenetPage implements OnInit {
     this.fileInput.nativeElement.click();
   }
 
-  // tslint:disable-next-line:no-any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   drawImageScaled(img: any): void {
     const width = this.canvasContainer.nativeElement.clientWidth;
     const height = this.canvasContainer.nativeElement.clientHeight;
@@ -64,7 +64,7 @@ export class PosenetPage implements OnInit {
       0, 0, img.width * this.ratio, img.height * this.ratio);
   }
 
-  // tslint:disable-next-line:no-any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private async estimate(img: any): Promise<void> {
     const flipHorizontal = false;
 
