@@ -13,7 +13,7 @@
   },
   "dependencies": {
     "cettia-client": "1.1.0",
-    "core-js": "3.18.1",
+    "core-js": "3.19.0",
     "echarts": "5.2.1"
   }
 }
