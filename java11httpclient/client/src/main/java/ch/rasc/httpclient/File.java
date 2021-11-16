@@ -95,7 +95,7 @@ public class File {
             .getBytes(StandardCharsets.UTF_8));
       }
     }
-    byteArrays.add(("--" + boundary + "--").getBytes(StandardCharsets.UTF_8));
+    byteArrays.add(("--" + boundary + "--\r\n").getBytes(StandardCharsets.UTF_8));
     return BodyPublishers.ofByteArrays(byteArrays);
   }
 
