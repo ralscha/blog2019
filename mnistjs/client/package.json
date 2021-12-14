@@ -20,7 +20,7 @@
     "@angular/platform-browser": "12.2.13",
     "@angular/platform-browser-dynamic": "12.2.13",
     "@angular/router": "12.2.13",
-    "@ionic/angular": "5.9.1",
+    "@ionic/angular": "^5.9.1",
     "@tensorflow/tfjs": "3.11.0",
     "brain.js": "1.6.1",
     "rxjs": "7.4.0",

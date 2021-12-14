@@ -57,7 +57,7 @@ export class HomePage implements AfterViewInit {
 
     this.image = new Image();
     this.image.onload = () => this.drawImageScaled(this.image);
-    this.image.src = URL.createObjectURL(this.selectedFile);
+    this.image.src = URL.createObjectURL(this.selectedFile!);
 
     /*
     const worker = createWorker({
@@ -97,7 +97,7 @@ export class HomePage implements AfterViewInit {
         await worker.terminate();
       }
     } catch (e) {
-      this.progressStatus = e;
+      this.progressStatus = "" + e;
       this.progress = null;
     } finally {
       this.progressBar.complete();
