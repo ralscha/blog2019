@@ -12,6 +12,7 @@
   },
   "private": true,
   "dependencies": {
+<<<<<<< HEAD
     "@angular/common": "13.1.0",
     "@angular/compiler": "13.1.0",
     "@angular/core": "13.1.0",
@@ -20,6 +21,16 @@
     "@angular/platform-browser-dynamic": "13.1.0",
     "@angular/router": "13.1.0",
     "@ionic/angular": "5.9.1",
+=======
+    "@angular/common": "12.2.13",
+    "@angular/compiler": "12.2.13",
+    "@angular/core": "12.2.13",
+    "@angular/forms": "12.2.13",
+    "@angular/platform-browser": "12.2.13",
+    "@angular/platform-browser-dynamic": "12.2.13",
+    "@angular/router": "12.2.13",
+    "@ionic/angular": "5.9.2",
+>>>>>>> d47f6758498a7898a0fef942a6df316f3a79ba8f
     "@tensorflow-models/coco-ssd": "2.2.2",
     "@tensorflow-models/mobilenet": "2.1.0",
     "@tensorflow-models/posenet": "2.2.2",

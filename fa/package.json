@@ -23,7 +23,11 @@
     "@fortawesome/free-brands-svg-icons": "5.15.4",
     "@fortawesome/free-regular-svg-icons": "5.15.4",
     "@fortawesome/free-solid-svg-icons": "5.15.4",
-    "@ionic/angular": "^6.0.0",
+<<<<<<< HEAD
+    "@ionic/angular": "6.0.0",
+=======
+    "@ionic/angular": "5.9.2",
+>>>>>>> d47f6758498a7898a0fef942a6df316f3a79ba8f
     "rxjs": "7.4.0",
     "tslib": "2.3.1",
     "zone.js": "0.11.4"
