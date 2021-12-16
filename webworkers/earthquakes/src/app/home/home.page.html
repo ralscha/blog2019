@@ -7,8 +7,8 @@
 </ion-header>
 
 <ion-content>
-  <ion-virtual-scroll [approxItemHeight]="128" [hidden]="earthquakes.length === 0" [items]="earthquakes">
-    <ion-item *virtualItem="let earthquake">
+  <cdk-virtual-scroll-viewport itemSize="128" minBufferPx="900" maxBufferPx="1350">
+    <ion-item *cdkVirtualFor="let earthquake of earthquakes">
       <ion-label>
         <ion-row>
           <ion-col size="3">
@@ -30,5 +30,5 @@
         </ion-row>
       </ion-label>
     </ion-item>
-  </ion-virtual-scroll>
+  </cdk-virtual-scroll-viewport>
 </ion-content>
