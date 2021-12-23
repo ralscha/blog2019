@@ -1,3 +1,5 @@
 /node_modules
 .idea/
 dist/
+/.angular/cache
+.DS_Store
