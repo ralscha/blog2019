@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 import ch.rasc.ratelimit.db.tables.pojos.Earthquake;
 import io.github.bucket4j.Bandwidth;
 import io.github.bucket4j.Bucket;
-import io.github.bucket4j.Bucket4j;
 import io.github.bucket4j.ConsumptionProbe;
 import io.github.bucket4j.Refill;
 
@@ -34,7 +33,7 @@ public class EarthquakeController {
     long capacity = 10;
     Refill refill = Refill.greedy(10, Duration.ofMinutes(1));
     Bandwidth limit = Bandwidth.classic(capacity, refill);
-    this.bucket = Bucket4j.builder().addLimit(limit).build();
+    this.bucket = Bucket.builder().addLimit(limit).build();
 
     // OR
     // Bandwidth limit = Bandwidth.simple(10, Duration.ofMinutes(1));

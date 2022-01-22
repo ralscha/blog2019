@@ -12,7 +12,6 @@ import java.time.Duration;
 import io.github.bucket4j.Bandwidth;
 import io.github.bucket4j.BlockingBucket;
 import io.github.bucket4j.Bucket;
-import io.github.bucket4j.Bucket4j;
 import io.github.bucket4j.Refill;
 
 public class Client {
@@ -51,8 +50,8 @@ public class Client {
   private static void bucketClient() throws InterruptedException {
     Refill refill = Refill.greedy(10, Duration.ofMinutes(1));
     Bandwidth limit = Bandwidth.classic(10, refill).withInitialTokens(1);
-    Bucket bucket = Bucket4j.builder().addLimit(limit).build();
-    BlockingBucket blockingBucket = bucket.asScheduler();
+    Bucket bucket = Bucket.builder().addLimit(limit).build();
+    BlockingBucket blockingBucket = bucket.asBlocking();
 
     for (int i = 0; i < 10; i++) {
       blockingBucket.consume(1);

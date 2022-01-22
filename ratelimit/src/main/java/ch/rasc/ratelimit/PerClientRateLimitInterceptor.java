@@ -13,7 +13,6 @@ import org.springframework.web.servlet.HandlerInterceptor;
 
 import io.github.bucket4j.Bandwidth;
 import io.github.bucket4j.Bucket;
-import io.github.bucket4j.Bucket4j;
 import io.github.bucket4j.ConsumptionProbe;
 import io.github.bucket4j.Refill;
 
@@ -21,7 +20,7 @@ public class PerClientRateLimitInterceptor implements HandlerInterceptor {
 
   private final Map<String, Bucket> buckets = new ConcurrentHashMap<>();
 
-  private final Bucket freeBucket = Bucket4j.builder()
+  private final Bucket freeBucket = Bucket.builder()
       .addLimit(Bandwidth.classic(10, Refill.intervally(10, Duration.ofMinutes(1))))
       .build();
 
@@ -59,13 +58,13 @@ public class PerClientRateLimitInterceptor implements HandlerInterceptor {
   }
 
   private static Bucket standardBucket() {
-    return Bucket4j.builder()
+    return Bucket.builder()
         .addLimit(Bandwidth.classic(50, Refill.intervally(50, Duration.ofMinutes(1))))
         .build();
   }
 
   private static Bucket premiumBucket() {
-    return Bucket4j.builder()
+    return Bucket.builder()
         .addLimit(Bandwidth.classic(100, Refill.intervally(100, Duration.ofMinutes(1))))
         .build();
   }
