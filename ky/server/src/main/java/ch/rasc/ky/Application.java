@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -24,10 +25,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import io.github.bucket4j.Bandwidth;
 import io.github.bucket4j.Bucket;
-import io.github.bucket4j.Bucket4j;
 import io.github.bucket4j.ConsumptionProbe;
 import io.github.bucket4j.Refill;
 
@@ -40,11 +42,21 @@ public class Application {
 	Application() {
 		Refill refill = Refill.greedy(2, Duration.ofSeconds(5));
 		Bandwidth limit = Bandwidth.classic(2, refill);
-		this.bucket = Bucket4j.builder().addLimit(limit).build();
+		this.bucket = Bucket.builder().addLimit(limit).build();
 	}
 
 	public static void main(String[] args) {
 		SpringApplication.run(Application.class, args);
+	}
+
+	@Bean
+	public WebMvcConfigurer corsConfigurer() {
+		return new WebMvcConfigurer() {
+			@Override
+			public void addCorsMappings(CorsRegistry registry) {
+				registry.addMapping("/**").allowedOrigins("*");
+			}
+		};
 	}
 
 	@GetMapping(path = "/simple-get", produces = MediaType.TEXT_PLAIN_VALUE)
@@ -120,9 +132,11 @@ public class Application {
 	}
 
 	@GetMapping("/download")
-	public void download(HttpServletResponse response) throws IOException, InterruptedException {
+	public void download(HttpServletResponse response)
+			throws IOException, InterruptedException {
 		response.addHeader(HttpHeaders.CONTENT_LENGTH, "1000000");
-		response.addHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_OCTET_STREAM_VALUE);
+		response.addHeader(HttpHeaders.CONTENT_TYPE,
+				MediaType.APPLICATION_OCTET_STREAM_VALUE);
 		Random rand = new Random();
 		@SuppressWarnings("resource")
 		ServletOutputStream outputStream = response.getOutputStream();
