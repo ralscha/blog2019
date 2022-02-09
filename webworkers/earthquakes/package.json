@@ -11,7 +11,7 @@
   "private": true,
   "dependencies": {
     "@angular/animations": "13.2.2",
-    "@angular/cdk": "13.2.2",
+    "@angular/cdk": "13.2.1",
     "@angular/common": "13.2.2",
     "@angular/compiler": "13.2.2",
     "@angular/core": "13.2.2",
@@ -19,11 +19,11 @@
     "@angular/platform-browser": "13.2.2",
     "@angular/platform-browser-dynamic": "13.2.2",
     "@angular/router": "13.2.2",
-    "@ionic/angular": "6.0.5",
+    "@ionic/angular": "6.0.7",
     "comlink": "4.3.1",
     "dexie": "3.2.0",
     "papaparse": "5.3.1",
-    "rxjs": "7.5.3",
+    "rxjs": "7.5.4",
     "tslib": "2.3.1",
     "zone.js": "0.11.4"
   },
