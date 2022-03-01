@@ -18,11 +18,19 @@
     "@angular/platform-browser-dynamic": "13.2.4",
     "@angular/router": "13.2.4",
     "@fortawesome/angular-fontawesome": "0.10.1",
+<<<<<<< HEAD
     "@fortawesome/fontawesome-svg-core": "1.2.36",
     "@fortawesome/free-brands-svg-icons": "5.15.4",
     "@fortawesome/free-regular-svg-icons": "5.15.4",
     "@fortawesome/free-solid-svg-icons": "5.15.4",
     "@ionic/angular": "6.0.9",
+=======
+    "@fortawesome/fontawesome-svg-core": "1.3.0",
+    "@fortawesome/free-brands-svg-icons": "6.0.0",
+    "@fortawesome/free-regular-svg-icons": "6.0.0",
+    "@fortawesome/free-solid-svg-icons": "6.0.0",
+    "@ionic/angular": "6.0.7",
+>>>>>>> branch 'master' of git@github.com:ralscha/blog2019.git
     "rxjs": "7.5.4",
     "tslib": "2.3.1",
     "zone.js": "0.11.4"
