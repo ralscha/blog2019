@@ -8,10 +8,10 @@
     "watch": "parcel watch src/index.html"
   },
   "devDependencies": {
-    "parcel": "2.3.2"
+    "parcel": "2.4.0"
   },
   "dependencies": {
-    "ky": "0.29.0"
+    "ky": "0.30.0"
   },
   "browserslist": [
     "last 1 Chrome versions"
