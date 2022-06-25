@@ -30,11 +30,8 @@
               "src/favicon.ico",
               "src/assets"
             ],
-            "styles": [
-              "src/styles.scss"
-            ],
             "scripts": [],
-            "webWorkerTsConfig": "tsconfig.worker.json",
+            "webWorkerTsConfig": "tsconfig.worker.json"
           },
           "configurations": {
             "production": {
@@ -65,8 +62,8 @@
               "extractLicenses": false,
               "sourceMap": true,
               "namedChunks": true
-          }
-        },
+            }
+          },
           "defaultConfiguration": "production"
         },
         "serve": {
@@ -93,8 +90,9 @@
       }
     }
   },
-  "defaultProject": "app",
   "cli": {
-    "defaultCollection": "@angular-eslint/schematics"
+    "schematicCollections": [
+      "@angular-eslint/schematics"
+    ]
   }
 }

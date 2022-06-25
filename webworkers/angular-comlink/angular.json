@@ -29,9 +29,6 @@
             "assets": [
               "src/favicon.ico"
             ],
-            "styles": [
-              "src/styles.scss"
-            ],
             "scripts": [],
             "webWorkerTsConfig": "tsconfig.worker.json"
           },
@@ -64,8 +61,8 @@
               "extractLicenses": false,
               "sourceMap": true,
               "namedChunks": true
-          }
-        },
+            }
+          },
           "defaultConfiguration": "production"
         },
         "serve": {
@@ -92,8 +89,9 @@
       }
     }
   },
-  "defaultProject": "app",
   "cli": {
-    "defaultCollection": "@angular-eslint/schematics"
+    "schematicCollections": [
+      "@angular-eslint/schematics"
+    ]
   }
 }
