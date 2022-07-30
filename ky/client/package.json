@@ -11,7 +11,7 @@
     "parcel": "2.6.2"
   },
   "dependencies": {
-    "ky": "0.31.0"
+    "ky": "0.31.1"
   },
   "browserslist": [
     "last 1 Chrome versions"
