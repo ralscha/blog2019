@@ -18,7 +18,7 @@ export class AuthService {
     return this.httpClient.get(`/authenticate`, {responseType: 'text'})
       .pipe(
         map(response => this.handleAuthResponse(response)),
-        catchError(_ => of(false))
+        catchError(() => of(false))
       );
   }
 
@@ -32,7 +32,7 @@ export class AuthService {
     return this.httpClient.post('/login', body, {responseType: 'text'})
       .pipe(
         map(response => this.handleAuthResponse(response)),
-        catchError(_ => of(false))
+        catchError(() => of(false))
       );
   }
 

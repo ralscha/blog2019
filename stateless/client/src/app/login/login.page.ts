@@ -28,7 +28,7 @@ export class LoginPage {
           this.showLoginFailedToast();
         }
 
-      }, _ => this.showLoginFailedToast());
+      }, () => this.showLoginFailedToast());
   }
 
   private showLoginFailedToast(): void {

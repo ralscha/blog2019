@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {Observable, of, from} from 'rxjs';
 import {environment} from '../environments/environment';
 import {HttpClient, HttpParams} from '@angular/common/http';
-import {catchError, finalize, mapTo, switchMap, tap} from 'rxjs/operators';
+import {catchError, finalize, map, mapTo, switchMap, tap} from 'rxjs/operators';
 import {LoadingController, NavController, ToastController} from '@ionic/angular';
 
 @Injectable({
@@ -23,7 +23,7 @@ export class AuthService {
       withCredentials: true
     }).pipe(
       tap(() => this.loggedIn = true),
-      mapTo(true),
+      map(() => true),
       catchError(() => {
         this.loggedIn = false;
         return of(false);
@@ -39,9 +39,7 @@ export class AuthService {
       message: `Logging in ...`
     })).pipe(
       tap(c => {
-        // @ts-ignore
         loading = c;
-        // @ts-ignore
         c.present();
       }),
       switchMap(() => this.submitLogin(username, password)),

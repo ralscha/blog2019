@@ -18,7 +18,7 @@ export class HomePage implements OnInit, OnDestroy {
   strokeWidth = 0;
   opacity = '1';
 
-  private interval!: number;
+  private interval!: any;
 
   ngOnDestroy(): void {
     clearInterval(this.interval);

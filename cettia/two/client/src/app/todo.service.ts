@@ -2,7 +2,6 @@ import {Injectable} from '@angular/core';
 import {ChangeEvent, ITodo, Todos} from './protos/changeevent';
 import {BehaviorSubject} from 'rxjs';
 import {environment} from '../environments/environment';
-// @ts-ignore
 import cettia from 'cettia-client/cettia-bundler';
 
 @Injectable({

@@ -1,4 +1,3 @@
-// @ts-ignore
 import Papa from 'papaparse';
 import {Earthquake, EarthquakeDb} from './earthquake-db';
 import * as Comlink from 'comlink';

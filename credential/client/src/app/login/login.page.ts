@@ -1,5 +1,6 @@
 import {Component} from '@angular/core';
 import {AuthService} from '../auth.service';
+import {noop} from 'rxjs';
 
 @Component({
   selector: 'app-login',
@@ -12,8 +13,7 @@ export class LoginPage {
   }
 
   login(username: string, password: string): void {
-    this.authService.login(username, password).subscribe(() => {
-    });
+    this.authService.login(username, password).subscribe(noop);
   }
 
 

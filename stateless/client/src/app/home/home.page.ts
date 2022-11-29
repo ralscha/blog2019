@@ -29,7 +29,7 @@ export class HomePage implements OnInit {
     );
 
     this.isAdmin().pipe(take(1), filter(isAdmin => isAdmin),
-      concatMap(_ => this.httpClient.get<boolean>('/isEnabled')))
+      concatMap(() => this.httpClient.get<boolean>('/isEnabled')))
       .subscribe(flag => this.userEnabled = flag, err => console.log(err));
   }
 

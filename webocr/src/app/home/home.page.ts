@@ -42,8 +42,7 @@ export class HomePage implements AfterViewInit {
   }
 
   async onFileChange(event: Event): Promise<void> {
-    // @ts-ignore
-    this.selectedFile = event.target.files[0];
+    this.selectedFile = (event.target as any).files[0];
 
     this.progressStatus = '';
     this.progress = null;
@@ -57,10 +56,12 @@ export class HomePage implements AfterViewInit {
 
     this.image = new Image();
     this.image.onload = () => this.drawImageScaled(this.image);
-    this.image.src = URL.createObjectURL(this.selectedFile!);
+    if (this.selectedFile) {
+      this.image.src = URL.createObjectURL(this.selectedFile);
+    }
 
     /*
-    const worker = createWorker({
+    const worker = await createWorker({
       logger: progress => {
         this.progressStatus = progress.status;
         this.progress = progress.progress;
@@ -69,7 +70,7 @@ export class HomePage implements AfterViewInit {
       }
     });
      */
-    const worker = createWorker({
+    const worker = await createWorker({
       workerPath: 'tesseract-202/worker.min.js',
       corePath: 'tesseract-202/tesseract-core.wasm.js',
       logger: progress => {
@@ -106,8 +107,9 @@ export class HomePage implements AfterViewInit {
     }
 
     // reset file input
-    // @ts-ignore
-    event.target.value = null;
+    if (event.target) {
+      (event.target as any).value = null;
+    }
   }
 
   redrawImage(): void {
