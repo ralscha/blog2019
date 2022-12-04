@@ -1,6 +1,6 @@
 package ch.rasc.envers;
 
-import javax.persistence.EntityManager;
+import jakarta.persistence.EntityManager;
 
 public class H2Version {
   public static void main(String[] args) {
