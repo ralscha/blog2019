@@ -2,8 +2,6 @@ package ch.rasc.bigint;
 
 import java.math.BigInteger;
 
-import org.springframework.stereotype.Component;
-
 import com.fasterxml.jackson.databind.module.SimpleModule;
 
 // @Component

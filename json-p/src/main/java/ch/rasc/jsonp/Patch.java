@@ -34,32 +34,22 @@ public class Patch {
       System.out.println(modifiedSource);
       // {"id":4321,"roles":["admin","dev"]}
     }
-    
-    JsonPatch builtPatch = Json.createPatchBuilder()
-                             .replace("/id", 4321)
-                             .add("/roles/1", "dev")
-                             .remove("/active")
-                             .build();    
+
+    JsonPatch builtPatch = Json.createPatchBuilder().replace("/id", 4321)
+        .add("/roles/1", "dev").remove("/active").build();
     JsonValue modifiedSource = builtPatch.apply(source);
     System.out.println(modifiedSource);
     // {"id":4321,"roles":["admin","dev"]}
-    
-    builtPatch = Json.createPatchBuilder()
-      .add("/roles/-", "dev")
-      .copy("/uuid", "/id")
-      .move("/enabled", "/active")
-      .build();
+
+    builtPatch = Json.createPatchBuilder().add("/roles/-", "dev").copy("/uuid", "/id")
+        .move("/enabled", "/active").build();
     modifiedSource = builtPatch.apply(source);
     System.out.println(modifiedSource);
     // {"id":1234,"roles":["admin","dev"],"uuid":1234,"enabled":true}
-    
+
     try {
-      builtPatch = Json.createPatchBuilder()
-          .test("/id", 4321)
-          .add("/roles/-", "dev")
-          .copy("/uuid", "/id")
-          .move("/enabled", "/active")
-          .build();
+      builtPatch = Json.createPatchBuilder().test("/id", 4321).add("/roles/-", "dev")
+          .copy("/uuid", "/id").move("/enabled", "/active").build();
       modifiedSource = builtPatch.apply(source);
       System.out.println(modifiedSource);
     }

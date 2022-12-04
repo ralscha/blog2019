@@ -76,7 +76,6 @@ public class MainQuery {
 
     System.out.println("-------------");
 
-
     query = reader.createQuery().forEntitiesAtRevision(Employee.class, 5);
     query.add(AuditEntity.relatedId("company").eq(1));
     for (Employee e : (List<Employee>) query.getResultList()) {
@@ -88,7 +87,8 @@ public class MainQuery {
     System.out.println("-------------");
     query = reader.createQuery().forEntitiesAtRevision(Employee.class, 5);
     query.add(AuditEntity.property("lastName").eq("Spencer"));
-    // query.add(AuditEntity.or(AuditEntity.property("lastName").eq("Spencer"), AuditEntity.property("lastName").eq("Robinson")));
+    // query.add(AuditEntity.or(AuditEntity.property("lastName").eq("Spencer"),
+    // AuditEntity.property("lastName").eq("Robinson")));
     for (Employee e : (List<Employee>) query.getResultList()) {
       System.out.println(e.getId() + ": " + e.getLastName() + " " + e.getFirstName());
     }
@@ -119,7 +119,6 @@ public class MainQuery {
       System.out.println(e.getId() + ": " + e.getLastName() + " " + e.getFirstName());
     }
     // empty
-
 
     System.out.println("-------------");
     query = reader.createQuery().forEntitiesModifiedAtRevision(Employee.class, 5);

@@ -1,5 +1,7 @@
 package ch.rasc.webpush.dto;
 
+import java.util.Objects;
+
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -33,13 +35,7 @@ public class Subscription {
 
   @Override
   public int hashCode() {
-    final int prime = 31;
-    int result = 1;
-    result = prime * result + (this.endpoint == null ? 0 : this.endpoint.hashCode());
-    result = prime * result
-        + (this.expirationTime == null ? 0 : this.expirationTime.hashCode());
-    result = prime * result + (this.keys == null ? 0 : this.keys.hashCode());
-    return result;
+    return Objects.hash(endpoint, expirationTime, keys);
   }
 
   @Override
@@ -47,35 +43,17 @@ public class Subscription {
     if (this == obj) {
       return true;
     }
-    if (obj == null) {
-      return false;
-    }
-    if (getClass() != obj.getClass()) {
+    if ((obj == null) || (getClass() != obj.getClass())) {
       return false;
     }
     Subscription other = (Subscription) obj;
-    if (this.endpoint == null) {
-      if (other.endpoint != null) {
-        return false;
-      }
-    }
-    else if (!this.endpoint.equals(other.endpoint)) {
+    if (!Objects.equals(this.endpoint, other.endpoint)) {
       return false;
     }
-    if (this.expirationTime == null) {
-      if (other.expirationTime != null) {
-        return false;
-      }
-    }
-    else if (!this.expirationTime.equals(other.expirationTime)) {
+    if (!Objects.equals(this.expirationTime, other.expirationTime)) {
       return false;
     }
-    if (this.keys == null) {
-      if (other.keys != null) {
-        return false;
-      }
-    }
-    else if (!this.keys.equals(other.keys)) {
+    if (!Objects.equals(this.keys, other.keys)) {
       return false;
     }
     return true;

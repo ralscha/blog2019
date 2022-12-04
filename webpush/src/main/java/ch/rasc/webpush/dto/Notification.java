@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 @JsonInclude(Include.NON_NULL)
 public class Notification {
-  
+
   enum Direction {
     auto, ltr, rtl
   }

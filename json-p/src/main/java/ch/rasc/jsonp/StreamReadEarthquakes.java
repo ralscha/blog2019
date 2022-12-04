@@ -28,11 +28,11 @@ public class StreamReadEarthquakes {
         Event event = parser.next();
         if (event == Event.KEY_NAME) {
           String key = parser.getString();
-          if (key.equals("mag")) {
+          if ("mag".equals(key)) {
             parser.next();
             System.out.println(parser.getBigDecimal());
           }
-          else if (key.equals("place")) {
+          else if ("place".equals(key)) {
             parser.next();
             System.out.println(parser.getString());
             System.out.println();

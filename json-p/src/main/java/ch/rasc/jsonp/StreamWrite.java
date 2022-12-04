@@ -12,27 +12,12 @@ public class StreamWrite {
     try (JsonGenerator jg = Json.createGeneratorFactory(properties)
         .createGenerator(System.out)) {
 
-      jg.writeStartObject()
-          .write("id", 1234)
-          .write("active", true)
-          .write("name", "Duke")
-          .writeNull("password")
-          .writeStartArray("roles")
-             .write("admin")
-             .write("user")
-             .write("operator")
-          .writeEnd()
-          .writeStartArray("phoneNumbers")
-             .writeStartObject()
-               .write("type", "mobile")
-               .write("number", "111-111-1111")
-             .writeEnd()
-             .writeStartObject()
-               .write("type", "home")
-               .write("number", "222-222-2222")
-             .writeEnd()
-          .writeEnd()
-        .writeEnd();
+      jg.writeStartObject().write("id", 1234).write("active", true).write("name", "Duke")
+          .writeNull("password").writeStartArray("roles").write("admin").write("user")
+          .write("operator").writeEnd().writeStartArray("phoneNumbers").writeStartObject()
+          .write("type", "mobile").write("number", "111-111-1111").writeEnd()
+          .writeStartObject().write("type", "home").write("number", "222-222-2222")
+          .writeEnd().writeEnd().writeEnd();
     }
   }
 }

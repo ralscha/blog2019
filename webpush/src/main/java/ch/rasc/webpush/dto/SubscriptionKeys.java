@@ -1,5 +1,7 @@
 package ch.rasc.webpush.dto;
 
+import java.util.Objects;
+
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -25,11 +27,7 @@ public class SubscriptionKeys {
 
   @Override
   public int hashCode() {
-    final int prime = 31;
-    int result = 1;
-    result = prime * result + (this.auth == null ? 0 : this.auth.hashCode());
-    result = prime * result + (this.p256dh == null ? 0 : this.p256dh.hashCode());
-    return result;
+    return Objects.hash(auth, p256dh);
   }
 
   @Override
@@ -37,27 +35,14 @@ public class SubscriptionKeys {
     if (this == obj) {
       return true;
     }
-    if (obj == null) {
-      return false;
-    }
-    if (getClass() != obj.getClass()) {
+    if ((obj == null) || (getClass() != obj.getClass())) {
       return false;
     }
     SubscriptionKeys other = (SubscriptionKeys) obj;
-    if (this.auth == null) {
-      if (other.auth != null) {
-        return false;
-      }
-    }
-    else if (!this.auth.equals(other.auth)) {
+    if (!Objects.equals(this.auth, other.auth)) {
       return false;
     }
-    if (this.p256dh == null) {
-      if (other.p256dh != null) {
-        return false;
-      }
-    }
-    else if (!this.p256dh.equals(other.p256dh)) {
+    if (!Objects.equals(this.p256dh, other.p256dh)) {
       return false;
     }
     return true;
