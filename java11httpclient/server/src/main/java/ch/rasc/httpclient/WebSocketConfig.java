@@ -14,19 +14,19 @@ import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry
 @EnableScheduling
 public class WebSocketConfig implements WebSocketConfigurer {
 
-	@Override
-	public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-		registry.addHandler(demoWsHandler(), "/wsEndpoint").setAllowedOrigins("*");
-	}
+  @Override
+  public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
+    registry.addHandler(demoWsHandler(), "/wsEndpoint").setAllowedOrigins("*");
+  }
 
-	@Bean
-	public DemoWsHandler demoWsHandler() {
-		return new DemoWsHandler();
-	}
+  @Bean
+  public DemoWsHandler demoWsHandler() {
+    return new DemoWsHandler();
+  }
 
-	@Bean
-	public TaskScheduler taskScheduler() {
-		return new ConcurrentTaskScheduler();
-	}
+  @Bean
+  public TaskScheduler taskScheduler() {
+    return new ConcurrentTaskScheduler();
+  }
 
 }

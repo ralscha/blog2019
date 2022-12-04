@@ -1,0 +1,12 @@
+version: '3.8'
+services:
+  db:
+    image: mariadb:10.10.2
+    ports:
+      - "3366:3306"
+    restart: "no"
+    environment:
+      MARIADB_ROOT_PASSWORD: root
+      MARIADB_DATABASE: demo
+      MARIADB_USER: demo
+      MARIADB_PASSWORD: demo

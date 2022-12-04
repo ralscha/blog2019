@@ -12,6 +12,9 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
 import org.springframework.security.crypto.password.DelegatingPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.context.DelegatingSecurityContextRepository;
+import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
+import org.springframework.security.web.context.RequestAttributeSecurityContextRepository;
 
 @SpringBootApplication
 @EnableScheduling
@@ -22,7 +25,7 @@ public class Application {
   public static void main(String[] args) {
     SpringApplication.run(Application.class, args);
   }
-  
+
   @Bean
   public PasswordEncoder passwordEncoder() {
     String defaultEncodingId = "argon2";
@@ -30,4 +33,12 @@ public class Application {
     encoders.put(defaultEncodingId, new Argon2PasswordEncoder(16, 32, 8, 1 << 16, 4));
     return new DelegatingPasswordEncoder(defaultEncodingId, encoders);
   }
+
+  @Bean
+  public DelegatingSecurityContextRepository delegatingSecurityContextRepository() {
+    return new DelegatingSecurityContextRepository(
+        new RequestAttributeSecurityContextRepository(),
+        new HttpSessionSecurityContextRepository());
+  }
+
 }

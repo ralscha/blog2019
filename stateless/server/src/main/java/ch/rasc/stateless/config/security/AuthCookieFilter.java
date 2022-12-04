@@ -6,21 +6,22 @@ import static ch.rasc.stateless.db.tables.AppUser.APP_USER;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-
 import org.jooq.DSLContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.web.filter.GenericFilterBean;
 
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
 
 import ch.rasc.stateless.db.tables.records.AppUserRecord;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.ServletResponse;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 public class AuthCookieFilter extends GenericFilterBean {
 
@@ -28,10 +29,14 @@ public class AuthCookieFilter extends GenericFilterBean {
 
   private final DSLContext dsl;
 
+  private final SecurityContextRepository securityContextRepository;
+
   private final Cache<String, AppUserDetail> userDetailsCache;
 
-  public AuthCookieFilter(DSLContext dsl) {
+  public AuthCookieFilter(DSLContext dsl,
+      SecurityContextRepository securityContextRepository) {
     this.dsl = dsl;
+    this.securityContextRepository = securityContextRepository;
 
     this.userDetailsCache = Caffeine.newBuilder().expireAfterAccess(1, TimeUnit.MINUTES)
         .maximumSize(1_000).build();
@@ -58,19 +63,23 @@ public class AuthCookieFilter extends GenericFilterBean {
       });
 
       if (userDetails != null && userDetails.isEnabled()) {
-        SecurityContextHolder.getContext().setAuthentication(new UserAuthentication(userDetails));
+        SecurityContextHolder.getContext()
+            .setAuthentication(new UserAuthentication(userDetails));
+        this.securityContextRepository.saveContext(SecurityContextHolder.getContext(),
+            httpServletRequest, (HttpServletResponse) servletResponse);
       }
     }
 
     filterChain.doFilter(servletRequest, servletResponse);
   }
 
-  public static String extractAuthenticationCookie(HttpServletRequest httpServletRequest) {
+  public static String extractAuthenticationCookie(
+      HttpServletRequest httpServletRequest) {
     String sessionId = null;
     Cookie[] cookies = httpServletRequest.getCookies();
     if (cookies != null) {
       for (Cookie cookie : cookies) {
-        if (cookie.getName().equals(AuthCookieFilter.COOKIE_NAME)) {
+        if (AuthCookieFilter.COOKIE_NAME.equals(cookie.getName())) {
           sessionId = cookie.getValue();
           break;
         }

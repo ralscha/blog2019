@@ -66,13 +66,14 @@ public class AuthController {
         AppSessionRecord record = this.dsl.newRecord(APP_SESSION);
         record.setId(sessionId);
         record.setAppUserId(appUserRecord.getId());
-        record.setValidUntil(LocalDateTime.now().plus(this.appProperties.getCookieMaxAge()));
+        record.setValidUntil(
+            LocalDateTime.now().plus(this.appProperties.getCookieMaxAge()));
         record.store();
 
         ResponseCookie cookie = ResponseCookie
             .from(AuthCookieFilter.COOKIE_NAME, sessionId)
-            .maxAge(this.appProperties.getCookieMaxAge()).sameSite("Strict")
-            .path("/").httpOnly(true).secure(this.appProperties.isSecureCookie()).build();
+            .maxAge(this.appProperties.getCookieMaxAge()).sameSite("Strict").path("/")
+            .httpOnly(true).secure(this.appProperties.isSecureCookie()).build();
 
         return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, cookie.toString())
             .body(appUserRecord.getAuthority());

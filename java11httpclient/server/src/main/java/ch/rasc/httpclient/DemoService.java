@@ -10,26 +10,26 @@ import org.springframework.web.socket.WebSocketSession;
 @Service
 public class DemoService {
 
-	private final DemoWsHandler wsHandler;
+  private final DemoWsHandler wsHandler;
 
-	private int counter;
+  private int counter;
 
-	public DemoService(DemoWsHandler wsHandler) {
-		this.wsHandler = wsHandler;
-		this.counter = 0;
-	}
+  public DemoService(DemoWsHandler wsHandler) {
+    this.wsHandler = wsHandler;
+    this.counter = 0;
+  }
 
-	@Scheduled(fixedDelay = 5_000L)
-	public void send() {
-		this.counter++;
-		for (WebSocketSession session : this.wsHandler.getSessions().values()) {
-			try {
-				session.sendMessage(new TextMessage("from server: " + this.counter));
-			}
-			catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-	}
+  @Scheduled(fixedDelay = 5_000L)
+  public void send() {
+    this.counter++;
+    for (WebSocketSession session : this.wsHandler.getSessions().values()) {
+      try {
+        session.sendMessage(new TextMessage("from server: " + this.counter));
+      }
+      catch (IOException e) {
+        e.printStackTrace();
+      }
+    }
+  }
 
 }
