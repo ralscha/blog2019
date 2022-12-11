@@ -81,7 +81,6 @@ export class HomePage implements AfterViewInit {
       }
     });
 
-    await worker.load();
     await worker.loadLanguage(this.language);
     await worker.initialize(this.language);
 
