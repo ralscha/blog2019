@@ -13,7 +13,7 @@
 <script>
     const exampleImage = 'https://tesseract.projectnaptha.com/img/eng_bw.png';
 
-    const worker = Tesseract.createWorker({
+    const worker = await Tesseract.createWorker({
       logger: m => console.log(m)
     });
     Tesseract.setLogging(true);
