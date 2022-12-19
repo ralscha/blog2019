@@ -15,12 +15,12 @@
     <dependency>
       <groupId>org.hibernate</groupId>
       <artifactId>hibernate-core</artifactId>
-      <version>6.1.5.Final</version>
+      <version>6.1.6.Final</version>
     </dependency>
     <dependency>
       <groupId>org.hibernate</groupId>
       <artifactId>hibernate-envers</artifactId>
-      <version>6.1.5.Final</version>
+      <version>6.1.6.Final</version>
     </dependency>
     <dependency>
       <groupId>org.glassfish.jaxb</groupId>
