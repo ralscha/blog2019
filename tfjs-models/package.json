@@ -30,7 +30,7 @@
     "zone.js": "0.12.0"
   },
   "devDependencies": {
-    "@angular-builders/custom-webpack": "14.1.0",
+    "@angular-builders/custom-webpack": "15.0.0",
     "@angular-devkit/build-angular": "15.0.4",
     "@angular-eslint/builder": "15.1.0",
     "@angular-eslint/eslint-plugin": "15.1.0",
@@ -40,8 +40,8 @@
     "@angular/cli": "15.0.4",
     "@angular/compiler-cli": "15.0.4",
     "@ionic/angular-toolkit": "7.0.0",
-    "@typescript-eslint/eslint-plugin": "5.46.1",
-    "@typescript-eslint/parser": "5.46.1",
+    "@typescript-eslint/eslint-plugin": "5.47.0",
+    "@typescript-eslint/parser": "5.47.0",
     "bread-compressor-cli": "1.1.0",
     "eslint": "8.30.0",
     "local-web-server": "5.2.1",
