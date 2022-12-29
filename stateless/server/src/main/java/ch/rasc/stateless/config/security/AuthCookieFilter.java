@@ -8,7 +8,6 @@ import java.util.concurrent.TimeUnit;
 
 import org.jooq.DSLContext;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.web.filter.GenericFilterBean;
 
 import com.github.benmanes.caffeine.cache.Cache;
@@ -21,7 +20,6 @@ import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 
 public class AuthCookieFilter extends GenericFilterBean {
 
@@ -29,14 +27,10 @@ public class AuthCookieFilter extends GenericFilterBean {
 
   private final DSLContext dsl;
 
-  private final SecurityContextRepository securityContextRepository;
-
   private final Cache<String, AppUserDetail> userDetailsCache;
 
-  public AuthCookieFilter(DSLContext dsl,
-      SecurityContextRepository securityContextRepository) {
+  public AuthCookieFilter(DSLContext dsl) {
     this.dsl = dsl;
-    this.securityContextRepository = securityContextRepository;
 
     this.userDetailsCache = Caffeine.newBuilder().expireAfterAccess(1, TimeUnit.MINUTES)
         .maximumSize(1_000).build();
@@ -65,8 +59,6 @@ public class AuthCookieFilter extends GenericFilterBean {
       if (userDetails != null && userDetails.isEnabled()) {
         SecurityContextHolder.getContext()
             .setAuthentication(new UserAuthentication(userDetails));
-        this.securityContextRepository.saveContext(SecurityContextHolder.getContext(),
-            httpServletRequest, (HttpServletResponse) servletResponse);
       }
     }
 

@@ -20,7 +20,6 @@ import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.logout.HeaderWriterLogoutHandler;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.security.web.context.SecurityContextHolderFilter;
-import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.security.web.header.writers.ClearSiteDataHeaderWriter;
 import org.springframework.security.web.header.writers.ClearSiteDataHeaderWriter.Directive;
 
@@ -35,12 +34,8 @@ public class SecurityConfig {
 
   private final CustomLogoutSuccessHandler logoutSuccessHandler;
 
-  private final SecurityContextRepository securityContextRepository;
-
-  public SecurityConfig(DSLContext dsl,
-      SecurityContextRepository securityContextRepository) {
-    this.securityContextRepository = securityContextRepository;
-    this.authCookieFilter = new AuthCookieFilter(dsl, securityContextRepository);
+  public SecurityConfig(DSLContext dsl) {
+    this.authCookieFilter = new AuthCookieFilter(dsl);
     this.logoutSuccessHandler = new CustomLogoutSuccessHandler(dsl);
   }
 
@@ -55,8 +50,6 @@ public class SecurityConfig {
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     http.sessionManagement(
         cust -> cust.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-        .securityContext(securityContext -> securityContext
-            .securityContextRepository(this.securityContextRepository))
         .headers(cust -> cust.contentSecurityPolicy(
             "script-src 'self'; object-src 'none'; base-uri 'self'"))
         .csrf(CsrfConfigurer::disable).logout(cust -> {
