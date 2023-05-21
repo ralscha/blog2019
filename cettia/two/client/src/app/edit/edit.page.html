@@ -17,12 +17,10 @@
 
   <ion-list>
     <ion-item>
-      <ion-label position="stacked">Title</ion-label>
-      <ion-input [(ngModel)]="todo!.title" type="text"></ion-input>
+      <ion-input [(ngModel)]="todo!.title" label="Title" labelPlacement="stacked" type="text"></ion-input>
     </ion-item>
     <ion-item>
-      <ion-label position="stacked">Completed</ion-label>
-      <ion-checkbox [(ngModel)]="todo!.completed"></ion-checkbox>
+      <ion-checkbox [(ngModel)]="todo!.completed" labelPlacement="stacked">Completed</ion-checkbox>
     </ion-item>
   </ion-list>
 

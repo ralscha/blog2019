@@ -1,4 +1,4 @@
-import {NgModule} from '@angular/core';
+import {inject, NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 import {RouteReuseStrategy, RouterModule, Routes} from '@angular/router';
 import {IonicModule, IonicRouteStrategy} from '@ionic/angular';
@@ -19,7 +19,7 @@ const routes: Routes = [
   {
     path: 'home',
     component: HomePage,
-    canActivate: [AuthGuard]
+    canActivate: [() => inject(AuthGuard).canActivate()]
   },
   {
     path: 'login',
@@ -32,17 +32,17 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    declarations: [AppComponent, HomePage, LoginPage],
-    imports: [BrowserModule,
-        CommonModule,
-        HttpClientModule,
-        FormsModule,
-        IonicModule.forRoot(),
-        RouterModule.forRoot(routes, { useHash: true })],
-    providers: [
-        { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
-    ],
-    bootstrap: [AppComponent]
+  declarations: [AppComponent, HomePage, LoginPage],
+  imports: [BrowserModule,
+    CommonModule,
+    HttpClientModule,
+    FormsModule,
+    IonicModule.forRoot(),
+    RouterModule.forRoot(routes, {useHash: true})],
+  providers: [
+    {provide: RouteReuseStrategy, useClass: IonicRouteStrategy}
+  ],
+  bootstrap: [AppComponent]
 })
 export class AppModule {
 }

@@ -4,8 +4,7 @@ import {IonicModule} from '@ionic/angular';
 import {FormsModule} from '@angular/forms';
 import {RouterModule} from '@angular/router';
 import {HomePage} from './home.page';
-import {MatLegacyTableModule as MatTableModule} from '@angular/material/legacy-table';
-import {NgProgressModule} from '@ngx-progressbar/core';
+import {MatTableModule} from '@angular/material/table';
 
 @NgModule({
   imports: [
@@ -13,7 +12,6 @@ import {NgProgressModule} from '@ngx-progressbar/core';
     FormsModule,
     IonicModule,
     MatTableModule,
-    NgProgressModule,
     RouterModule.forChild([
       {
         path: '',

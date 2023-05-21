@@ -1,6 +1,17 @@
-import Papa from 'papaparse';
+import {parse} from 'papaparse';
 import {Earthquake, EarthquakeDb} from './earthquake-db';
 import * as Comlink from 'comlink';
+
+type EarthquakeRow = {
+  id: string;
+  time: string;
+  place: string;
+  mag: string;
+  depth: string;
+  latitude: string;
+  longitude: string
+};
+
 
 class EarthquakesLoader {
   private db: EarthquakeDb;
@@ -12,7 +23,7 @@ class EarthquakesLoader {
   async load(url: string): Promise<void> {
     const response = await fetch(url);
     const text = await response.text();
-    const data = Papa.parse(text, {header: true});
+    const data = parse<EarthquakeRow>(text, {header: true});
 
     const earthquakes: Earthquake[] = [];
 

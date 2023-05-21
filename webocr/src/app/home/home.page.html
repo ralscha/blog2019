@@ -11,11 +11,8 @@
   </ion-toolbar>
 </ion-header>
 
-<ng-progress [fixed]="false" [max]="100" [meteor]="false" [min]="0" [thick]="true" color="green"></ng-progress>
-
 <ion-item>
-  <ion-label position="stacked">Language</ion-label>
-  <ion-select [(ngModel)]="language">
+  <ion-select [(ngModel)]="language" label="Language" labelPlacement="stacked">
     <ion-select-option value='afr'>Afrikaans</ion-select-option>
     <ion-select-option value='amh'>Amharic</ion-select-option>
     <ion-select-option value='ara'>Arabic</ion-select-option>

@@ -6,7 +6,7 @@
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
-    <version>3.0.6</version>
+    <version>3.1.0</version>
     <relativePath />
   </parent>
   <groupId>ch.rasc</groupId>
@@ -27,7 +27,7 @@
 	<dependency>
 	    <groupId>com.bucket4j</groupId>
 	    <artifactId>bucket4j-core</artifactId>
-	    <version>8.2.0</version>
+	    <version>8.3.0</version>
 	</dependency>
   </dependencies>
 

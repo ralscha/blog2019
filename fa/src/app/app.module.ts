@@ -43,18 +43,18 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    declarations: [AppComponent, HomePage],
-    imports: [BrowserModule,
-        FontAwesomeModule,
-        CommonModule,
-        HttpClientModule,
-        FormsModule,
-        IonicModule.forRoot(),
-        RouterModule.forRoot(routes, { useHash: true })],
-    providers: [
-        { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
-    ],
-    bootstrap: [AppComponent]
+  declarations: [AppComponent, HomePage],
+  imports: [BrowserModule,
+    FontAwesomeModule,
+    CommonModule,
+    HttpClientModule,
+    FormsModule,
+    IonicModule.forRoot(),
+    RouterModule.forRoot(routes, {useHash: true})],
+  providers: [
+    {provide: RouteReuseStrategy, useClass: IonicRouteStrategy}
+  ],
+  bootstrap: [AppComponent]
 })
 export class AppModule {
   constructor(library: FaIconLibrary) {

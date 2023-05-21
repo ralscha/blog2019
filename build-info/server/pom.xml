@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.0.6</version>
+		<version>3.1.0</version>
 		<relativePath />
 	</parent>
 	<groupId>ch.rasc</groupId>
@@ -43,10 +43,10 @@
 					</execution>
 				</executions>
 			</plugin>
-			<plugin>
-				<groupId>pl.project13.maven</groupId>
-				<artifactId>git-commit-id-plugin</artifactId>
-			</plugin>
+	        <plugin>
+	            <groupId>io.github.git-commit-id</groupId>
+	            <artifactId>git-commit-id-maven-plugin</artifactId>
+	        </plugin>
 		</plugins>
 	</build>
 

@@ -76,6 +76,7 @@ export class SpeechPage implements OnInit, OnDestroy {
       // @ts-ignore
       const ix: number = result.scores.reduce((bestIndexSoFar: number, currentValue: number, currentIndex: number) => {
         if (this.whitelistIndex.indexOf(currentIndex) !== -1) {
+          // @ts-ignore
           return currentValue > result.scores[bestIndexSoFar] ? currentIndex : bestIndexSoFar;
         }
         return bestIndexSoFar;
@@ -227,7 +228,7 @@ export class SpeechPage implements OnInit, OnDestroy {
       y: Math.floor((Math.random() * 30) + 1)
     };
 
-    for (let i = 0; i > this.snake.length; i++) {
+    for (let i = 0; i < this.snake.length; i++) {
       const snakeX = this.snake[i].x;
       const snakeY = this.snake[i].y;
 

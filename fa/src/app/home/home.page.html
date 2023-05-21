@@ -44,12 +44,12 @@
     <fa-icon [icon]="['fas', 'swimmer']" flip="both" size="3x"></fa-icon>
   </div>
   <div>
-    <fa-icon [icon]="['fas', 'asterisk']" [spin]="true" size="6x"></fa-icon>
-    <fa-icon [icon]="['fas', 'cog']" [pulse]="true" size="6x"></fa-icon>
+    <fa-icon [icon]="['fas', 'asterisk']" animation="spin" size="6x"></fa-icon>
+    <fa-icon [icon]="['fas', 'cog']" animation="spin-pulse" size="6x"></fa-icon>
   </div>
 
   <div>
-    <fa-icon [icon]="['fas', 'sync']" [spin]="syncRunning" size="6x"></fa-icon>
+    <fa-icon [animation]="syncRunning ? 'spin' : undefined" [icon]="['fas', 'sync']" size="6x"></fa-icon>
     <ion-button (click)="syncRunning = true" [disabled]="syncRunning">Start</ion-button>
     <ion-button (click)="syncRunning = false" [disabled]="!syncRunning">Stop</ion-button>
   </div>
@@ -147,8 +147,9 @@
   </div>
 
   <div>
-    <fa-icon [icon]="['fas', 'bell']" [styles]="dynamicStyle()" size="5x"></fa-icon>
-    <fa-icon [icon]="['far', 'bell']" [styles]="{'color': color, 'stroke': stroke, 'stroke-width': strokeWidth + 'px', 'opacity': opacity}"
+    <fa-icon [icon]="['fas', 'bell']" [style]="dynamicStyle()" size="5x"></fa-icon>
+    <fa-icon [icon]="['far', 'bell']"
+             [style]="{'color': color, 'stroke': stroke, 'stroke-width': strokeWidth + 'px', 'opacity': opacity}"
              size="5x"></fa-icon>
   </div>
 

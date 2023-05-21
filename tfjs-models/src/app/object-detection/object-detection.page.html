@@ -8,8 +8,8 @@
 
 <ion-content #content>
   <ion-item>
-    <ion-label position="stacked">Base Model</ion-label>
-    <ion-select (ionChange)="baseModelChange($event)" name="baseModel" value="lite_mobilenet_v2">
+    <ion-select (ionChange)="baseModelChange($event)" label="Base Model" labelPlacement="stacked"
+                name="baseModel" value="lite_mobilenet_v2">
       <ion-select-option value="lite_mobilenet_v2">Lite Mobilenet V2</ion-select-option>
       <ion-select-option value="mobilenet_v2">Mobilenet v2</ion-select-option>
       <ion-select-option value="mobilenet_v1">Mobilenet v1</ion-select-option>

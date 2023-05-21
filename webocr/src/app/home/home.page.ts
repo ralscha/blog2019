@@ -1,6 +1,5 @@
 import {AfterViewInit, ChangeDetectorRef, Component, ElementRef, ViewChild} from '@angular/core';
 import {createWorker, Line, Page, Symbol as TesseractSymbol, Word} from 'tesseract.js';
-import {NgProgressComponent} from '@ngx-progressbar/core';
 
 @Component({
   selector: 'app-home',
@@ -12,7 +11,6 @@ export class HomePage implements AfterViewInit {
   @ViewChild('fileSelector') fileInput!: ElementRef;
   @ViewChild('canvas') canvas!: ElementRef;
   @ViewChild('canvasContainer') canvasContainer!: ElementRef;
-  @ViewChild(NgProgressComponent) progressBar!: NgProgressComponent;
 
   result: Page | null = null;
   words: Word[] | null = null;
@@ -76,15 +74,12 @@ export class HomePage implements AfterViewInit {
       logger: progress => {
         this.progressStatus = progress.status;
         this.progress = progress.progress;
-        this.progressBar.set(progress.progress * 100);
         this.changeDetectionRef.markForCheck();
       }
     });
 
     await worker.loadLanguage(this.language);
     await worker.initialize(this.language);
-
-    this.progressBar.set(0);
 
     try {
       if (this.selectedFile) {
@@ -100,7 +95,6 @@ export class HomePage implements AfterViewInit {
       this.progressStatus = "" + e;
       this.progress = null;
     } finally {
-      this.progressBar.complete();
       this.progressStatus = null;
       this.progress = null;
     }

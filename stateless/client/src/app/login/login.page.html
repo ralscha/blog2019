@@ -6,15 +6,17 @@
 
 <ion-content class="ion-padding">
   <form #form="ngForm" (ngSubmit)="login(form.value)" novalidate>
-    <ion-list>
+    <ion-list lines="none">
       <ion-item>
-        <ion-label position="stacked">Email</ion-label>
-        <ion-input [required]="true" name="email" ngModel type="text"></ion-input>
+        <ion-input [required]="true" errorText="Email is required" label="Email" labelPlacement="stacked" name="email"
+                   ngModel
+                   type="text"></ion-input>
       </ion-item>
 
       <ion-item>
-        <ion-label position="stacked">Password</ion-label>
-        <ion-input [required]="true" name="password" ngModel type="password"></ion-input>
+        <ion-input [required]="true" errorText="Password is required" label="Password" labelPlacement="stacked"
+                   name="password" ngModel
+                   type="password"></ion-input>
       </ion-item>
 
       <ion-button [disabled]="!form.valid" class="ion-margin-top" color="primary" expand="block" type="submit">Login
