@@ -8,7 +8,7 @@
     "watch": "parcel watch src/index.html"
   },
   "devDependencies": {
-    "parcel": "2.8.3"
+    "parcel": "2.9.1"
   },
   "dependencies": {
     "ky": "0.33.3"
