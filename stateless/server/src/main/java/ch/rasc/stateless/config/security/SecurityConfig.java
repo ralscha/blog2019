@@ -50,8 +50,8 @@ public class SecurityConfig {
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     http.sessionManagement(
         cust -> cust.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-        .headers(cust -> cust.contentSecurityPolicy(
-            "script-src 'self'; object-src 'none'; base-uri 'self'"))
+        .headers(cust -> cust.contentSecurityPolicy(customizer -> customizer
+            .policyDirectives("script-src 'self'; object-src 'none'; base-uri 'self'")))
         .csrf(CsrfConfigurer::disable).logout(cust -> {
           cust.addLogoutHandler(new HeaderWriterLogoutHandler(
               new ClearSiteDataHeaderWriter(Directive.ALL)));

@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -25,22 +26,16 @@ public class SecurityConfig {
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
   // @formatter:off
 	  http
-		.csrf().disable()
-	  .cors()
-  	  .and()
-  	.formLogin()  	
-  	  .successHandler((request, response, authentication) -> response.setStatus(HttpServletResponse.SC_OK))
+		.csrf(customizer->customizer.disable())
+	  .cors(Customizer.withDefaults())
+  	.formLogin(customizer-> customizer.successHandler((request, response, authentication) -> response.setStatus(HttpServletResponse.SC_OK))
   	  .failureHandler((request, response, exception) -> response.sendError(HttpServletResponse.SC_UNAUTHORIZED))
-  	  .permitAll()
-  	  .and()
-  	.logout()
-  	  .logoutSuccessHandler(new HttpStatusReturningLogoutSuccessHandler())
-  	  .deleteCookies("JSESSIONID")
-  	  .and()
-		.authorizeHttpRequests().anyRequest().authenticated()
-      .and()
-    .exceptionHandling()
-      .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED));
+  	  .permitAll())
+  	.logout(customizer ->
+  	  customizer.logoutSuccessHandler(new HttpStatusReturningLogoutSuccessHandler())
+  	  .deleteCookies("JSESSIONID"))
+		.authorizeHttpRequests(customizer -> customizer.anyRequest().authenticated())
+    .exceptionHandling(customizer -> customizer.authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)));
 	  return http.build();
     // @formatter:on
   }
