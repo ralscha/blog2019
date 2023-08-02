@@ -31,13 +31,16 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.reactive.function.client.support.WebClientAdapter;
+import org.springframework.web.service.invoker.HttpServiceProxyFactory;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import ch.rasc.webpush.dto.Notification;
+import ch.rasc.webpush.ChuckNorrisJokeService.Joke;
 import ch.rasc.webpush.dto.PushMessage;
 import ch.rasc.webpush.dto.Subscription;
 import ch.rasc.webpush.dto.SubscriptionEndpoint;
@@ -51,8 +54,6 @@ public class PushController {
 
   private final Map<String, Subscription> subscriptions = new ConcurrentHashMap<>();
 
-  private final Map<String, Subscription> subscriptionsAngular = new ConcurrentHashMap<>();
-
   private String lastNumbersAPIFact = "";
 
   private final HttpClient httpClient;
@@ -60,6 +61,8 @@ public class PushController {
   private final Algorithm jwtAlgorithm;
 
   private final ObjectMapper objectMapper;
+
+  private final ChuckNorrisJokeService service;
 
   public PushController(ServerKeys serverKeys, CryptoService cryptoService,
       ObjectMapper objectMapper) {
@@ -70,16 +73,16 @@ public class PushController {
 
     this.jwtAlgorithm = Algorithm.ECDSA256(this.serverKeys.getPublicKey(),
         this.serverKeys.getPrivateKey());
+
+    WebClient client = WebClient.builder().baseUrl("https://api.chucknorris.io").build();
+    HttpServiceProxyFactory factory = HttpServiceProxyFactory
+        .builder(WebClientAdapter.forClient(client)).build();
+    this.service = factory.createClient(ChuckNorrisJokeService.class);
   }
 
   @GetMapping(path = "/publicSigningKey", produces = "application/octet-stream")
   public byte[] publicSigningKey() {
     return this.serverKeys.getPublicKeyUncompressed();
-  }
-
-  @GetMapping(path = "/publicSigningKeyBase64")
-  public String publicSigningKeyBase64() {
-    return this.serverKeys.getPublicKeyBase64();
   }
 
   @PostMapping("/subscribe")
@@ -88,33 +91,14 @@ public class PushController {
     this.subscriptions.put(subscription.getEndpoint(), subscription);
   }
 
-  @PostMapping("/subscribeAngular")
-  @ResponseStatus(HttpStatus.CREATED)
-  public void subscribeAngular(@RequestBody Subscription subscription) {
-    System.out.println("subscribe: " + subscription);
-    this.subscriptionsAngular.put(subscription.getEndpoint(), subscription);
-  }
-
   @PostMapping("/unsubscribe")
   public void unsubscribe(@RequestBody SubscriptionEndpoint subscription) {
     this.subscriptions.remove(subscription.getEndpoint());
   }
 
-  @PostMapping("/unsubscribeAngular")
-  @ResponseStatus(HttpStatus.NO_CONTENT)
-  public void unsubscribeAngular(@RequestBody SubscriptionEndpoint subscription) {
-    System.out.println("unsubscribe: " + subscription);
-    this.subscriptionsAngular.remove(subscription.getEndpoint());
-  }
-
   @PostMapping("/isSubscribed")
   public boolean isSubscribed(@RequestBody SubscriptionEndpoint subscription) {
     return this.subscriptions.containsKey(subscription.getEndpoint());
-  }
-
-  @PostMapping("/isSubscribedAngular")
-  public boolean isSubscribedAngular(@RequestBody SubscriptionEndpoint subscription) {
-    return this.subscriptionsAngular.containsKey(subscription.getEndpoint());
   }
 
   @GetMapping(path = "/lastNumbersAPIFact")
@@ -145,36 +129,17 @@ public class PushController {
 
   @Scheduled(fixedDelay = 30_000)
   public void chuckNorrisJoke() {
-    if (this.subscriptions.isEmpty() && this.subscriptionsAngular.isEmpty()) {
+    if (this.subscriptions.isEmpty()) {
       return;
     }
 
     try {
-      HttpResponse<String> response = this.httpClient.send(HttpRequest
-          .newBuilder(URI.create("https://api.icndb.com/jokes/random")).build(),
-          BodyHandlers.ofString());
-      if (response.statusCode() == 200) {
-        Map<String, Object> jokeJson = this.objectMapper.readValue(response.body(),
-            Map.class);
-
-        @SuppressWarnings("unchecked")
-        Map<String, Object> value = (Map<String, Object>) jokeJson.get("value");
-        int id = (int) value.get("id");
-        String joke = (String) value.get("joke");
-
-        sendPushMessageToAllSubscribers(this.subscriptions,
-            new PushMessage("Chuck Norris Joke: " + id, joke));
-
-        Notification notification = new Notification("Chuck Norris Joke: " + id);
-        notification.setBody(joke);
-        notification.setIcon("assets/chuck.png");
-
-        sendPushMessageToAllSubscribers(this.subscriptionsAngular,
-            Map.of("notification", notification));
-      }
+      Joke joke = this.service.getRandomJoke();
+      sendPushMessageToAllSubscribers(this.subscriptions,
+          new PushMessage("Chuck Norris Joke: " + joke.id(), joke.value()));
     }
-    catch (IOException | InterruptedException e) {
-      Application.logger.error("fetch chuck norris", e);
+    catch (IOException e) {
+      Application.logger.error("sending chuck norris joke failed", e);
     }
   }
 
