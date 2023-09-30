@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.7.12</version>
+		<version>2.7.15</version>
 		<relativePath/>
 	</parent>
 	<groupId>ch.rasc</groupId>
@@ -15,7 +15,7 @@
 	<description>Capacitor Upload Example</description>
 
 	<properties>
-		<java.version>17</java.version>
+		<java.version>21</java.version>
 	</properties>
 
 	<dependencies>
