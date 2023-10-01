@@ -59,17 +59,17 @@ export class HomePage implements AfterViewInit {
       this.image.src = URL.createObjectURL(this.selectedFile);
     }
 
-    /*
-    const worker = await createWorker({
+    /* download files from 3rd party server
+    const worker = await createWorker(this.language, 1, {
       logger: progress => {
         this.progressStatus = progress.status;
         this.progress = progress.progress;
-        this.progressBar.set(progress.progress * 100);
         this.changeDetectionRef.markForCheck();
       }
     });
      */
-    const worker = await createWorker(this.language, undefined, {
+
+    const worker = await createWorker(this.language, 1, {
       workerPath: 'tesseract5/worker.min.js',
       corePath: 'tesseract5/',
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
