@@ -40,6 +40,7 @@ export class HomePage implements AfterViewInit {
   }
 
   async onFileChange(event: Event): Promise<void> {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     this.selectedFile = (event.target as any).files[0];
 
     this.progressStatus = '';
@@ -68,18 +69,16 @@ export class HomePage implements AfterViewInit {
       }
     });
      */
-    const worker = await createWorker({
-      workerPath: 'tesseract-202/worker.min.js',
-      corePath: 'tesseract-202/tesseract-core.wasm.js',
-      logger: progress => {
+    const worker = await createWorker(this.language, undefined, {
+      workerPath: 'tesseract5/worker.min.js',
+      corePath: 'tesseract5/',
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      logger: (progress: any) => {
         this.progressStatus = progress.status;
         this.progress = progress.progress;
         this.changeDetectionRef.markForCheck();
       }
     });
-
-    await worker.loadLanguage(this.language);
-    await worker.initialize(this.language);
 
     try {
       if (this.selectedFile) {
@@ -101,6 +100,7 @@ export class HomePage implements AfterViewInit {
 
     // reset file input
     if (event.target) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       (event.target as any).value = null;
     }
   }

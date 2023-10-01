@@ -9,28 +9,28 @@
 </head>
 <body>
 
-<script src="https://cdn.jsdelivr.net/npm/tesseract.js@2.1.1/dist/tesseract.min.js"></script>
+<script src="https://unpkg.com/tesseract.js@5.0.0/dist/tesseract.min.js"></script>
 <script>
-    const exampleImage = 'https://tesseract.projectnaptha.com/img/eng_bw.png';
+  const exampleImage = 'https://tesseract.projectnaptha.com/img/eng_bw.png';
+  Tesseract.setLogging(true);
 
-    const worker = await Tesseract.createWorker({
-      logger: m => console.log(m)
-    });
-    Tesseract.setLogging(true);
-    work();
+  const workerPromise = Tesseract.createWorker("eng", 1, {
+    legacyCore: true,
+    legacyLang: true,
+    logger: m => console.log(m)
+  });
 
-    async function work() {
-      await worker.loadLanguage('eng');
-      await worker.initialize('eng');
+  workerPromise.then(worker => work(worker));
 
-      let result = await worker.detect(exampleImage);
-      console.log(result.data);
+  async function work(worker) {
+    let result = await worker.detect(exampleImage);
+    console.log(result.data);
 
-      result = await worker.recognize(exampleImage);
-      console.log(result.data);
+    result = await worker.recognize(exampleImage);
+    console.log(result.data);
 
-      await worker.terminate();
-    }
+    await worker.terminate();
+  }
 </script>
 </body>
 </html>

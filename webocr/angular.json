@@ -29,12 +29,12 @@
               {
                 "glob": "worker.min.js",
                 "input": "node_modules/tesseract.js/dist/",
-                "output": "./tesseract-202"
+                "output": "./tesseract5"
               },
               {
-                "glob": "tesseract-core.wasm.js",
+                "glob": "@(tesseract-core.wasm.js|tesseract-core-simd.wasm.js|tesseract-core-lstm.wasm.js|tesseract-core-simd-lstm.wasm.js)",
                 "input": "node_modules/tesseract.js-core/",
-                "output": "./tesseract-202"
+                "output": "./tesseract5"
               }
             ],
             "styles": [
@@ -49,7 +49,7 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "500kb",
+                  "maximumWarning": "650kb",
                   "maximumError": "1mb"
                 },
                 {
