@@ -24,7 +24,7 @@
     "@ionic/angular": "7.4.2",
     "ionicons": "7.1.2",
     "rxjs": "7.8.1",
-    "tesseract.js": "5.0.0",
+    "tesseract.js": "5.0.2",
     "tslib": "2.6.2",
     "zone.js": "0.13.1"
   },
@@ -38,7 +38,7 @@
     "@angular/cli": "16.2.4",
     "@angular/compiler-cli": "16.2.7",
     "@ionic/angular-toolkit": "10.0.0",
-    "@types/node": "20.8.0",
+    "@types/node": "20.8.2",
     "@typescript-eslint/eslint-plugin": "5.62.0",
     "@typescript-eslint/parser": "5.62.0",
     "bread-compressor-cli": "2.0.0",
