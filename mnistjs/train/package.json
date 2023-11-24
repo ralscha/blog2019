@@ -7,7 +7,7 @@
     "traintf": "node --max-old-space-size=4096 ./tfjs.js"
   },
   "dependencies": {
-    "@tensorflow/tfjs-node": "4.10.0",
+    "@tensorflow/tfjs-node": "4.13.0",
     "brain.js": "1.6.1"
   }
 }

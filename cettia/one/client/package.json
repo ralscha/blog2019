@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "devDependencies": {
-    "parcel": "2.10.2"
+    "parcel": "2.10.3"
   },
   "scripts": {
     "start": "parcel src/index.html",
@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "cettia-client": "1.1.0",
-    "core-js": "3.33.2",
+    "core-js": "3.33.3",
     "echarts": "5.4.3"
   }
 }
