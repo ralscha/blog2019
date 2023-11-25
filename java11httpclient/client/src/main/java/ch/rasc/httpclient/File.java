@@ -76,6 +76,7 @@ public class File {
   public static BodyPublisher ofMimeMultipartData(Map<Object, Object> data,
       String boundary) throws IOException {
     var byteArrays = new ArrayList<byte[]>();
+    byteArrays.add("\r\n".getBytes(StandardCharsets.UTF_8));
     byte[] separator = ("--" + boundary + "\r\nContent-Disposition: form-data; name=")
         .getBytes(StandardCharsets.UTF_8);
     for (Map.Entry<Object, Object> entry : data.entrySet()) {
