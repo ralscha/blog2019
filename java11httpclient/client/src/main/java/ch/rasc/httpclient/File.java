@@ -52,19 +52,19 @@ public class File {
 
     try (JsonReader jsonReader = Json.createReader(new StringReader(vtResponse.body()))) {
       JsonObject jobj = jsonReader.readObject();
-      String analysisId = jobj.getJsonObject("data").get("id").toString().replace("\"", "");
+      String analysisId = jobj.getJsonObject("data").get("id").toString().replace("\"",
+          "");
       URI uri = UrlBuilder
-          .fromString("https://www.virustotal.com/api/v3/analyses/" + analysisId)
-          .toUri();
+          .fromString("https://www.virustotal.com/api/v3/analyses/" + analysisId).toUri();
 
       HttpResponse<String> status = client.send(
           HttpRequest.newBuilder(uri).header("x-apikey", virusTotalApiKey).build(),
           BodyHandlers.ofString());
 
       System.out.println(status.body());
-      
+
       TimeUnit.MINUTES.sleep(2);
-      
+
       status = client.send(
           HttpRequest.newBuilder(uri).header("x-apikey", virusTotalApiKey).build(),
           BodyHandlers.ofString());
@@ -76,8 +76,7 @@ public class File {
   public static BodyPublisher ofMimeMultipartData(Map<Object, Object> data,
       String boundary) throws IOException {
     var byteArrays = new ArrayList<byte[]>();
-    byteArrays.add("\r\n".getBytes(StandardCharsets.UTF_8));
-    byte[] separator = ("--" + boundary + "\r\nContent-Disposition: form-data; name=")
+    byte[] separator = ("\r\n--" + boundary + "\r\nContent-Disposition: form-data; name=")
         .getBytes(StandardCharsets.UTF_8);
     for (Map.Entry<Object, Object> entry : data.entrySet()) {
       byteArrays.add(separator);
@@ -89,14 +88,13 @@ public class File {
             + "\"\r\nContent-Type: " + mimeType + "\r\n\r\n")
                 .getBytes(StandardCharsets.UTF_8));
         byteArrays.add(Files.readAllBytes(path));
-        byteArrays.add("\r\n".getBytes(StandardCharsets.UTF_8));
       }
       else {
-        byteArrays.add(("\"" + entry.getKey() + "\"\r\n\r\n" + entry.getValue() + "\r\n")
+        byteArrays.add(("\"" + entry.getKey() + "\"\r\n\r\n" + entry.getValue())
             .getBytes(StandardCharsets.UTF_8));
       }
     }
-    byteArrays.add(("--" + boundary + "--\r\n").getBytes(StandardCharsets.UTF_8));
+    byteArrays.add(("\r\n--" + boundary + "--\r\n").getBytes(StandardCharsets.UTF_8));
     return BodyPublishers.ofByteArrays(byteArrays);
   }
 
