@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {AuthService} from '../service/auth.service';
 import {NavController} from '@ionic/angular';
-import {HttpClient} from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import {Observable, of} from 'rxjs';
 import {catchError, concatMap, filter, map, take} from 'rxjs/operators';
 

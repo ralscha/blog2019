@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {BehaviorSubject, Observable, of} from 'rxjs';
-import {HttpClient, HttpParams} from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import {catchError, map, tap} from 'rxjs/operators';
 
 @Injectable({

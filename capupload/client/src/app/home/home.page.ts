@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {LoadingController, ToastController} from '@ionic/angular';
-import {HttpClient} from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import {Camera, CameraResultType, CameraSource} from '@capacitor/camera';
 import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
 import {environment} from '../../environments/environment';

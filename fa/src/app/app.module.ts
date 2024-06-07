@@ -7,7 +7,7 @@ import {HomePage} from './home/home.page';
 import {CommonModule} from '@angular/common';
 import {FaIconLibrary, FontAwesomeModule} from '@fortawesome/angular-fontawesome';
 import {FormsModule} from '@angular/forms';
-import {HttpClientModule} from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import {
   faAsterisk,
   faBan,
@@ -42,20 +42,16 @@ const routes: Routes = [
   {path: 'home', component: HomePage},
 ];
 
-@NgModule({
-  declarations: [AppComponent, HomePage],
-  imports: [BrowserModule,
-    FontAwesomeModule,
-    CommonModule,
-    HttpClientModule,
-    FormsModule,
-    IonicModule.forRoot(),
-    RouterModule.forRoot(routes, {useHash: true})],
-  providers: [
-    {provide: RouteReuseStrategy, useClass: IonicRouteStrategy}
-  ],
-  bootstrap: [AppComponent]
-})
+@NgModule({ declarations: [AppComponent, HomePage],
+    bootstrap: [AppComponent], imports: [BrowserModule,
+        FontAwesomeModule,
+        CommonModule,
+        FormsModule,
+        IonicModule.forRoot(),
+        RouterModule.forRoot(routes, { useHash: true })], providers: [
+        { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+        provideHttpClient(withInterceptorsFromDi())
+    ] })
 export class AppModule {
   constructor(library: FaIconLibrary) {
     // library.addIconPacks(fas);

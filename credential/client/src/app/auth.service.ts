@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {from, Observable, of} from 'rxjs';
 import {environment} from '../environments/environment';
-import {HttpClient, HttpParams} from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import {catchError, finalize, map, mapTo, switchMap, tap} from 'rxjs/operators';
 import {LoadingController, NavController, ToastController} from '@ionic/angular';
 
@@ -76,7 +76,8 @@ export class AuthService {
       password,
       name: username
     });
-    return navigator.credentials.store(cred);
+    navigator.credentials.store(cred);
+	return cred;
   }
 
   private async showError(): Promise<void> {

@@ -5,25 +5,19 @@ import {AppComponent} from './app.component';
 import {IonicModule, IonicRouteStrategy} from '@ionic/angular';
 import {RouteReuseStrategy} from '@angular/router';
 import {HomePage} from './home/home.page';
-import {HttpClientModule} from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import {FormsModule} from '@angular/forms';
 
-@NgModule({
-  declarations: [
-    AppComponent,
-    HomePage
-  ],
-  imports: [
-    BrowserModule,
-    HttpClientModule,
-    FormsModule,
-    IonicModule.forRoot(),
-    AppRoutingModule
-  ],
-  providers: [
-    {provide: RouteReuseStrategy, useClass: IonicRouteStrategy}
-  ],
-  bootstrap: [AppComponent]
-})
+@NgModule({ declarations: [
+        AppComponent,
+        HomePage
+    ],
+    bootstrap: [AppComponent], imports: [BrowserModule,
+        FormsModule,
+        IonicModule.forRoot(),
+        AppRoutingModule], providers: [
+        { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+        provideHttpClient(withInterceptorsFromDi())
+    ] })
 export class AppModule {
 }
