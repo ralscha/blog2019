@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.3.4</version>
+		<version>3.3.5</version>
 		<relativePath />
 	</parent>
 	<groupId>ch.rasc</groupId>
@@ -36,7 +36,7 @@
 		<dependency>
 			<groupId>com.google.protobuf</groupId>
 			<artifactId>protobuf-java</artifactId>
-			<version>4.28.2</version>
+			<version>4.28.3</version>
 		</dependency>
 	</dependencies>
 
@@ -58,7 +58,7 @@
 							<goal>run</goal>
 						</goals>
 						<configuration>
-							<protocVersion>4.28.2</protocVersion>
+							<protocVersion>4.28.3</protocVersion>
 							<inputDirectories>
 								<include>src/main/protobuf</include>
 							</inputDirectories>
