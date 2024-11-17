@@ -3,9 +3,6 @@ package ch.rasc.ratelimit;
 import java.time.Duration;
 import java.util.concurrent.TimeUnit;
 
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.web.servlet.HandlerInterceptor;
 
@@ -15,8 +12,9 @@ import io.github.bucket4j.Bandwidth;
 import io.github.bucket4j.Bucket;
 import io.github.bucket4j.BucketConfiguration;
 import io.github.bucket4j.ConsumptionProbe;
-import io.github.bucket4j.Refill;
 import io.github.bucket4j.grid.hazelcast.HazelcastProxyManager;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 public class PerClientHazelcastRateLimitInterceptor implements HandlerInterceptor {
 
@@ -39,22 +37,22 @@ public class PerClientHazelcastRateLimitInterceptor implements HandlerIntercepto
     BucketConfiguration configuration;
 
     if (apiKey.startsWith("1")) {
-      configuration = BucketConfiguration.builder()
-          .addLimit(Bandwidth.classic(100, Refill.intervally(100, Duration.ofMinutes(1))))
-          .build();
+      Bandwidth limit = Bandwidth.builder().capacity(100)
+          .refillIntervally(100, Duration.ofMinutes(1)).build();
+      configuration = BucketConfiguration.builder().addLimit(limit).build();
     }
     else if (!apiKey.equals("free")) {
-      configuration = BucketConfiguration.builder()
-          .addLimit(Bandwidth.classic(50, Refill.intervally(50, Duration.ofMinutes(1))))
-          .build();
+      Bandwidth limit = Bandwidth.builder().capacity(50)
+          .refillIntervally(50, Duration.ofMinutes(1)).build();
+      configuration = BucketConfiguration.builder().addLimit(limit).build();
     }
     else {
-      configuration = BucketConfiguration.builder()
-          .addLimit(Bandwidth.classic(10, Refill.intervally(10, Duration.ofMinutes(1))))
-          .build();
+      Bandwidth limit = Bandwidth.builder().capacity(10)
+          .refillIntervally(10, Duration.ofMinutes(1)).build();
+      configuration = BucketConfiguration.builder().addLimit(limit).build();
     }
 
-    Bucket requestBucket = this.proxyManager.builder().build(apiKey, configuration);
+    Bucket requestBucket = this.proxyManager.builder().build(apiKey, () -> configuration);
 
     ConsumptionProbe probe = requestBucket.tryConsumeAndReturnRemaining(1);
     if (probe.isConsumed()) {

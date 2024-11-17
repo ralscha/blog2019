@@ -7,12 +7,6 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpRequest.Builder;
 import java.net.http.HttpResponse;
 import java.net.http.HttpResponse.BodyHandlers;
-import java.time.Duration;
-
-import io.github.bucket4j.Bandwidth;
-import io.github.bucket4j.BlockingBucket;
-import io.github.bucket4j.Bucket;
-import io.github.bucket4j.Refill;
 
 public class Client {
 
@@ -21,7 +15,7 @@ public class Client {
 
   private final static HttpClient httpClient = HttpClient.newHttpClient();
 
-  public static void main(String[] args) throws InterruptedException {
+  public static void main(String[] args) {
     top1Client();
     // topNClient();
     // lastClient();
@@ -44,18 +38,6 @@ public class Client {
     }
     catch (IOException | InterruptedException e) {
       e.printStackTrace();
-    }
-  }
-
-  private static void bucketClient() throws InterruptedException {
-    Refill refill = Refill.greedy(10, Duration.ofMinutes(1));
-    Bandwidth limit = Bandwidth.classic(10, refill).withInitialTokens(1);
-    Bucket bucket = Bucket.builder().addLimit(limit).build();
-    BlockingBucket blockingBucket = bucket.asBlocking();
-
-    for (int i = 0; i < 10; i++) {
-      blockingBucket.consume(1);
-      get(SERVER_1 + "/top/3");
     }
   }
 

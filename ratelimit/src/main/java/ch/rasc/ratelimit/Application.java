@@ -14,7 +14,6 @@ import com.hazelcast.map.IMap;
 import io.github.bucket4j.Bandwidth;
 import io.github.bucket4j.Bucket;
 import io.github.bucket4j.BucketConfiguration;
-import io.github.bucket4j.Refill;
 import io.github.bucket4j.grid.hazelcast.HazelcastProxyManager;
 
 @SpringBootApplication
@@ -25,13 +24,13 @@ public class Application implements WebMvcConfigurer {
 
   @Override
   public void addInterceptors(InterceptorRegistry registry) {
-    Refill refill = Refill.greedy(10, Duration.ofMinutes(1));
-    Bandwidth limit = Bandwidth.classic(10, refill).withInitialTokens(1);
+    Bandwidth limit = Bandwidth.builder().capacity(10)
+        .refillGreedy(10, Duration.ofMinutes(1)).build();
     Bucket bucket = Bucket.builder().addLimit(limit).build();
     registry.addInterceptor(new RateLimitInterceptor(bucket, 1)).addPathPatterns("/last");
 
-    refill = Refill.intervally(3, Duration.ofMinutes(1));
-    limit = Bandwidth.classic(3, refill);
+    limit = Bandwidth.builder().capacity(3).refillIntervally(3, Duration.ofMinutes(1))
+        .build();
     bucket = Bucket.builder().addLimit(limit).build();
     registry.addInterceptor(new RateLimitInterceptor(bucket, 1))
         .addPathPatterns("/place/*");
@@ -40,7 +39,8 @@ public class Application implements WebMvcConfigurer {
         .build();
     IMap<String, byte[]> map = this.hzInstance.getMap("bucket-map");
     HazelcastProxyManager<String> proxyManager = new HazelcastProxyManager<>(map);
-    Bucket hazelcastBucket = proxyManager.builder().build("rate-limit", configuration);
+    Bucket hazelcastBucket = proxyManager.builder().build("rate-limit",
+        () -> configuration);
 
     registry.addInterceptor(new RateLimitInterceptor(hazelcastBucket, 1))
         .addPathPatterns("/place/*");

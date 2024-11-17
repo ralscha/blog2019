@@ -3,9 +3,7 @@
  */
 package ch.rasc.ratelimit.db;
 
-
 import ch.rasc.ratelimit.db.tables.Earthquake;
-
 
 /**
  * Convenience access to all tables in the default schema.
@@ -13,8 +11,8 @@ import ch.rasc.ratelimit.db.tables.Earthquake;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Tables {
 
-    /**
-     * The table <code>EARTHQUAKE</code>.
-     */
-    public static final Earthquake EARTHQUAKE = Earthquake.EARTHQUAKE;
+  /**
+   * The table <code>EARTHQUAKE</code>.
+   */
+  public static final Earthquake EARTHQUAKE = Earthquake.EARTHQUAKE;
 }

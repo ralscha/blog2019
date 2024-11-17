@@ -7,15 +7,14 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import me.desair.tus.server.TusFileUploadService;
 import me.desair.tus.server.exception.TusException;
 import me.desair.tus.server.upload.UploadInfo;
@@ -52,7 +51,7 @@ public class UploadController {
     this.tusFileUploadService.process(servletRequest, servletResponse);
 
     String uploadURI = servletRequest.getRequestURI();
-    
+
     UploadInfo uploadInfo = null;
     try {
       uploadInfo = this.tusFileUploadService.getUploadInfo(uploadURI);
@@ -78,7 +77,6 @@ public class UploadController {
       }
     }
   }
-
 
   @Scheduled(fixedDelayString = "PT24H")
   private void cleanup() {

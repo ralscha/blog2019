@@ -5,24 +5,21 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import io.github.bucket4j.Bandwidth;
 import io.github.bucket4j.Bucket;
 import io.github.bucket4j.ConsumptionProbe;
-import io.github.bucket4j.Refill;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 public class PerClientRateLimitInterceptor implements HandlerInterceptor {
 
   private final Map<String, Bucket> buckets = new ConcurrentHashMap<>();
 
-  private final Bucket freeBucket = Bucket.builder()
-      .addLimit(Bandwidth.classic(10, Refill.intervally(10, Duration.ofMinutes(1))))
-      .build();
+  private final Bucket freeBucket = Bucket.builder().addLimit(Bandwidth.builder()
+      .capacity(10).refillIntervally(10, Duration.ofMinutes(1)).build()).build();
 
   @Override
   public boolean preHandle(HttpServletRequest request, HttpServletResponse response,
@@ -58,15 +55,13 @@ public class PerClientRateLimitInterceptor implements HandlerInterceptor {
   }
 
   private static Bucket standardBucket() {
-    return Bucket.builder()
-        .addLimit(Bandwidth.classic(50, Refill.intervally(50, Duration.ofMinutes(1))))
-        .build();
+    return Bucket.builder().addLimit(Bandwidth.builder().capacity(50)
+        .refillIntervally(50, Duration.ofMinutes(1)).build()).build();
   }
 
   private static Bucket premiumBucket() {
-    return Bucket.builder()
-        .addLimit(Bandwidth.classic(100, Refill.intervally(100, Duration.ofMinutes(1))))
-        .build();
+    return Bucket.builder().addLimit(Bandwidth.builder().capacity(100)
+        .refillIntervally(100, Duration.ofMinutes(1)).build()).build();
   }
 
 }

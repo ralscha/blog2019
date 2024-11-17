@@ -20,8 +20,8 @@ public class Application {
   }
 
   @Bean
-  public TusFileUploadService tusFileUploadService(AppProperties appProperties) {
-    return new TusFileUploadService().withStoragePath(appProperties.getTusUploadDirectory())
-        .withUploadURI("/upload");
+  TusFileUploadService tusFileUploadService(AppProperties appProperties) {
+    return new TusFileUploadService()
+        .withStoragePath(appProperties.getTusUploadDirectory()).withUploadUri("/upload");
   }
 }

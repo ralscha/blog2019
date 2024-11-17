@@ -18,7 +18,6 @@ import ch.rasc.ratelimit.db.tables.pojos.Earthquake;
 import io.github.bucket4j.Bandwidth;
 import io.github.bucket4j.Bucket;
 import io.github.bucket4j.ConsumptionProbe;
-import io.github.bucket4j.Refill;
 
 @RestController
 public class EarthquakeController {
@@ -31,8 +30,8 @@ public class EarthquakeController {
     this.dsl = dsl;
 
     long capacity = 10;
-    Refill refill = Refill.greedy(10, Duration.ofMinutes(1));
-    Bandwidth limit = Bandwidth.classic(capacity, refill);
+    Bandwidth limit = Bandwidth.builder().capacity(capacity)
+        .refillGreedy(10, Duration.ofMinutes(1)).build();
     this.bucket = Bucket.builder().addLimit(limit).build();
 
     // OR
