@@ -7,6 +7,10 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpRequest.Builder;
 import java.net.http.HttpResponse;
 import java.net.http.HttpResponse.BodyHandlers;
+import java.time.Duration;
+
+import io.github.bucket4j.BlockingBucket;
+import io.github.bucket4j.Bucket;
 
 public class Client {
 
@@ -119,6 +123,17 @@ public class Client {
 
   private static void get(String url) {
     get(url, null);
+  }
+
+  private static void bucketClient() throws InterruptedException {
+    Bucket bucket = Bucket.builder().addLimit(limit -> limit.capacity(10)
+        .refillGreedy(10, Duration.ofMinutes(1)).initialTokens(1)).build();
+    BlockingBucket blockingBucket = bucket.asBlocking();
+
+    for (int i = 0; i < 10; i++) {
+      blockingBucket.consume(1);
+      get(SERVER_1 + "/top/3");
+    }
   }
 
   private static void get(String url, String apiKey) {
