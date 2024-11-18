@@ -31,11 +31,8 @@ public class EarthquakeController {
 
     long capacity = 10;
     Bandwidth limit = Bandwidth.builder().capacity(capacity)
-        .refillGreedy(10, Duration.ofMinutes(1)).build();
+        .refillGreedy(capacity, Duration.ofMinutes(1)).build();
     this.bucket = Bucket.builder().addLimit(limit).build();
-
-    // OR
-    // Bandwidth limit = Bandwidth.simple(10, Duration.ofMinutes(1));
   }
 
   @GetMapping("/top1")
