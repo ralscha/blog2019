@@ -8,9 +8,10 @@ import {ProfileInfo} from './model/profile-info';
 import {ClientInfo} from './model/client-info';
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+    selector: 'app-root',
+    templateUrl: './app.component.html',
+    styleUrls: ['./app.component.css'],
+    standalone: false
 })
 export class AppComponent implements OnInit {
   info$!: Observable<{ build: BuildInfo, git: GitInfo, profile: ProfileInfo }>;
