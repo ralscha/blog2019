@@ -36,7 +36,7 @@
     "@angular/cli": "18.2.12",
     "@angular/compiler-cli": "18.2.13",
     "@ionic/angular-toolkit": "12.1.1",
-    "typescript-eslint": "8.18.2",
+    "typescript-eslint": "8.19.0",
     "@typescript-eslint/parser": "7.16.0",
     "eslint": "9.17.0",
     "goog-webfont-dl": "1.0.4",
