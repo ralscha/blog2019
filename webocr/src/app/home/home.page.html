@@ -126,7 +126,7 @@
 <ion-content class="ion-padding">
 
   <input #fileSelector (change)="onFileChange($event)" accept="image/*" style="display: none;"
-         type="file">
+    type="file">
 
   <ion-grid class="ion-no-margin">
     <ion-row>
@@ -135,66 +135,66 @@
     </ion-row>
   </ion-grid>
 
-  <ion-card *ngIf="result" class="ion-no-margin ion-margin-bottom">
-    <ion-card-header>Text Confidence: {{result.confidence | number:'1.2-2'}} %</ion-card-header>
-    <ion-card-content>{{result.text}}</ion-card-content>
-  </ion-card>
+  @if (result) {
+    <ion-card class="ion-no-margin ion-margin-bottom">
+      <ion-card-header>Text Confidence: {{result.confidence | number:'1.2-2'}} %</ion-card-header>
+      <ion-card-content>{{result.text}}</ion-card-content>
+    </ion-card>
+  }
 
-  <div *ngIf="result" class="table-container mat-elevation-z1">
-    <table [dataSource]="result.lines" mat-table>
-      <ng-container matColumnDef="text">
-        <th *matHeaderCellDef mat-header-cell>Line</th>
-        <td *matCellDef="let line" mat-cell> {{line.text}} </td>
-      </ng-container>
-
-      <ng-container matColumnDef="confidence">
-        <th *matHeaderCellDef mat-header-cell>Confidence</th>
-        <td *matCellDef="let line" mat-cell> {{line.confidence | number:'1.2-2'}} %</td>
-      </ng-container>
-
-      <tr *matHeaderRowDef="elementColumns; sticky: true" mat-header-row></tr>
-      <tr (click)="onLineClick(line)" *matRowDef="let line; columns: elementColumns;"
+  @if (result) {
+    <div class="table-container mat-elevation-z1">
+      <table [dataSource]="result.lines" mat-table>
+        <ng-container matColumnDef="text">
+          <th *matHeaderCellDef mat-header-cell>Line</th>
+          <td *matCellDef="let line" mat-cell> {{line.text}} </td>
+        </ng-container>
+        <ng-container matColumnDef="confidence">
+          <th *matHeaderCellDef mat-header-cell>Confidence</th>
+          <td *matCellDef="let line" mat-cell> {{line.confidence | number:'1.2-2'}} %</td>
+        </ng-container>
+        <tr *matHeaderRowDef="elementColumns; sticky: true" mat-header-row></tr>
+        <tr (click)="onLineClick(line)" *matRowDef="let line; columns: elementColumns;"
           [ngClass]="{'highlight': selectedLine === line}"
-          mat-row></tr>
-    </table>
-  </div>
+        mat-row></tr>
+      </table>
+    </div>
+  }
 
-  <div *ngIf="words" class="table-container mat-elevation-z1 ion-margin-top">
-    <table [dataSource]="words" mat-table>
-
-      <ng-container matColumnDef="text">
-        <th *matHeaderCellDef mat-header-cell>Word</th>
-        <td *matCellDef="let word" mat-cell> {{word.text}} </td>
-      </ng-container>
-
-      <ng-container matColumnDef="confidence">
-        <th *matHeaderCellDef mat-header-cell>Confidence</th>
-        <td *matCellDef="let word" mat-cell> {{word.confidence | number:'1.2-2'}} %</td>
-      </ng-container>
-
-      <tr *matHeaderRowDef="elementColumns; sticky: true" mat-header-row></tr>
-      <tr (click)="onWordClick(word)" *matRowDef="let word; columns: elementColumns;"
+  @if (words) {
+    <div class="table-container mat-elevation-z1 ion-margin-top">
+      <table [dataSource]="words" mat-table>
+        <ng-container matColumnDef="text">
+          <th *matHeaderCellDef mat-header-cell>Word</th>
+          <td *matCellDef="let word" mat-cell> {{word.text}} </td>
+        </ng-container>
+        <ng-container matColumnDef="confidence">
+          <th *matHeaderCellDef mat-header-cell>Confidence</th>
+          <td *matCellDef="let word" mat-cell> {{word.confidence | number:'1.2-2'}} %</td>
+        </ng-container>
+        <tr *matHeaderRowDef="elementColumns; sticky: true" mat-header-row></tr>
+        <tr (click)="onWordClick(word)" *matRowDef="let word; columns: elementColumns;"
           [ngClass]="{'highlight': selectedWord === word}"
-          mat-row></tr>
-    </table>
-  </div>
+        mat-row></tr>
+      </table>
+    </div>
+  }
 
-  <div *ngIf="symbols" class="table-container mat-elevation-z1 ion-margin-top">
-    <table [dataSource]="symbols" mat-table>
-
-      <ng-container matColumnDef="text">
-        <th *matHeaderCellDef mat-header-cell>Symbol</th>
-        <td *matCellDef="let symbol" mat-cell> {{symbol.text}} </td>
-      </ng-container>
-
-      <ng-container matColumnDef="confidence">
-        <th *matHeaderCellDef mat-header-cell>Confidence</th>
-        <td *matCellDef="let symbol" mat-cell> {{symbol.confidence | number:'1.2-2'}} %</td>
-      </ng-container>
-
-      <tr *matHeaderRowDef="elementColumns; sticky: true" mat-header-row></tr>
-      <tr (click)="onSymbolClick(symbol)" *matRowDef="let symbol; columns: elementColumns;"
-          [ngClass]="{'highlight': selectedSymbol === symbol}" mat-row></tr>
-    </table>
-  </div>
+  @if (symbols) {
+    <div class="table-container mat-elevation-z1 ion-margin-top">
+      <table [dataSource]="symbols" mat-table>
+        <ng-container matColumnDef="text">
+          <th *matHeaderCellDef mat-header-cell>Symbol</th>
+          <td *matCellDef="let symbol" mat-cell> {{symbol.text}} </td>
+        </ng-container>
+        <ng-container matColumnDef="confidence">
+          <th *matHeaderCellDef mat-header-cell>Confidence</th>
+          <td *matCellDef="let symbol" mat-cell> {{symbol.confidence | number:'1.2-2'}} %</td>
+        </ng-container>
+        <tr *matHeaderRowDef="elementColumns; sticky: true" mat-header-row></tr>
+        <tr (click)="onSymbolClick(symbol)" *matRowDef="let symbol; columns: elementColumns;"
+        [ngClass]="{'highlight': selectedSymbol === symbol}" mat-row></tr>
+      </table>
+    </div>
+  }
 </ion-content>

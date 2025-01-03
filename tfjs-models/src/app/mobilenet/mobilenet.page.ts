@@ -3,9 +3,10 @@ import {LoadingController} from '@ionic/angular';
 import {load, MobileNet} from '@tensorflow-models/mobilenet';
 
 @Component({
-  selector: 'app-mobilenet',
-  templateUrl: './mobilenet.page.html',
-  styleUrls: ['./mobilenet.page.scss']
+    selector: 'app-mobilenet',
+    templateUrl: './mobilenet.page.html',
+    styleUrls: ['./mobilenet.page.scss'],
+    standalone: false
 })
 export class MobilenetPage {
   @ViewChild('image', {static: true}) image!: ElementRef;

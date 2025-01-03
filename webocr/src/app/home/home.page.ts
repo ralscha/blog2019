@@ -2,9 +2,10 @@ import {AfterViewInit, ChangeDetectorRef, Component, ElementRef, ViewChild} from
 import {createWorker, Line, Page, Symbol as TesseractSymbol, Word} from 'tesseract.js';
 
 @Component({
-  selector: 'app-home',
-  templateUrl: './home.page.html',
-  styleUrls: ['./home.page.scss']
+    selector: 'app-home',
+    templateUrl: './home.page.html',
+    styleUrls: ['./home.page.scss'],
+    standalone: false
 })
 export class HomePage implements AfterViewInit {
 

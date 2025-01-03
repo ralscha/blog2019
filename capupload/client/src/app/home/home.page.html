@@ -41,7 +41,9 @@
 
     <ion-row>
       <ion-col size="12">
-        <img *ngIf="photo" [src]="photo"/>
+        @if (photo) {
+          <img [src]="photo"/>
+        }
       </ion-col>
     </ion-row>
 

@@ -6,9 +6,10 @@ import {Observable, of} from 'rxjs';
 import {catchError, concatMap, filter, map, take} from 'rxjs/operators';
 
 @Component({
-  selector: 'app-home',
-  templateUrl: './home.page.html',
-  styleUrls: ['./home.page.scss']
+    selector: 'app-home',
+    templateUrl: './home.page.html',
+    styleUrls: ['./home.page.scss'],
+    standalone: false
 })
 export class HomePage implements OnInit {
   message!: Observable<string>;

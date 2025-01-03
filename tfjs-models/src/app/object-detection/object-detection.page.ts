@@ -4,9 +4,10 @@ import {LoadingController} from '@ionic/angular';
 import '@tensorflow/tfjs-backend-webgl';
 
 @Component({
-  selector: 'app-object-detection',
-  templateUrl: './object-detection.page.html',
-  styleUrls: ['./object-detection.page.scss']
+    selector: 'app-object-detection',
+    templateUrl: './object-detection.page.html',
+    styleUrls: ['./object-detection.page.scss'],
+    standalone: false
 })
 export class ObjectDetectionPage implements OnInit {
 

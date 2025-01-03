@@ -3,9 +3,10 @@ import {getAdjacentKeyPoints, load, PoseNet} from '@tensorflow-models/posenet';
 import {LoadingController} from '@ionic/angular';
 
 @Component({
-  selector: 'app-posenet',
-  templateUrl: './posenet.page.html',
-  styleUrls: ['./posenet.page.scss'],
+    selector: 'app-posenet',
+    templateUrl: './posenet.page.html',
+    styleUrls: ['./posenet.page.scss'],
+    standalone: false
 })
 export class PosenetPage implements OnInit {
 

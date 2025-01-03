@@ -12,19 +12,23 @@
     <ion-button (click)="erase()">Erase</ion-button>
   </div>
 
-  <table *ngIf="detectionsCNN !== null">
-    <thead>
-    <th></th>
-    <th style="text-align: right">MLP: {{detectedNumberMLP}}</th>
-    <th style="text-align: right">CNN: {{detectedNumberCNN}}</th>
-    </thead>
-    <tbody>
-    <tr *ngFor="let detection of detectionsMLP; index as i">
-      <td>{{i}}</td>
-      <td class="ion-text-end">{{detection * 100 | number:'1.1-1'}} %</td>
-      <td class="ion-text-end">{{detectionsCNN[i] * 100 | number:'1.1-1'}} %</td>
-    </tr>
-    </tbody>
-  </table>
+  @if (detectionsCNN !== null) {
+    <table>
+      <thead>
+        <th></th>
+        <th style="text-align: right">MLP: {{detectedNumberMLP}}</th>
+        <th style="text-align: right">CNN: {{detectedNumberCNN}}</th>
+      </thead>
+      <tbody>
+        @for (detection of detectionsMLP; track detection; let i = $index) {
+          <tr>
+            <td>{{i}}</td>
+            <td class="ion-text-end">{{detection * 100 | number:'1.1-1'}} %</td>
+            <td class="ion-text-end">{{detectionsCNN[i] * 100 | number:'1.1-1'}} %</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  }
 
 </ion-content>

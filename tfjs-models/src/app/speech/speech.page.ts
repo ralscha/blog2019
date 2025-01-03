@@ -4,9 +4,10 @@ import {NavigationEnd, Router} from '@angular/router';
 import {Subscription} from 'rxjs';
 
 @Component({
-  selector: 'app-speech',
-  templateUrl: './speech.page.html',
-  styleUrls: ['./speech.page.scss'],
+    selector: 'app-speech',
+    templateUrl: './speech.page.html',
+    styleUrls: ['./speech.page.scss'],
+    standalone: false
 })
 export class SpeechPage implements OnInit, OnDestroy {
 

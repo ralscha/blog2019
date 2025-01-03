@@ -4,9 +4,10 @@ import {AuthService} from '../service/auth.service';
 import {MessagesService} from '../service/messages.service';
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.page.html',
-  styleUrls: ['./login.page.scss'],
+    selector: 'app-login',
+    templateUrl: './login.page.html',
+    styleUrls: ['./login.page.scss'],
+    standalone: false
 })
 export class LoginPage {
 

@@ -10,14 +10,16 @@
   </div>
 
   <ul class="output">
-    <li *ngFor="let prediction of predictions | async">
-      {{prediction.className}} ({{prediction.probability | number:'1.5-5'}})
-    </li>
+    @for (prediction of predictions | async; track prediction.className) {
+      <li>
+        {{prediction.className}} ({{prediction.probability | number:'1.5-5'}})
+      </li>
+    }
   </ul>
 </ion-content>
 
 <ion-footer class="ion-text-center">
   <input #fileSelector (change)="onFileCange($event)" accept="image/*" style="display: none;"
-         type="file">
+    type="file">
   <ion-button (click)="clickFileSelector()" class="ion-text-center">Select File ...</ion-button>
 </ion-footer>
