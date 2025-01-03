@@ -3,7 +3,6 @@
   "version": "0.0.1",
   "scripts": {
     "build": "ng build",
-    "lint": "ng lint",
     "ng": "ng",
     "pbts": "pbjs -t static-module ../server/src/main/protobuf/ChangeEvent.proto -o src/app/protos/changeevent.js && pbts --no-comments src/app/protos/changeevent.js -o src/app/protos/changeevent.d.ts",
     "serve-dist": "ws --hostname localhost -d dist/app -p 1234 -o --log.format stats",
@@ -33,10 +32,7 @@
     "@angular/cli": "18.2.12",
     "@angular/compiler-cli": "18.2.13",
     "@ionic/angular-toolkit": "12.1.1",
-    "angular-eslint": "18.4.3",
-    "eslint": "9.17.0",
     "local-web-server": "5.4.0",
-    "typescript": "5.5.4",
-    "typescript-eslint": "8.19.0"
+    "typescript": "5.5.4"
   }
 }
