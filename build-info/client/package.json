@@ -6,7 +6,6 @@
     "start": "ng serve",
     "build": "ng build",
     "serve-dist": "ws --hostname localhost -d dist/buildinfo -p 1234 -o --log.format stats",
-    "lint": "ng lint",
     "prebuild": "node ./build-info-env.js",
     "postbuild": "node ./git-tag.js",
     "release-patch": "npm --no-git-tag-version version patch && npm run build-prod"
@@ -26,17 +25,9 @@
     "zone.js": "0.15.0"
   },
   "devDependencies": {
-    "@angular-eslint/builder": "19.0.2",
-    "@angular-eslint/eslint-plugin": "19.0.2",
-    "@angular-eslint/eslint-plugin-template": "19.0.2",
-    "@angular-eslint/schematics": "19.0.2",
-    "@angular-eslint/template-parser": "19.0.2",
-    "@angular/build": "^19.0.6",
+    "@angular/build": "19.0.6",
     "@angular/cli": "19.0.6",
     "@angular/compiler-cli": "19.0.5",
-    "@typescript-eslint/eslint-plugin": "7.16.0",
-    "@typescript-eslint/parser": "7.16.0",
-    "eslint": "8.57.0",
     "local-web-server": "5.4.0",
     "replace-in-file": "7.2.0",
     "simple-git": "3.27.0",
