@@ -2,10 +2,10 @@
   "name": "stateless",
   "version": "0.0.1",
   "scripts": {
-    "ng": "ng",
-    "start": "ng serve",
     "build": "ng build",
-    "serve-dist": "ws"
+    "ng": "ng",
+    "serve-dist": "ws",
+    "start": "ng serve"
   },
   "private": true,
   "dependencies": {
@@ -16,7 +16,7 @@
     "@angular/platform-browser": "19.0.5",
     "@angular/platform-browser-dynamic": "19.0.5",
     "@angular/router": "19.0.5",
-    "@ionic/angular": "7.8.6",
+    "@ionic/angular": "8.4.1",
     "ionicons": "7.4.0",
     "rxjs": "7.8.1",
     "tslib": "2.8.1",
