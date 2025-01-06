@@ -3,17 +3,14 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "start": "parcel src/index.html",
-    "build": "parcel build src/index.html",
-    "watch": "parcel watch src/index.html"
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
   },
   "devDependencies": {
-    "parcel": "2.13.3"
+    "vite": "6.0.7"
   },
   "dependencies": {
     "ky": "1.7.4"
-  },
-  "browserslist": [
-    "last 1 Chrome versions"
-  ]
+  }
 }
