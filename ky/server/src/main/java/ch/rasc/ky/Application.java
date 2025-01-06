@@ -25,10 +25,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import io.github.bucket4j.Bandwidth;
 import io.github.bucket4j.Bucket;
 import io.github.bucket4j.ConsumptionProbe;
-import io.github.bucket4j.Refill;
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -39,9 +37,9 @@ public class Application {
   private final Bucket bucket;
 
   Application() {
-    Refill refill = Refill.greedy(2, Duration.ofSeconds(5));
-    Bandwidth limit = Bandwidth.classic(2, refill);
-    this.bucket = Bucket.builder().addLimit(limit).build();
+    this.bucket = Bucket.builder()
+        .addLimit(limit -> limit.capacity(2).refillGreedy(2, Duration.ofSeconds(5)))
+        .build();
   }
 
   public static void main(String[] args) {
@@ -147,6 +145,11 @@ public class Application {
       outputStream.write(bytes);
       TimeUnit.MILLISECONDS.sleep(250);
     }
+  }
+
+  @GetMapping("/always-fail")
+  public void alwaysFail() {
+    throw new RuntimeException("always fail");
   }
 
 }
