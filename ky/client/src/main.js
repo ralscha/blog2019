@@ -113,7 +113,7 @@ async function retry() {
     console.log(e);
   }
   try {
-    const response = await ky.get('http://localhost:8080/retry-test', { retry: 1 }).text();
+    const response = await ky.get('http://localhost:8080/retry-test', { retry: 0 }).text();
   } catch (e) {
     console.log(e);
   }
