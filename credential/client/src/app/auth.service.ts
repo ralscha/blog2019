@@ -77,7 +77,7 @@ export class AuthService {
       name: username
     });
     navigator.credentials.store(cred);
-	return cred;
+	  return cred;
   }
 
   private async showError(): Promise<void> {
