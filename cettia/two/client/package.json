@@ -24,7 +24,7 @@
     "protobufjs": "7.4.0",
     "rxjs": "7.8.1",
     "tslib": "2.8.1",
-    "uuid": "11.0.3",
+    "uuid": "11.0.5",
     "zone.js": "0.14.10"
   },
   "devDependencies": {
