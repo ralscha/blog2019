@@ -76,7 +76,7 @@ public class PushController {
 
     WebClient client = WebClient.builder().baseUrl("https://api.chucknorris.io").build();
     HttpServiceProxyFactory factory = HttpServiceProxyFactory
-        .builder(WebClientAdapter.forClient(client)).build();
+        .builderFor(WebClientAdapter.create(client)).build();
     this.service = factory.createClient(ChuckNorrisJokeService.class);
   }
 
