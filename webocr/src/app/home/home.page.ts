@@ -71,8 +71,8 @@ export class HomePage implements AfterViewInit {
      */
 
     const worker = await createWorker(this.language, 1, {
-      workerPath: 'tesseract5/worker.min.js',
-      corePath: 'tesseract5/',
+      workerPath: 'tesseract6/worker.min.js',
+      corePath: 'tesseract6/',
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       logger: (progress: any) => {
         this.progressStatus = progress.status;
@@ -83,7 +83,7 @@ export class HomePage implements AfterViewInit {
 
     try {
       if (this.selectedFile) {
-        const recognizeResult = await worker.recognize(this.selectedFile);
+        const recognizeResult = await worker.recognize(this.selectedFile, undefined, {blocks: true});
         if (recognizeResult) {
           this.result = recognizeResult.data;
         } else {

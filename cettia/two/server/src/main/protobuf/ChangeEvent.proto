@@ -12,14 +12,13 @@ message Todos {
   repeated Todo todos = 1;
 }
 
+enum ChangeType {
+  INSERT = 0;
+  UPDATE = 1;
+  DELETE = 2;
+}
+
 message ChangeEvent {
-
-  enum ChangeType {
-    INSERT = 0;
-    UPDATE = 1;
-    DELETE = 2;
-  }
-
   Todo todo = 1;
   ChangeType change = 2;
 }

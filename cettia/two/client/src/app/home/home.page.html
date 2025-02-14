@@ -14,9 +14,13 @@
 
 <ion-content class="ion-padding">
   <ion-list>
-    <ion-item (click)="editTodo(todo)" *ngFor="let todo of todoService.todosObservable | async">
-      <ion-label>{{todo.title}}</ion-label>
-      <ion-icon *ngIf="todo.completed" name="checkmark-circle-outline" slot="end"></ion-icon>
-    </ion-item>
+    @for (todo of todoService.todosObservable | async; track todo) {
+      <ion-item (click)="editTodo(todo)">
+        <ion-label>{{ todo.title }}</ion-label>
+        @if (todo.completed) {
+          <ion-icon name="checkmark-circle-outline" slot="end"></ion-icon>
+        }
+      </ion-item>
+    }
   </ion-list>
 </ion-content>

@@ -4,20 +4,20 @@
   "scripts": {
     "build": "ng build",
     "ng": "ng",
-    "pbts": "pbjs -t static-module ../server/src/main/protobuf/ChangeEvent.proto -o src/app/protos/changeevent.js && pbts --no-comments src/app/protos/changeevent.js -o src/app/protos/changeevent.d.ts",
+    "pbts": "npx pbjs ../server/src/main/protobuf/ChangeEvent.proto --ts src/app/protos/changeevent.ts",
     "serve-dist": "ws --hostname localhost -d dist/app -p 1234 -o --log.format stats",
     "start": "ng serve"
   },
   "private": true,
   "dependencies": {
-    "@angular/animations": "18.2.13",
-    "@angular/common": "18.2.13",
-    "@angular/compiler": "18.2.13",
-    "@angular/core": "18.2.13",
-    "@angular/forms": "18.2.13",
-    "@angular/platform-browser": "18.2.13",
-    "@angular/platform-browser-dynamic": "18.2.13",
-    "@angular/router": "18.2.13",
+    "@angular/animations": "19.1.6",
+    "@angular/common": "19.1.6",
+    "@angular/compiler": "19.1.6",
+    "@angular/core": "19.1.6",
+    "@angular/forms": "19.1.6",
+    "@angular/platform-browser": "19.1.6",
+    "@angular/platform-browser-dynamic": "19.1.6",
+    "@angular/router": "19.1.6",
     "@ionic/angular": "8.4.3",
     "cettia-client": "1.1.0",
     "ionicons": "7.4.0",
@@ -25,14 +25,14 @@
     "rxjs": "7.8.1",
     "tslib": "2.8.1",
     "uuid": "11.0.5",
-    "zone.js": "0.14.10"
+    "zone.js": "0.15.0"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "18.2.12",
-    "@angular/cli": "18.2.12",
-    "@angular/compiler-cli": "18.2.13",
+    "@angular/build": "19.1.7",
+    "@angular/cli": "19.1.7",
+    "@angular/compiler-cli": "19.1.6",
     "@ionic/angular-toolkit": "12.1.1",
     "local-web-server": "5.4.0",
-    "typescript": "5.5.4"
+    "typescript": "5.7.3"
   }
 }

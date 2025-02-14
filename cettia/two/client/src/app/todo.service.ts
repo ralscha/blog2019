@@ -1,17 +1,17 @@
 import {Injectable} from '@angular/core';
-import {ChangeEvent, ITodo, Todos} from './protos/changeevent';
 import {BehaviorSubject} from 'rxjs';
 import {environment} from '../environments/environment';
 import cettia from 'cettia-client/cettia-bundler';
+import {ChangeEvent, ChangeType, decodeChangeEvent, decodeTodos, encodeChangeEvent, Todo} from "./protos/changeevent";
 
 @Injectable({
   providedIn: 'root'
 })
 export class TodoService {
 
-  private todos: Map<string, ITodo> = new Map();
+  private todos: Map<string, Todo> = new Map();
 
-  private todosSubject = new BehaviorSubject<ITodo[]>([]);
+  private todosSubject = new BehaviorSubject<Todo[]>([]);
   public todosObservable = this.todosSubject.asObservable();
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -24,7 +24,10 @@ export class TodoService {
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     this.socket.on('initial', (msg: any) => {
-      const initialTodos = Todos.decode(msg);
+      const initialTodos = decodeTodos(msg);
+      if (!initialTodos.todos) {
+        return;
+      }
       for (const todo of initialTodos.todos) {
         if (todo.id) {
           this.todos.set(todo.id, todo);
@@ -35,14 +38,14 @@ export class TodoService {
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     this.socket.on('update', (msg: any) => {
-      const changeEvent = ChangeEvent.decode(msg);
+      const changeEvent = decodeChangeEvent(msg);
       const todo = changeEvent.todo;
       if (todo?.id) {
-        if (changeEvent.change === ChangeEvent.ChangeType.DELETE) {
+        if (changeEvent.change === ChangeType.DELETE) {
           this.todos.delete(todo.id);
-        } else if (changeEvent.change === ChangeEvent.ChangeType.INSERT) {
+        } else if (changeEvent.change === ChangeType.INSERT) {
           this.todos.set(todo.id, todo);
-        } else if (changeEvent.change === ChangeEvent.ChangeType.UPDATE) {
+        } else if (changeEvent.change === ChangeType.UPDATE) {
           this.todos.set(todo.id, todo);
         }
         this.todosSubject.next([...this.todos.values()]);
@@ -61,34 +64,34 @@ export class TodoService {
 
   }
 
-  getTodo(id: string): ITodo | undefined {
+  getTodo(id: string): Todo | undefined {
     return this.todos.get(id);
   }
 
-  deleteTodo(todo: ITodo): void {
+  deleteTodo(todo: Todo): void {
     if (todo.id) {
       const deleted = this.todos.delete(todo.id);
       if (deleted) {
         this.todosSubject.next([...this.todos.values()]);
 
-        const changeEvent = ChangeEvent.create({change: ChangeEvent.ChangeType.DELETE, todo});
-        const buffer = ChangeEvent.encode(changeEvent).finish();
+        const changeEvent: ChangeEvent = {change: ChangeType.DELETE, todo};
+        const buffer = encodeChangeEvent(changeEvent);
         this.socket.send('update', buffer);
       }
     }
   }
 
-  save(todo: ITodo): void {
+  save(todo: Todo): void {
     let changeType;
     if (todo.id) {
       if (this.todos.has(todo.id)) {
-        changeType = ChangeEvent.ChangeType.UPDATE;
+        changeType = ChangeType.UPDATE;
       } else {
-        changeType = ChangeEvent.ChangeType.INSERT;
+        changeType = ChangeType.INSERT;
       }
 
-      const changeEvent = ChangeEvent.create({change: changeType, todo});
-      const buffer = ChangeEvent.encode(changeEvent).finish();
+      const changeEvent: ChangeEvent = {change: changeType, todo};
+      const buffer = encodeChangeEvent(changeEvent);
       this.socket.send('update', buffer);
 
       this.todos.set(todo.id, todo);
