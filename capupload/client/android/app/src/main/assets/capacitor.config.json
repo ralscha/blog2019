@@ -1,7 +1,0 @@
-{
-	"appId": "ch.rasc.capupload",
-	"appName": "capupload",
-	"bundledWebRuntime": false,
-	"npmClient": "npm",
-	"webDir": "dist/app"
-}
