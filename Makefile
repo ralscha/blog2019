@@ -28,7 +28,6 @@ check-dep:
 	cd ./sbjooqflyway && ./mvnw.cmd versions:display-dependency-updates && ./mvnw.cmd versions:display-plugin-updates
 	cd ./stateless/client && ncu
 	cd ./stateless/server && ./mvnw.cmd versions:display-dependency-updates && ./mvnw.cmd versions:display-plugin-updates
-	cd ./tfjs-models && ncu
 	cd ./tls-and-h2 && ./mvnw.cmd versions:display-dependency-updates && ./mvnw.cmd versions:display-plugin-updates
 	cd ./uploadtus/client && ncu
 	cd ./uploadtus/server && ./mvnw.cmd versions:display-dependency-updates && ./mvnw.cmd versions:display-plugin-updates

@@ -2,10 +2,8 @@ import {AfterViewInit, Component, ElementRef, OnDestroy, ViewChild} from '@angul
 import {wrap} from 'comlink';
 
 @Component({
-    selector: 'app-root',
-    templateUrl: './app.component.html',
-    styleUrls: ['./app.component.css'],
-    standalone: false
+  selector: 'app-root',
+  templateUrl: './app.component.html'
 })
 export class AppComponent implements AfterViewInit, OnDestroy {
   duration = '';
@@ -20,7 +18,7 @@ export class AppComponent implements AfterViewInit, OnDestroy {
 
   private workX = 0;
   private workY = 0;
-  private endCounter = 0;
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private computeMandelbrotSetMethods!: any[];
   private workers!: Worker[];
@@ -58,7 +56,6 @@ export class AppComponent implements AfterViewInit, OnDestroy {
 
     this.workX = 0;
     this.workY = 0;
-    this.endCounter = 0;
 
 
     const promises: Promise<void>[] = [];

@@ -1,6 +1,5 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
-import {NavController} from '@ionic/angular';
 import {TodoService} from '../todo.service';
 import {v4 as uuid} from 'uuid';
 import {FormsModule} from '@angular/forms';
@@ -17,7 +16,8 @@ import {
   IonItem,
   IonList,
   IonTitle,
-  IonToolbar
+  IonToolbar,
+  NavController
 } from "@ionic/angular/standalone";
 import {addIcons} from "ionicons";
 import {trashOutline} from "ionicons/icons";
@@ -30,12 +30,12 @@ import {Todo} from "../protos/changeevent";
   imports: [FormsModule, IonHeader, IonToolbar, IonButtons, IonBackButton, IonTitle, IonButton, IonIcon, IonContent, IonList, IonItem, IonInput, IonCheckbox, IonFooter]
 })
 export class EditPage implements OnInit {
-
   todo: Todo | undefined;
+  private readonly navCtrl = inject(NavController);
+  private readonly route = inject(ActivatedRoute);
+  private readonly todoService = inject(TodoService);
 
-  constructor(private readonly navCtrl: NavController,
-              private readonly route: ActivatedRoute,
-              private readonly todoService: TodoService) {
+  constructor() {
     addIcons({trashOutline});
   }
 

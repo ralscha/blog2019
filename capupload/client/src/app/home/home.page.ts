@@ -1,31 +1,49 @@
-import {Component} from '@angular/core';
-import {LoadingController, ToastController} from '@ionic/angular';
-import { HttpClient } from '@angular/common/http';
+import {Component, inject} from '@angular/core';
+import {
+  IonButton,
+  IonCol,
+  IonContent,
+  IonGrid,
+  IonHeader,
+  IonIcon,
+  IonItem,
+  IonRow,
+  IonText,
+  IonTitle,
+  IonToggle,
+  IonToolbar,
+  LoadingController,
+  ToastController
+} from '@ionic/angular/standalone';
+import {HttpClient} from '@angular/common/http';
 import {Camera, CameraResultType, CameraSource} from '@capacitor/camera';
 import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
 import {environment} from '../../environments/environment';
 import {catchError, finalize} from 'rxjs/operators';
 import {Observable, throwError} from 'rxjs';
 import {Upload} from 'tus-js-client';
+import {FormsModule} from '@angular/forms';
+import {addIcons} from "ionicons";
+import {camera, image} from "ionicons/icons";
 
 @Component({
-    selector: 'app-home',
-    templateUrl: './home.page.html',
-    styleUrls: ['./home.page.scss'],
-    standalone: false
+  selector: 'app-home',
+  templateUrl: './home.page.html',
+  imports: [FormsModule, IonHeader, IonToolbar, IonTitle, IonContent, IonGrid, IonRow, IonCol, IonItem, IonToggle, IonButton, IonIcon, IonText]
 })
 export class HomePage {
-
   public tus = false;
   public error: string | null = null;
   photo: SafeResourceUrl | null = null;
+  private readonly http = inject(HttpClient);
+  private readonly sanitizer = inject(DomSanitizer);
+  private readonly loadingCtrl = inject(LoadingController);
+  private readonly toastCtrl = inject(ToastController);
   private counter = 0;
   private loading: HTMLIonLoadingElement | null = null;
 
-  constructor(private readonly http: HttpClient,
-              private readonly sanitizer: DomSanitizer,
-              private readonly loadingCtrl: LoadingController,
-              private readonly toastCtrl: ToastController) {
+  constructor() {
+    addIcons({image, camera});
   }
 
   async takePhoto(): Promise<void> {

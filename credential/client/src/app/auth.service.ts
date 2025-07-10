@@ -1,22 +1,21 @@
-import {Injectable} from '@angular/core';
+import {inject, Injectable} from '@angular/core';
 import {from, Observable, of} from 'rxjs';
 import {environment} from '../environments/environment';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import {HttpClient, HttpParams} from '@angular/common/http';
 import {catchError, finalize, map, mapTo, switchMap, tap} from 'rxjs/operators';
-import {LoadingController, NavController, ToastController} from '@ionic/angular';
+import {LoadingController, NavController, ToastController} from '@ionic/angular/standalone';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
+  private readonly httpClient = inject(HttpClient);
+  private readonly navCtrl = inject(NavController);
+  private readonly toastCtrl = inject(ToastController);
+  private readonly loadingCtrl = inject(LoadingController);
+
 
   private loggedIn = false;
-
-  constructor(private readonly httpClient: HttpClient,
-              private readonly navCtrl: NavController,
-              private readonly toastCtrl: ToastController,
-              private readonly loadingCtrl: LoadingController) {
-  }
 
   isAuthenticated(): Observable<boolean> {
     return this.httpClient.get<void>(`${environment.serverUrl}/authenticate`, {
@@ -77,7 +76,7 @@ export class AuthService {
       name: username
     });
     navigator.credentials.store(cred);
-	  return cred;
+    return cred;
   }
 
   private async showError(): Promise<void> {

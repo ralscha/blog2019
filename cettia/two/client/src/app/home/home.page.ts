@@ -1,5 +1,4 @@
-import {Component} from '@angular/core';
-import {NavController} from '@ionic/angular';
+import {Component, inject} from '@angular/core';
 import {TodoService} from '../todo.service';
 import {AsyncPipe} from '@angular/common';
 import {
@@ -12,7 +11,8 @@ import {
   IonLabel,
   IonList,
   IonTitle,
-  IonToolbar
+  IonToolbar,
+  NavController
 } from "@ionic/angular/standalone";
 import {addIcons} from "ionicons";
 import {addOutline} from "ionicons/icons";
@@ -25,9 +25,10 @@ import {Todo} from "../protos/changeevent";
   imports: [AsyncPipe, IonHeader, IonToolbar, IonButtons, IonContent, IonItem, IonList, IonButton, IonTitle, IonIcon, IonLabel]
 })
 export class HomePage {
+  readonly todoService = inject(TodoService);
+  private readonly navCtrl = inject(NavController);
 
-  constructor(private readonly navCtrl: NavController,
-              readonly todoService: TodoService) {
+  constructor() {
     addIcons({addOutline});
   }
 

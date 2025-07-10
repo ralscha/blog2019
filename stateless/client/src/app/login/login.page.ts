@@ -1,20 +1,29 @@
-import {Component} from '@angular/core';
-import {NavController} from '@ionic/angular';
+import {Component, inject} from '@angular/core';
+import {
+  IonButton,
+  IonContent,
+  IonHeader,
+  IonInput,
+  IonItem,
+  IonList,
+  IonTitle,
+  IonToolbar,
+  NavController
+} from '@ionic/angular/standalone';
 import {AuthService} from '../service/auth.service';
 import {MessagesService} from '../service/messages.service';
+import {FormsModule} from '@angular/forms';
 
 @Component({
-    selector: 'app-login',
-    templateUrl: './login.page.html',
-    styleUrls: ['./login.page.scss'],
-    standalone: false
+  selector: 'app-login',
+  templateUrl: './login.page.html',
+  imports: [FormsModule, IonHeader, IonToolbar, IonTitle, IonContent, IonList, IonItem, IonInput, IonButton]
 })
 export class LoginPage {
+  private readonly navCtrl = inject(NavController);
+  private readonly authService = inject(AuthService);
+  private readonly messagesService = inject(MessagesService);
 
-  constructor(private readonly navCtrl: NavController,
-              private readonly authService: AuthService,
-              private readonly messagesService: MessagesService) {
-  }
 
   async login({email, password}: { email: string, password: string }): Promise<void> {
     const loading = await this.messagesService.showLoading('Logging in');

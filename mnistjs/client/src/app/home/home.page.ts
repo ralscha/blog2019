@@ -3,12 +3,14 @@ import {DrawableDirective} from '../drawable.directive';
 // @ts-ignore
 import * as brain from 'brain.js/browser';
 import * as tf from '@tensorflow/tfjs';
+import {DecimalPipe} from '@angular/common';
+import {IonButton, IonContent, IonHeader, IonTitle, IonToolbar} from "@ionic/angular/standalone";
 
 @Component({
-    selector: 'app-home',
-    templateUrl: './home.page.html',
-    styleUrls: ['./home.page.scss'],
-    standalone: false
+  selector: 'app-home',
+  templateUrl: './home.page.html',
+  styleUrls: ['./home.page.scss'],
+  imports: [DrawableDirective, DecimalPipe, IonHeader, IonToolbar, IonTitle, IonContent, IonButton]
 })
 export class HomePage {
 

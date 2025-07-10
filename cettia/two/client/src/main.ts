@@ -6,12 +6,11 @@ import {
   withHashLocation,
   withPreloading
 } from '@angular/router';
-import {IonicRouteStrategy} from '@ionic/angular';
 import {bootstrapApplication} from '@angular/platform-browser';
 import {HomePage} from './app/home/home.page';
 import {EditPage} from './app/edit/edit.page';
 import {AppComponent} from './app/app.component';
-import {provideIonicAngular} from "@ionic/angular/standalone";
+import {IonicRouteStrategy, provideIonicAngular} from '@ionic/angular/standalone';
 
 const routes: Routes = [
   {path: '', redirectTo: 'home', pathMatch: 'full'},

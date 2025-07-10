@@ -1,18 +1,17 @@
-import {Injectable} from '@angular/core';
+import {inject, Injectable} from '@angular/core';
 import {BehaviorSubject, Observable, of} from 'rxjs';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import {HttpClient, HttpParams} from '@angular/common/http';
 import {catchError, map, tap} from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
+  private readonly httpClient = inject(HttpClient);
+
 
   private readonly authoritySubject = new BehaviorSubject<string | null>(null);
   readonly authority$ = this.authoritySubject.asObservable();
-
-  constructor(private readonly httpClient: HttpClient) {
-  }
 
   isAuthenticated(): Observable<boolean> {
     return this.httpClient.get(`/authenticate`, {responseType: 'text'})

@@ -5,10 +5,10 @@ self.addEventListener('message', messageEvent => {
 });
 
 function computeMandelbrotSet({startX, startY, width, height, totalWidth, totalHeight, maxIteration}:
-                                {
-                                  startX: number, startY: number, width: number, height: number,
-                                  totalWidth: number, totalHeight: number, maxIteration: number
-                                }): void {
+                              {
+                                startX: number, startY: number, width: number, height: number,
+                                totalWidth: number, totalHeight: number, maxIteration: number
+                              }): void {
   const result = [];
   for (let iy = startY; iy < startY + height; iy++) {
     for (let ix = startX; ix < startX + width; ix++) {

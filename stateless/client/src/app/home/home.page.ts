@@ -1,24 +1,22 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
 import {AuthService} from '../service/auth.service';
-import {NavController} from '@ionic/angular';
-import { HttpClient } from '@angular/common/http';
+import {IonButton, IonContent, IonHeader, IonTitle, IonToolbar, NavController} from '@ionic/angular/standalone';
+import {HttpClient} from '@angular/common/http';
 import {Observable, of} from 'rxjs';
 import {catchError, concatMap, filter, map, take} from 'rxjs/operators';
+import {AsyncPipe} from '@angular/common';
 
 @Component({
-    selector: 'app-home',
-    templateUrl: './home.page.html',
-    styleUrls: ['./home.page.scss'],
-    standalone: false
+  selector: 'app-home',
+  templateUrl: './home.page.html',
+  imports: [AsyncPipe, IonHeader, IonToolbar, IonTitle, IonContent, IonButton]
 })
 export class HomePage implements OnInit {
   message!: Observable<string>;
   userEnabled = false;
-
-  constructor(private readonly authService: AuthService,
-              private readonly navCtrl: NavController,
-              private readonly httpClient: HttpClient) {
-  }
+  private readonly authService = inject(AuthService);
+  private readonly navCtrl = inject(NavController);
+  private readonly httpClient = inject(HttpClient);
 
   ngOnInit(): void {
     this.message = this.httpClient.get('/message', {responseType: 'text'})

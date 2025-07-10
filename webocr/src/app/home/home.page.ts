@@ -1,18 +1,50 @@
-import {AfterViewInit, ChangeDetectorRef, Component, ElementRef, ViewChild} from '@angular/core';
+import {AfterViewInit, ChangeDetectorRef, Component, ElementRef, inject, ViewChild} from '@angular/core';
 import {createWorker, Line, Page, Symbol as TesseractSymbol, Word} from 'tesseract.js';
+import {FormsModule} from '@angular/forms';
+import {
+  MatCell,
+  MatCellDef,
+  MatColumnDef,
+  MatHeaderCell,
+  MatHeaderCellDef,
+  MatHeaderRow,
+  MatHeaderRowDef,
+  MatRow,
+  MatRowDef,
+  MatTable
+} from '@angular/material/table';
+import {DecimalPipe, NgClass, PercentPipe} from '@angular/common';
+import {
+  IonButton,
+  IonButtons,
+  IonCard,
+  IonCardContent,
+  IonCardHeader,
+  IonCol,
+  IonContent,
+  IonGrid,
+  IonHeader,
+  IonIcon,
+  IonItem,
+  IonRow,
+  IonSelect,
+  IonSelectOption,
+  IonTitle,
+  IonToolbar
+} from "@ionic/angular/standalone";
+import {addIcons} from "ionicons";
+import {cameraOutline} from "ionicons/icons";
 
 @Component({
-    selector: 'app-home',
-    templateUrl: './home.page.html',
-    styleUrls: ['./home.page.scss'],
-    standalone: false
+  selector: 'app-home',
+  templateUrl: './home.page.html',
+  styleUrl: './home.page.scss',
+  imports: [FormsModule, MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, NgClass, DecimalPipe, PercentPipe, IonHeader, IonToolbar, IonTitle, IonButtons, IonItem, IonSelect, IonSelectOption, IonButton, IonIcon, IonContent, IonGrid, IonRow, IonCol, IonCard, IonCardHeader, IonCardContent]
 })
 export class HomePage implements AfterViewInit {
-
   @ViewChild('fileSelector') fileInput!: ElementRef;
   @ViewChild('canvas') canvas!: ElementRef;
   @ViewChild('canvasContainer') canvasContainer!: ElementRef;
-
   result: Page | null = null;
   words: Word[] | null = null;
   symbols: TesseractSymbol[] | null = null;
@@ -23,13 +55,15 @@ export class HomePage implements AfterViewInit {
   progressStatus: string | null = null;
   progress: number | null = null;
   language = 'eng';
+  private readonly changeDetectionRef = inject(ChangeDetectorRef);
   private ctx!: CanvasRenderingContext2D;
   private selectedFile: File | null = null;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private image: any | null = null;
   private ratio: number | null = null;
 
-  constructor(private readonly changeDetectionRef: ChangeDetectorRef) {
+  constructor() {
+    addIcons({cameraOutline});
   }
 
   ngAfterViewInit(): void {

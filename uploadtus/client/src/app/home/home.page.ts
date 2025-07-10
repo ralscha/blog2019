@@ -1,26 +1,35 @@
-import {ChangeDetectorRef, Component, ViewChild} from '@angular/core';
+import {ChangeDetectorRef, Component, inject, ViewChild} from '@angular/core';
 // @ts-ignore
 import * as RecordRTC from 'recordrtc';
 import {Upload} from 'tus-js-client';
-import {ToastController} from '@ionic/angular';
+import {
+  IonButton,
+  IonCol,
+  IonContent,
+  IonHeader,
+  IonItem,
+  IonLabel,
+  IonRow,
+  IonTitle,
+  IonToolbar,
+  ToastController
+} from '@ionic/angular/standalone';
 import {environment} from '../../environments/environment';
+import {ProgressBarComponent} from '../progress-bar/progress-bar.component';
 
 @Component({
-    selector: 'app-home',
-    templateUrl: './home.page.html',
-    styleUrls: ['./home.page.scss'],
-    standalone: false
+  selector: 'app-home',
+  templateUrl: './home.page.html',
+  imports: [ProgressBarComponent, IonHeader, IonToolbar, IonTitle, IonContent, IonItem, IonLabel, IonRow, IonCol, IonButton]
 })
 export class HomePage {
   recording = false;
   uploadProgress = 0;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   @ViewChild('videoElement', {static: true}) videoElement!: any;
+  private readonly toastCtrl = inject(ToastController);
+  private readonly changeDetectionRef = inject(ChangeDetectorRef);
   private recordRTC: RecordRTC;
-
-  constructor(private readonly toastCtrl: ToastController,
-              private readonly changeDetectionRef: ChangeDetectorRef) {
-  }
 
   start(): void {
     this.recording = true;

@@ -1,17 +1,22 @@
-import {Component} from '@angular/core';
+import {Component, inject} from '@angular/core';
 import {AuthService} from '../auth.service';
-import {NavController} from '@ionic/angular';
+import {IonButton, IonContent, IonHeader, IonTitle, IonToolbar, NavController} from '@ionic/angular/standalone';
 
 @Component({
-    selector: 'app-home',
-    templateUrl: './home.page.html',
-    styleUrls: ['./home.page.scss'],
-    standalone: false
+  selector: 'app-home',
+  templateUrl: './home.page.html',
+  imports: [
+    IonHeader,
+    IonToolbar,
+    IonTitle,
+    IonContent,
+    IonButton
+  ]
 })
 export class HomePage {
-  constructor(private readonly authService: AuthService,
-              private readonly navCtrl: NavController) {
-  }
+  private readonly authService = inject(AuthService);
+  private readonly navCtrl = inject(NavController);
+
 
   async logout(): Promise<void> {
     this.authService.logout().subscribe(() => this.navCtrl.navigateRoot('/login'));
