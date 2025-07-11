@@ -1,4 +1,4 @@
-import {AfterViewInit, ChangeDetectorRef, Component, ElementRef, inject, ViewChild} from '@angular/core';
+import {AfterViewInit, ChangeDetectorRef, Component, ElementRef, inject, viewChild} from '@angular/core';
 import {createWorker, Line, Page, Symbol as TesseractSymbol, Word} from 'tesseract.js';
 import {FormsModule} from '@angular/forms';
 import {
@@ -42,9 +42,9 @@ import {cameraOutline} from "ionicons/icons";
   imports: [FormsModule, MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, NgClass, DecimalPipe, PercentPipe, IonHeader, IonToolbar, IonTitle, IonButtons, IonItem, IonSelect, IonSelectOption, IonButton, IonIcon, IonContent, IonGrid, IonRow, IonCol, IonCard, IonCardHeader, IonCardContent]
 })
 export class HomePage implements AfterViewInit {
-  @ViewChild('fileSelector') fileInput!: ElementRef;
-  @ViewChild('canvas') canvas!: ElementRef;
-  @ViewChild('canvasContainer') canvasContainer!: ElementRef;
+  readonly fileInput = viewChild.required<ElementRef>('fileSelector');
+  readonly canvas = viewChild.required<ElementRef>('canvas');
+  readonly canvasContainer = viewChild.required<ElementRef>('canvasContainer');
   result: Page | null = null;
   words: Word[] | null = null;
   symbols: TesseractSymbol[] | null = null;
@@ -67,11 +67,11 @@ export class HomePage implements AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.ctx = this.canvas.nativeElement.getContext('2d');
+    this.ctx = this.canvas().nativeElement.getContext('2d');
   }
 
   clickFileSelector(): void {
-    this.fileInput.nativeElement.click();
+    this.fileInput().nativeElement.click();
   }
 
   async onFileChange(event: Event): Promise<void> {
@@ -194,8 +194,8 @@ export class HomePage implements AfterViewInit {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private drawImageScaled(img: any): void {
-    const width = this.canvasContainer.nativeElement.clientWidth;
-    const height = this.canvasContainer.nativeElement.clientHeight;
+    const width = this.canvasContainer().nativeElement.clientWidth;
+    const height = this.canvasContainer().nativeElement.clientHeight;
 
     const hRatio = width / img.width;
     const vRatio = height / img.height;
@@ -204,8 +204,8 @@ export class HomePage implements AfterViewInit {
       this.ratio = 1;
     }
 
-    this.canvas.nativeElement.width = img.width * this.ratio;
-    this.canvas.nativeElement.height = img.height * this.ratio;
+    this.canvas().nativeElement.width = img.width * this.ratio;
+    this.canvas().nativeElement.height = img.height * this.ratio;
 
     this.ctx.clearRect(0, 0, width, height);
     this.ctx.drawImage(img, 0, 0, img.width, img.height, 0, 0, img.width * this.ratio, img.height * this.ratio);

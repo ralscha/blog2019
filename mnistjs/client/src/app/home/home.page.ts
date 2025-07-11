@@ -1,4 +1,4 @@
-import {Component, ViewChild} from '@angular/core';
+import {Component, viewChild} from '@angular/core';
 import {DrawableDirective} from '../drawable.directive';
 // @ts-ignore
 import * as brain from 'brain.js/browser';
@@ -14,7 +14,7 @@ import {IonButton, IonContent, IonHeader, IonTitle, IonToolbar} from "@ionic/ang
 })
 export class HomePage {
 
-  @ViewChild(DrawableDirective) drawable!: DrawableDirective;
+  readonly drawable = viewChild.required(DrawableDirective);
 
   detectionsMLP: number[] = [];
   detectedNumberMLP: number | null = null;
@@ -54,7 +54,7 @@ export class HomePage {
 
     const ratioX = canvas.width / 28;
     const ratioY = canvas.height / 28;
-    const drawBox = this.drawable.getDrawingBox();
+    const drawBox = this.drawable().getDrawingBox();
     const scaledSourceWidth = Math.min(20, Math.max(4, ((drawBox[2] - drawBox[0] + 32) / ratioX)));
     const scaledSourceHeight = Math.min(20, ((drawBox[3] - drawBox[1] + 32) / ratioY));
     const dx = (28 - scaledSourceWidth) / 2;
@@ -94,7 +94,7 @@ export class HomePage {
     this.detectionsCNN = null;
     this.detectedNumberCNN = null;
 
-    this.drawable.clear();
+    this.drawable().clear();
   }
 
   maxScore(obj: { [key: number]: number }): number {

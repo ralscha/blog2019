@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, ElementRef, OnDestroy, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, OnDestroy, viewChild} from '@angular/core';
 
 @Component({
   selector: 'app-root',
@@ -8,8 +8,7 @@ export class AppComponent implements AfterViewInit, OnDestroy {
   duration = '';
   progress = '0 %';
 
-  @ViewChild('myCanvas')
-  myCanvasRef!: ElementRef;
+  readonly myCanvasRef = viewChild.required<ElementRef>('myCanvas');
   private ctx!: CanvasRenderingContext2D;
 
   private readonly maxIteration = 20000;
@@ -24,7 +23,7 @@ export class AppComponent implements AfterViewInit, OnDestroy {
   private totalPixels!: number;
 
   ngAfterViewInit(): void {
-    const myCanvas = this.myCanvasRef.nativeElement;
+    const myCanvas = this.myCanvasRef().nativeElement;
     this.ctx = myCanvas.getContext('2d');
     this.height = myCanvas.height;
     this.width = myCanvas.width;

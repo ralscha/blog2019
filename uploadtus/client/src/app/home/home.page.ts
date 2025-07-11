@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, inject, ViewChild} from '@angular/core';
+import {ChangeDetectorRef, Component, inject, viewChild} from '@angular/core';
 // @ts-ignore
 import * as RecordRTC from 'recordrtc';
 import {Upload} from 'tus-js-client';
@@ -26,7 +26,7 @@ export class HomePage {
   recording = false;
   uploadProgress = 0;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  @ViewChild('videoElement', {static: true}) videoElement!: any;
+  readonly videoElement = viewChild.required<any>('videoElement');
   private readonly toastCtrl = inject(ToastController);
   private readonly changeDetectionRef = inject(ChangeDetectorRef);
   private recordRTC: RecordRTC;
@@ -35,8 +35,8 @@ export class HomePage {
     this.recording = true;
     navigator.mediaDevices.getUserMedia({video: true, audio: false})
       .then(async (stream) => {
-        this.videoElement.nativeElement.srcObject = stream;
-        await this.videoElement.nativeElement.play();
+        this.videoElement().nativeElement.srcObject = stream;
+        await this.videoElement().nativeElement.play();
 
         this.recordRTC = RecordRTC(stream, {type: 'video'});
         this.recordRTC.startRecording();
@@ -54,8 +54,8 @@ export class HomePage {
       });
     }
 
-    this.videoElement.nativeElement.pause();
-    this.videoElement.nativeElement.srcObject = null;
+    this.videoElement().nativeElement.pause();
+    this.videoElement().nativeElement.srcObject = null;
   }
 
   takeSnapshot(): void {
@@ -65,7 +65,7 @@ export class HomePage {
 
     const ctx = canvas.getContext('2d');
     if (ctx) {
-      ctx.drawImage(this.videoElement.nativeElement, 0, 0, canvas.width, canvas.height);
+      ctx.drawImage(this.videoElement().nativeElement, 0, 0, canvas.width, canvas.height);
       canvas.toBlob(this.uploadSnapshot.bind(this), 'image/jpeg', 1);
     }
   }
