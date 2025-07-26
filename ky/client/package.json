@@ -8,9 +8,9 @@
     "preview": "vite preview"
   },
   "devDependencies": {
-    "vite": "6.3.5"
+    "vite": "7.0.6"
   },
   "dependencies": {
-    "ky": "1.8.1"
+    "ky": "1.8.2"
   }
 }
