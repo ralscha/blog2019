@@ -1,1 +1,1 @@
-Code for blog post: https://golb.hplar.ch/2019/06/credential-management-api.html
+Code for blog post: https://blog.rasc.ch/2019/06/credential-management-api.html

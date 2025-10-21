@@ -1,1 +1,1 @@
-Source code for the blog post: https://golb.hplar.ch/2019/06/variable-length-int-java.html
+Source code for the blog post: https://blog.rasc.ch/2019/06/variable-length-int-java.html

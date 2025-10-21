@@ -1,1 +1,1 @@
-Code for the blog post: https://golb.hplar.ch/2019/08/git-with-jgit.html
+Code for the blog post: https://blog.rasc.ch/2019/08/git-with-jgit.html

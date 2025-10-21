@@ -1,1 +1,1 @@
-Source code for blog post:  https://golb.hplar.ch/2019/01/java-11-http-client.html
+Source code for blog post:  https://blog.rasc.ch/2019/01/java-11-http-client.html

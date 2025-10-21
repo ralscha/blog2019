@@ -1,1 +1,1 @@
-Code for the blog post: https://golb.hplar.ch/2019/06/upload-with-tus.html
+Code for the blog post: https://blog.rasc.ch/2019/06/upload-with-tus.html

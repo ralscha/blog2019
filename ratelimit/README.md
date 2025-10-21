@@ -1,1 +1,1 @@
-Source code for blog post: https://golb.hplar.ch/2019/08/rate-limit-bucket4j.html
+Source code for blog post: https://blog.rasc.ch/2019/08/rate-limit-bucket4j.html

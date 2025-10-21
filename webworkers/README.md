@@ -1,1 +1,1 @@
-Source code for the blog post: https://golb.hplar.ch/2019/07/web-workers.html
+Source code for the blog post: https://blog.rasc.ch/2019/07/web-workers.html

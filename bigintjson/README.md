@@ -1,1 +1,1 @@
-Code for the blog post: https://golb.hplar.ch/2019/01/js-bigint-json.html
+Code for the blog post: https://blog.rasc.ch/2019/01/js-bigint-json.html
