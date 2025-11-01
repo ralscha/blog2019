@@ -8,6 +8,10 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     <description>Example</description>
     <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 
+    <class>ch.rasc.envers.Company</class>
+    <class>ch.rasc.envers.Employee</class>
+    <class>ch.rasc.envers.CustomRevisionEntity</class>
+
     <properties>
       <property name="javax.persistence.jdbc.driver" value="org.h2.Driver" />
       <property name="javax.persistence.jdbc.url" value="jdbc:h2:./db/test" />
