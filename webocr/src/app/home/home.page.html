@@ -155,7 +155,7 @@
             </ng-container>
             <tr *matHeaderRowDef="elementColumns; sticky: true" mat-header-row></tr>
             <tr (click)="onLineClick(line)" *matRowDef="let line; columns: elementColumns;"
-                [ngClass]="{'highlight': selectedLine === line}"
+                [class.highlight]="selectedLine === line"
                 mat-row></tr>
           </table>
         </div>
@@ -176,7 +176,7 @@
         </ng-container>
         <tr *matHeaderRowDef="elementColumns; sticky: true" mat-header-row></tr>
         <tr (click)="onWordClick(word)" *matRowDef="let word; columns: elementColumns;"
-            [ngClass]="{'highlight': selectedWord === word}"
+            [class.highlight]="selectedWord === word"
             mat-row></tr>
       </table>
     </div>
@@ -195,7 +195,7 @@
         </ng-container>
         <tr *matHeaderRowDef="elementColumns; sticky: true" mat-header-row></tr>
         <tr (click)="onSymbolClick(symbol)" *matRowDef="let symbol; columns: elementColumns;"
-            [ngClass]="{'highlight': selectedSymbol === symbol}" mat-row></tr>
+            [class.highlight]="selectedSymbol === symbol" mat-row></tr>
       </table>
     </div>
   }

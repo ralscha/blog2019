@@ -1,16 +1,13 @@
 package ch.rasc.bigint;
 
-import java.io.IOException;
+import tools.jackson.core.JsonGenerator;
+import tools.jackson.databind.SerializationContext;
+import tools.jackson.databind.ValueSerializer;
 
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.SerializerProvider;
-
-public class LongSerializer extends JsonSerializer<Long> {
+public class LongSerializer extends ValueSerializer<Long> {
 
   @Override
-  public void serialize(Long value, JsonGenerator gen, SerializerProvider serializers)
-      throws IOException {
+  public void serialize(Long value, JsonGenerator gen, SerializationContext context) {
     gen.writeString(value.toString() + "n");
   }
 

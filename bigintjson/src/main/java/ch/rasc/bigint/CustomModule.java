@@ -2,7 +2,7 @@ package ch.rasc.bigint;
 
 import java.math.BigInteger;
 
-import com.fasterxml.jackson.databind.module.SimpleModule;
+import tools.jackson.databind.module.SimpleModule;
 
 // @Component
 public class CustomModule extends SimpleModule {

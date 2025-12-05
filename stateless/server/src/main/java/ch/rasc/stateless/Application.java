@@ -24,10 +24,10 @@ public class Application {
   }
 
   @Bean
-  public PasswordEncoder passwordEncoder() {
+  PasswordEncoder passwordEncoder() {
     String defaultEncodingId = "argon2";
     Map<String, PasswordEncoder> encoders = new HashMap<>();
-    encoders.put(defaultEncodingId, new Argon2PasswordEncoder(16, 32, 8, 1 << 16, 4));
+    encoders.put(defaultEncodingId, Argon2PasswordEncoder.defaultsForSpringSecurity_v5_8());
     return new DelegatingPasswordEncoder(defaultEncodingId, encoders);
   }
 

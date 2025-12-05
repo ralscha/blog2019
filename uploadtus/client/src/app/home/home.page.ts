@@ -1,6 +1,6 @@
 import {ChangeDetectorRef, Component, inject, viewChild} from '@angular/core';
 // @ts-ignore
-import * as RecordRTC from 'recordrtc';
+import RecordRTC from 'recordrtc';
 import {Upload} from 'tus-js-client';
 import {
   IonButton,

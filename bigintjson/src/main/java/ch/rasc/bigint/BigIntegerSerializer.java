@@ -1,17 +1,15 @@
 package ch.rasc.bigint;
 
-import java.io.IOException;
 import java.math.BigInteger;
 
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.SerializerProvider;
+import tools.jackson.core.JsonGenerator;
+import tools.jackson.databind.SerializationContext;
+import tools.jackson.databind.ValueSerializer;
 
-public class BigIntegerSerializer extends JsonSerializer<BigInteger> {
+public class BigIntegerSerializer extends ValueSerializer<BigInteger> {
 
   @Override
-  public void serialize(BigInteger value, JsonGenerator gen,
-      SerializerProvider serializers) throws IOException {
+  public void serialize(BigInteger value, JsonGenerator gen, SerializationContext context) {
     gen.writeString(value.toString() + "n");
   }
 

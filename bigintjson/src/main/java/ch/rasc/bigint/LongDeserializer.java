@@ -1,18 +1,14 @@
 package ch.rasc.bigint;
 
-import java.io.IOException;
+import tools.jackson.core.JsonParser;
+import tools.jackson.databind.DeserializationContext;
+import tools.jackson.databind.ValueDeserializer;
 
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-
-public class LongDeserializer extends JsonDeserializer<Long> {
+public class LongDeserializer extends ValueDeserializer<Long> {
 
   @Override
-  public Long deserialize(JsonParser jp, DeserializationContext ctxt)
-      throws IOException, JsonProcessingException {
-    String value = jp.getText();
+  public Long deserialize(JsonParser jp, DeserializationContext ctxt) {
+    String value = jp.getString();
     if (value != null) {
       value = value.strip();
       if (value.length() > 0) {

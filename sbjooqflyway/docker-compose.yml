@@ -1,11 +1,10 @@
 services:
   db:
-    image: mariadb:10.10.2
+    image: postgres:18
     ports:
-      - "3366:3306"
+      - "5432:5432"
     restart: "no"
     environment:
-      MARIADB_ROOT_PASSWORD: root
-      MARIADB_DATABASE: demo
-      MARIADB_USER: demo
-      MARIADB_PASSWORD: demo
+      POSTGRES_DB: demo
+      POSTGRES_USER: demo
+      POSTGRES_PASSWORD: demo

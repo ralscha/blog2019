@@ -36,7 +36,7 @@ import io.cettia.transport.websocket.WebSocketTransportServer;
 public class Application {
 
   @Bean
-  public Server defaultServer() {
+  Server defaultServer() {
     Server server = new DefaultServer();
 
     server.onsocket(socket -> {
@@ -80,7 +80,7 @@ public class Application {
   }
 
   @Bean
-  public RouterFunction<ServerResponse> httpMapping(Server defaultServer,
+  RouterFunction<ServerResponse> httpMapping(Server defaultServer,
       @Value("classpath:/static/index.html") final Resource indexHtml) {
     HttpTransportServer httpTransportServer = new HttpTransportServer()
         .ontransport(defaultServer);
@@ -100,7 +100,7 @@ public class Application {
   }
 
   @Bean
-  public HandlerMapping wsMapping(Server defaultServer) {
+  HandlerMapping wsMapping(Server defaultServer) {
     WebSocketTransportServer wsTransportServer = new WebSocketTransportServer()
         .ontransport(defaultServer);
     AsityWebSocketHandler asityWebSocketHandler = new AsityWebSocketHandler()

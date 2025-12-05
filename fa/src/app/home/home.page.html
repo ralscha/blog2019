@@ -9,89 +9,89 @@
 <ion-content class="ion-padding">
 
   <div>
-    <fa-icon icon="smile-wink"></fa-icon>
-    <fa-icon icon="smile-beam"></fa-icon>
+    <fa-icon icon="smile-wink" />
+    <fa-icon icon="smile-beam" />
 
-    <fa-icon [icon]="['far', 'smile-wink']"></fa-icon>
-    <fa-icon [icon]="['far', 'smile-beam']"></fa-icon>
+    <fa-icon [icon]="['far', 'smile-wink']" />
+    <fa-icon [icon]="['far', 'smile-beam']" />
   </div>
 
   <ion-button>
-    <fa-icon [icon]="faHandPointLeft" slot="start"></fa-icon>
+    <fa-icon [icon]="faHandPointLeft" slot="start" />
     Left Icon
   </ion-button>
 
   <ion-button>
     Right Icon
-    <fa-icon [icon]="faHandPointRight" slot="end"></fa-icon>
+    <fa-icon [icon]="faHandPointRight" slot="end" />
   </ion-button>
 
   <div>
-    <fa-icon [icon]="['fas', 'skiing']" size="lg"></fa-icon>
-    <fa-icon [icon]="['fas', 'skiing']" size="2x"></fa-icon>
-    <fa-icon [icon]="['fas', 'skiing']" size="3x"></fa-icon>
-    <fa-icon [icon]="['fas', 'skiing']" size="4x"></fa-icon>
+    <fa-icon [icon]="['fas', 'skiing']" size="lg" />
+    <fa-icon [icon]="['fas', 'skiing']" size="2x" />
+    <fa-icon [icon]="['fas', 'skiing']" size="3x" />
+    <fa-icon [icon]="['fas', 'skiing']" size="4x" />
   </div>
   <div>
-    <fa-icon [icon]="['fas', 'snowboarding']" size="3x"></fa-icon>
-    <fa-icon [icon]="['fas', 'snowboarding']" [rotate]="90" size="3x"></fa-icon>
-    <fa-icon [icon]="['fas', 'snowboarding']" [rotate]="180" size="3x"></fa-icon>
-    <fa-icon [icon]="['fas', 'snowboarding']" [rotate]="270" size="3x"></fa-icon>
+    <fa-icon [icon]="['fas', 'snowboarding']" size="3x" />
+    <fa-icon [icon]="['fas', 'snowboarding']" [rotate]="90" size="3x" />
+    <fa-icon [icon]="['fas', 'snowboarding']" [rotate]="180" size="3x" />
+    <fa-icon [icon]="['fas', 'snowboarding']" [rotate]="270" size="3x" />
   </div>
   <div>
-    <fa-icon [icon]="['fas', 'swimmer']" flip="horizontal" size="3x"></fa-icon>
-    <fa-icon [icon]="['fas', 'swimmer']" flip="vertical" size="3x"></fa-icon>
-    <fa-icon [icon]="['fas', 'swimmer']" flip="both" size="3x"></fa-icon>
+    <fa-icon [icon]="['fas', 'swimmer']" flip="horizontal" size="3x" />
+    <fa-icon [icon]="['fas', 'swimmer']" flip="vertical" size="3x" />
+    <fa-icon [icon]="['fas', 'swimmer']" flip="both" size="3x" />
   </div>
   <div>
-    <fa-icon [icon]="['fas', 'asterisk']" animation="spin" size="6x"></fa-icon>
-    <fa-icon [icon]="['fas', 'cog']" animation="spin-pulse" size="6x"></fa-icon>
+    <fa-icon [icon]="['fas', 'asterisk']" animation="spin" size="6x" />
+    <fa-icon [icon]="['fas', 'cog']" animation="spin-pulse" size="6x" />
   </div>
 
   <div>
-    <fa-icon [animation]="syncRunning ? 'spin' : undefined" [icon]="['fas', 'sync']" size="6x"></fa-icon>
+    <fa-icon [animation]="syncRunning ? 'spin' : undefined" [icon]="['fas', 'sync']" size="6x" />
     <ion-button (click)="syncRunning = true" [disabled]="syncRunning">Start</ion-button>
     <ion-button (click)="syncRunning = false" [disabled]="!syncRunning">Stop</ion-button>
   </div>
 
   <div>
-    <fa-icon [icon]="['fas', 'swimmer']" [mask]="['fas', 'circle']" size="6x" transform="shrink-10 down-4"></fa-icon>
+    <fa-icon [icon]="['fas', 'swimmer']" [mask]="['fas', 'circle']" size="6x" transform="shrink-10 down-4" />
   </div>
 
   <div>
     <ul>
       <li>
-        <fa-icon [icon]="['fas', 'swimmer']" size="2x"></fa-icon>
+        <fa-icon [icon]="['fas', 'swimmer']" size="2x" />
         Swimmer
       </li>
       <li>
-        <fa-icon [icon]="['fas', 'snowboarding']" size="2x"></fa-icon>
+        <fa-icon [icon]="['fas', 'snowboarding']" size="2x" />
         Snowboarding
       </li>
       <li>
-        <fa-icon [icon]="['fas', 'skiing']" size="2x"></fa-icon>
+        <fa-icon [icon]="['fas', 'skiing']" size="2x" />
         Skiing
       </li>
       <li>
-        <fa-icon [icon]="['fas', 'skiing-nordic']" size="2x"></fa-icon>
+        <fa-icon [icon]="['fas', 'skiing-nordic']" size="2x" />
         Skiing Nordic
       </li>
     </ul>
     <ul>
       <li>
-        <fa-icon [fixedWidth]="true" [icon]="['fas', 'swimmer']" size="2x"></fa-icon>
+        <fa-icon [fixedWidth]="true" [icon]="['fas', 'swimmer']" size="2x" />
         Swimmer
       </li>
       <li>
-        <fa-icon [fixedWidth]="true" [icon]="['fas', 'snowboarding']" size="2x"></fa-icon>
+        <fa-icon [fixedWidth]="true" [icon]="['fas', 'snowboarding']" size="2x" />
         Snowboarding
       </li>
       <li>
-        <fa-icon [fixedWidth]="true" [icon]="['fas', 'skiing']" size="2x"></fa-icon>
+        <fa-icon [fixedWidth]="true" [icon]="['fas', 'skiing']" size="2x" />
         Skiing
       </li>
       <li>
-        <fa-icon [fixedWidth]="true" [icon]="['fas', 'skiing-nordic']" size="2x"></fa-icon>
+        <fa-icon [fixedWidth]="true" [icon]="['fas', 'skiing-nordic']" size="2x" />
         Skiing Nordic
       </li>
     </ul>
@@ -99,58 +99,58 @@
 
   <ion-card>
     <ion-card-content>
-      <fa-icon [border]="true" [icon]="['fas', 'asterisk']" pull="left" size="2x"></fa-icon>
+      <fa-icon [border]="true" [icon]="['fas', 'asterisk']" pull="left" size="2x" />
       Lorem ipsum dolor sit amet, ei cum possit denique, debet mundi sit ne.
     </ion-card-content>
   </ion-card>
 
   <ion-card>
     <ion-card-content>
-      <fa-icon [border]="true" [icon]="['fas', 'asterisk']" pull="right" size="2x"></fa-icon>
+      <fa-icon [border]="true" [icon]="['fas', 'asterisk']" pull="right" size="2x" />
       Lorem ipsum dolor sit amet, ei cum possit denique, debet mundi sit ne.
     </ion-card-content>
   </ion-card>
 
   <div>
     <fa-layers size="6x">
-      <fa-icon [icon]="['fas', 'play']" transform="rotate--90 grow-2"></fa-icon>
-      <fa-icon [icon]="['fas', 'sun']" [inverse]="true" transform="shrink-10 up-2"></fa-icon>
-      <fa-icon [icon]="['fas', 'moon']" [inverse]="true" transform="shrink-11 down-4.2 left-4"></fa-icon>
-      <fa-icon [icon]="['fas', 'star']" [inverse]="true" transform="shrink-11 down-4.2 right-4"></fa-icon>
+      <fa-icon [icon]="['fas', 'play']" transform="rotate--90 grow-2" />
+      <fa-icon [icon]="['fas', 'sun']" [inverse]="true" transform="shrink-10 up-2" />
+      <fa-icon [icon]="['fas', 'moon']" [inverse]="true" transform="shrink-11 down-4.2 left-4" />
+      <fa-icon [icon]="['fas', 'star']" [inverse]="true" transform="shrink-11 down-4.2 right-4" />
     </fa-layers>
   </div>
 
   <div>
     <fa-layers size="5x">
-      <fa-icon [icon]="['fas', 'cloud']"></fa-icon>
-      <fa-layers-text content="Cloud" style="color: white;" transform="shrink-12"></fa-layers-text>
+      <fa-icon [icon]="['fas', 'cloud']" />
+      <fa-layers-text content="Cloud" style="color: white;" transform="shrink-12" />
     </fa-layers>
   </div>
 
   <div>
     <fa-layers size="5x">
-      <fa-icon [icon]="['fas', 'envelope-open']"></fa-icon>
-      <fa-layers-counter content="5"></fa-layers-counter>
+      <fa-icon [icon]="['fas', 'envelope-open']" />
+      <fa-layers-counter content="5" />
     </fa-layers>
   </div>
 
   <div>
-    <fa-icon [icon]="['fas', 'hand-point-left']" size="5x" transform="rotate-{{magicLevel}}"></fa-icon>
+    <fa-icon [icon]="['fas', 'hand-point-left']" size="5x" transform="rotate-{{magicLevel}}" />
     <input (input)="updateMagicLevel($event)" [value]="magicLevel" max="360" min="0" type='range'/>
   </div>
 
   <div>
     <fa-stack size="5x">
-      <fa-icon [icon]="['fas', 'camera']" stackItemSize="1x"></fa-icon>
-      <fa-icon [icon]="['fas', 'ban']" stackItemSize="2x" style="color:Tomato"></fa-icon>
+      <fa-icon [icon]="['fas', 'camera']" stackItemSize="1x" />
+      <fa-icon [icon]="['fas', 'ban']" stackItemSize="2x" style="color:Tomato" />
     </fa-stack>
   </div>
 
   <div>
-    <fa-icon [icon]="['fas', 'bell']" [style]="dynamicStyle()" size="5x"></fa-icon>
+    <fa-icon [icon]="['fas', 'bell']" [style]="dynamicStyle()" size="5x" />
     <fa-icon [icon]="['far', 'bell']"
              [style]="{'color': color, 'stroke': stroke, 'stroke-width': strokeWidth + 'px', 'opacity': opacity}"
-             size="5x"></fa-icon>
+             size="5x" />
   </div>
 
 </ion-content>

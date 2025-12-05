@@ -13,7 +13,7 @@ import {
   MatRowDef,
   MatTable
 } from '@angular/material/table';
-import {DecimalPipe, NgClass, PercentPipe} from '@angular/common';
+import {DecimalPipe, PercentPipe} from '@angular/common';
 import {
   IonButton,
   IonButtons,
@@ -39,7 +39,7 @@ import {cameraOutline} from "ionicons/icons";
   selector: 'app-home',
   templateUrl: './home.page.html',
   styleUrl: './home.page.scss',
-  imports: [FormsModule, MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, NgClass, DecimalPipe, PercentPipe, IonHeader, IonToolbar, IonTitle, IonButtons, IonItem, IonSelect, IonSelectOption, IonButton, IonIcon, IonContent, IonGrid, IonRow, IonCol, IonCard, IonCardHeader, IonCardContent]
+  imports: [FormsModule, MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, DecimalPipe, PercentPipe, IonHeader, IonToolbar, IonTitle, IonButtons, IonItem, IonSelect, IonSelectOption, IonButton, IonIcon, IonContent, IonGrid, IonRow, IonCol, IonCard, IonCardHeader, IonCardContent]
 })
 export class HomePage implements AfterViewInit {
   readonly fileInput = viewChild.required<ElementRef>('fileSelector');

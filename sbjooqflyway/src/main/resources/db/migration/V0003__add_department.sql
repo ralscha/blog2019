@@ -1,8 +1,7 @@
 CREATE TABLE department (
-    id    INTEGER NOT NULL AUTO_INCREMENT,
+    id    SERIAL PRIMARY KEY,
     no    CHAR(4)     NOT NULL,
-    name  VARCHAR(40) NOT NULL,
-    PRIMARY KEY(id)
+    name  VARCHAR(40) NOT NULL
 );
 
 INSERT INTO department(no, name) VALUES 
@@ -19,4 +18,4 @@ INSERT INTO department(no, name) VALUES
   
 ALTER TABLE employee ADD COLUMN department_id INTEGER; 
 UPDATE employee SET department_id = (SELECT id FROM department where no = 'dddd');
-ALTER TABLE employee MODIFY department_id INTEGER NOT NULL;
+ALTER TABLE employee ALTER COLUMN department_id SET NOT NULL;

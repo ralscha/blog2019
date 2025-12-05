@@ -1,3 +1,4 @@
+import { provideZoneChangeDetection } from "@angular/core";
 import {
   PreloadAllModules,
   provideRouter,
@@ -22,7 +23,7 @@ const routes: Routes = [
 
 bootstrapApplication(AppComponent, {
   providers: [
-    {provide: RouteReuseStrategy, useClass: IonicRouteStrategy},
+    provideZoneChangeDetection(),{provide: RouteReuseStrategy, useClass: IonicRouteStrategy},
     provideIonicAngular(),
     provideRouter(routes, withHashLocation(), withPreloading(PreloadAllModules))
   ]

@@ -8,11 +8,9 @@ import java.util.Random;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import io.cettia.Server;
 import io.cettia.ServerSocketPredicates;
+import tools.jackson.databind.ObjectMapper;
 
 @Service
 public class DataEmitterService {
@@ -36,7 +34,7 @@ public class DataEmitterService {
   }
 
   @Scheduled(initialDelay = 2_000, fixedRate = 5_000)
-  public void sendPieData() throws JsonProcessingException {
+  public void sendPieData() {
     List<Integer> data = new ArrayList<>();
     for (int i = 0; i < 5; i++) {
       data.add(random.nextInt(300));
@@ -53,7 +51,7 @@ public class DataEmitterService {
   }
 
   @Scheduled(initialDelay = 2_000, fixedRate = 5_200)
-  public void sendBarData() throws JsonProcessingException {
+  public void sendBarData() {
     List<Integer> data = new ArrayList<>();
     for (int i = 0; i < 7; i++) {
       data.add(random.nextInt(300));
@@ -64,7 +62,7 @@ public class DataEmitterService {
   }
 
   @Scheduled(initialDelay = 2_000, fixedRate = 1_000)
-  public void sendLineData() throws JsonProcessingException {
+  public void sendLineData() {
     var data = new HashMap<String, Object>();
     data.put("name", System.currentTimeMillis());
     data.put("value", new Object[] { System.currentTimeMillis(), random.nextInt(3000) });

@@ -1,3 +1,4 @@
+import { provideZoneChangeDetection } from "@angular/core";
 import {AppComponent} from "./app/app.component";
 import {bootstrapApplication} from "@angular/platform-browser";
 import {IonicRouteStrategy, provideIonicAngular} from "@ionic/angular/standalone";
@@ -7,7 +8,7 @@ import {provideHttpClient, withInterceptorsFromDi} from "@angular/common/http";
 
 bootstrapApplication(AppComponent, {
   providers: [
-    provideIonicAngular(),
+    provideZoneChangeDetection(),provideIonicAngular(),
     provideHttpClient(withInterceptorsFromDi()),
     provideRouter(routes, withHashLocation()),
     {provide: RouteReuseStrategy, useClass: IonicRouteStrategy}

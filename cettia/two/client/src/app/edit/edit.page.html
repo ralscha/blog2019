@@ -1,13 +1,12 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/home"></ion-back-button>
+      <ion-back-button defaultHref="/home" />
     </ion-buttons>
     <ion-title>Edit Todo</ion-title>
     <ion-buttons slot="end">
       <ion-button (click)="deleteTodo()">
-        <ion-icon name="trash-outline" slot="icon-only">
-        </ion-icon>
+        <ion-icon name="trash-outline" slot="icon-only" />
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
@@ -17,7 +16,7 @@
 
   <ion-list>
     <ion-item>
-      <ion-input [(ngModel)]="todo!.title" label="Title" labelPlacement="stacked" type="text"></ion-input>
+      <ion-input [(ngModel)]="todo!.title" label="Title" labelPlacement="stacked" type="text" />
     </ion-item>
     <ion-item>
       <ion-checkbox [(ngModel)]="todo!.completed" labelPlacement="stacked">Completed</ion-checkbox>

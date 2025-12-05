@@ -1,3 +1,4 @@
+import { provideZoneChangeDetection } from "@angular/core";
 import {defineCustomElements} from '@ionic/pwa-elements/loader';
 
 import {provideRouter, RouteReuseStrategy, Routes, withHashLocation} from '@angular/router';
@@ -14,7 +15,7 @@ const routes: Routes = [
 
 bootstrapApplication(AppComponent, {
   providers: [
-    provideIonicAngular(),
+    provideZoneChangeDetection(),provideIonicAngular(),
     provideRouter(routes, withHashLocation()),
     {provide: RouteReuseStrategy, useClass: IonicRouteStrategy},
     provideHttpClient(withInterceptorsFromDi())

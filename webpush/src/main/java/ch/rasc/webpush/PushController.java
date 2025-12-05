@@ -38,12 +38,12 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import ch.rasc.webpush.ChuckNorrisJokeService.Joke;
 import ch.rasc.webpush.dto.PushMessage;
 import ch.rasc.webpush.dto.Subscription;
 import ch.rasc.webpush.dto.SubscriptionEndpoint;
+import tools.jackson.databind.ObjectMapper;
 
 @RestController
 public class PushController {
