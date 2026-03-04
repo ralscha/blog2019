@@ -105,8 +105,8 @@ export class HomePage implements AfterViewInit {
      */
 
     const worker = await createWorker(this.language, 1, {
-      workerPath: 'tesseract6/worker.min.js',
-      corePath: 'tesseract6/',
+      workerPath: 'tesseract7/worker.min.js',
+      corePath: 'tesseract7/',
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       logger: (progress: any) => {
         this.progressStatus = progress.status;

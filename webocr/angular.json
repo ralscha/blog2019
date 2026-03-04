@@ -26,12 +26,12 @@
               {
                 "glob": "worker.min.js",
                 "input": "node_modules/tesseract.js/dist/",
-                "output": "./tesseract6"
+                "output": "./tesseract7"
               },
               {
                 "glob": "@(tesseract-core.wasm.js|tesseract-core-simd.wasm.js|tesseract-core-lstm.wasm.js|tesseract-core-simd-lstm.wasm.js)",
                 "input": "node_modules/tesseract.js-core/",
-                "output": "./tesseract6"
+                "output": "./tesseract7"
               }
             ],
             "styles": [
