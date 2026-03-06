@@ -4,8 +4,8 @@ export const environment: Env = {
   production: true,
   serverURL: 'http://localhost:8080',
   version: '0.0.1',
-  buildTimestamp: 1751714337,
-  shortCommitId: '08cb0dc',
-  commitId: '08cb0dcecc1dd5bd4e5972a6447386fe3c011c76',
-  commitTime: 1747581450
+  buildTimestamp: 1772811729,
+  shortCommitId: '596bb0b',
+  commitId: '596bb0ba2fed416da636fbb18f8e33a5179c7b8a',
+  commitTime: 1772596717
 };
