@@ -37,7 +37,7 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.fasterxml.jackson.core.JsonProcessingException;
+
 
 import ch.rasc.webpush.ChuckNorrisJokeService.Joke;
 import ch.rasc.webpush.dto.PushMessage;
@@ -133,14 +133,9 @@ public class PushController {
       return;
     }
 
-    try {
-      Joke joke = this.service.getRandomJoke();
+    Joke joke = this.service.getRandomJoke();
       sendPushMessageToAllSubscribers(this.subscriptions,
           new PushMessage("Chuck Norris Joke: " + joke.id(), joke.value()));
-    }
-    catch (IOException e) {
-      Application.logger.error("sending chuck norris joke failed", e);
-    }
   }
 
   private void sendPushMessageToAllSubscribersWithoutPayload() {
@@ -155,7 +150,7 @@ public class PushController {
   }
 
   private void sendPushMessageToAllSubscribers(Map<String, Subscription> subs,
-      Object message) throws JsonProcessingException {
+      Object message) {
 
     Set<String> failedSubscriptions = new HashSet<>();
 
@@ -187,7 +182,7 @@ public class PushController {
   private boolean sendPushMessage(Subscription subscription, byte[] body) {
     String origin = null;
     try {
-      URL url = new URL(subscription.getEndpoint());
+      URL url = URI.create(subscription.getEndpoint()).toURL();
       origin = url.getProtocol() + "://" + url.getHost();
     }
     catch (MalformedURLException e) {

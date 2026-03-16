@@ -27,7 +27,7 @@ public class SubscriptionKeys {
 
   @Override
   public int hashCode() {
-    return Objects.hash(auth, p256dh);
+    return Objects.hash(this.auth, this.p256dh);
   }
 
   @Override
@@ -35,14 +35,11 @@ public class SubscriptionKeys {
     if (this == obj) {
       return true;
     }
-    if ((obj == null) || (getClass() != obj.getClass())) {
+    if (obj == null || getClass() != obj.getClass()) {
       return false;
     }
     SubscriptionKeys other = (SubscriptionKeys) obj;
-    if (!Objects.equals(this.auth, other.auth)) {
-      return false;
-    }
-    if (!Objects.equals(this.p256dh, other.p256dh)) {
+    if (!Objects.equals(this.auth, other.auth) || !Objects.equals(this.p256dh, other.p256dh)) {
       return false;
     }
     return true;

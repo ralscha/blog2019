@@ -35,7 +35,7 @@ public class Subscription {
 
   @Override
   public int hashCode() {
-    return Objects.hash(endpoint, expirationTime, keys);
+    return Objects.hash(this.endpoint, this.expirationTime, this.keys);
   }
 
   @Override
@@ -43,17 +43,11 @@ public class Subscription {
     if (this == obj) {
       return true;
     }
-    if ((obj == null) || (getClass() != obj.getClass())) {
+    if (obj == null || getClass() != obj.getClass()) {
       return false;
     }
     Subscription other = (Subscription) obj;
-    if (!Objects.equals(this.endpoint, other.endpoint)) {
-      return false;
-    }
-    if (!Objects.equals(this.expirationTime, other.expirationTime)) {
-      return false;
-    }
-    if (!Objects.equals(this.keys, other.keys)) {
+    if (!Objects.equals(this.endpoint, other.endpoint) || !Objects.equals(this.expirationTime, other.expirationTime) || !Objects.equals(this.keys, other.keys)) {
       return false;
     }
     return true;
