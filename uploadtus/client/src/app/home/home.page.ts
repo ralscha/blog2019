@@ -1,6 +1,4 @@
-import {ChangeDetectorRef, Component, inject, viewChild} from '@angular/core';
-// @ts-ignore
-import RecordRTC from 'recordrtc';
+import {ChangeDetectorRef, Component, ElementRef, inject, viewChild} from '@angular/core';
 import {Upload} from 'tus-js-client';
 import {
   IonButton,
@@ -25,37 +23,57 @@ import {ProgressBarComponent} from '../progress-bar/progress-bar.component';
 export class HomePage {
   recording = false;
   uploadProgress = 0;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  readonly videoElement = viewChild.required<any>('videoElement');
+  readonly videoElement = viewChild.required<ElementRef<HTMLVideoElement>>('videoElement');
   private readonly toastCtrl = inject(ToastController);
   private readonly changeDetectionRef = inject(ChangeDetectorRef);
-  private recordRTC: RecordRTC;
+  private mediaRecorder: MediaRecorder | null = null;
+  private mediaStream: MediaStream | null = null;
+  private recordedChunks: Blob[] = [];
 
-  start(): void {
+  async start(): Promise<void> {
     this.recording = true;
-    navigator.mediaDevices.getUserMedia({video: true, audio: false})
-      .then(async (stream) => {
-        this.videoElement().nativeElement.srcObject = stream;
-        await this.videoElement().nativeElement.play();
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({video: true, audio: false});
+      this.mediaStream = stream;
+      this.videoElement().nativeElement.srcObject = stream;
+      await this.videoElement().nativeElement.play();
 
-        this.recordRTC = RecordRTC(stream, {type: 'video'});
-        this.recordRTC.startRecording();
-
-      })
-      .catch(err => console.log('An error occurred! ' + err));
+      this.recordedChunks = [];
+      const mimeType = this.getPreferredVideoMimeType();
+      this.mediaRecorder = mimeType ? new MediaRecorder(stream, {mimeType}) : new MediaRecorder(stream);
+      this.mediaRecorder.addEventListener('dataavailable', this.handleDataAvailable);
+      this.mediaRecorder.start();
+    }
+    catch (error) {
+      this.recording = false;
+      console.error('Could not start video capture', error);
+      await this.presentToast('Could not access the camera');
+    }
   }
 
   stop(): void {
     this.recording = false;
-    if (this.recordRTC) {
-      this.recordRTC.stopRecording(() => {
-        const recordedBlob = this.recordRTC.getBlob();
-        this.uploadVideo(recordedBlob);
-      });
+    const mediaRecorder = this.mediaRecorder;
+    if (mediaRecorder && mediaRecorder.state !== 'inactive') {
+      mediaRecorder.addEventListener('stop', () => {
+        const recordedBlob = new Blob(this.recordedChunks, {
+          type: mediaRecorder.mimeType || 'video/webm'
+        });
+        this.resetRecorder();
+        if (recordedBlob.size > 0) {
+          this.uploadVideo(recordedBlob);
+        }
+      }, {once: true});
+      mediaRecorder.stop();
+    }
+    else {
+      this.resetRecorder();
     }
 
     this.videoElement().nativeElement.pause();
     this.videoElement().nativeElement.srcObject = null;
+    this.mediaStream?.getTracks().forEach(track => track.stop());
+    this.mediaStream = null;
   }
 
   takeSnapshot(): void {
@@ -88,7 +106,7 @@ export class HomePage {
     }
   }
 
-  private uploadFile(file: File): void {
+  private async uploadFile(file: File): Promise<void> {
     this.uploadProgress = 0;
 
     const upload = new Upload(file, {
@@ -100,29 +118,62 @@ export class HomePage {
         filetype: file.type
       },
       onError: async (error) => {
-        const toast = await this.toastCtrl.create({
-          message: 'Upload failed: ' + error,
-          duration: 3000,
-          position: 'top'
-        });
-        toast.present();
+        await this.presentToast('Upload failed: ' + error);
       },
-      onChunkComplete: (chunkSize, bytesAccepted, bytesTotal) => {
-        this.uploadProgress = Math.floor(bytesAccepted / bytesTotal * 100);
+      onProgress: (bytesUploaded, bytesTotal) => {
+        this.uploadProgress = Math.floor(bytesUploaded / bytesTotal * 100);
         this.changeDetectionRef.detectChanges();
       },
       onSuccess: async () => {
         this.uploadProgress = 100;
         this.changeDetectionRef.detectChanges();
-        const toast = await this.toastCtrl.create({
-          message: 'Upload successful',
-          duration: 3000,
-          position: 'top',
-        });
-        toast.present();
+        await this.presentToast('Upload successful');
       }
     });
 
-    upload.start();
+    try {
+      const previousUploads = await upload.findPreviousUploads();
+      if (previousUploads.length > 0) {
+        upload.resumeFromPreviousUpload(previousUploads[0]);
+      }
+      upload.start();
+    }
+    catch (error) {
+      await this.presentToast('Could not initialize the upload');
+      console.error('Could not initialize upload', error);
+    }
+  }
+
+  private readonly handleDataAvailable = (event: BlobEvent): void => {
+    if (event.data.size > 0) {
+      this.recordedChunks.push(event.data);
+    }
+  };
+
+  private getPreferredVideoMimeType(): string | undefined {
+    const supportedTypes = [
+      'video/webm;codecs=vp9',
+      'video/webm;codecs=vp8',
+      'video/webm'
+    ];
+
+    return supportedTypes.find((candidate) => MediaRecorder.isTypeSupported(candidate));
+  }
+
+  private async presentToast(message: string): Promise<void> {
+    const toast = await this.toastCtrl.create({
+      message,
+      duration: 3000,
+      position: 'top'
+    });
+    await toast.present();
+  }
+
+  private resetRecorder(): void {
+    if (this.mediaRecorder) {
+      this.mediaRecorder.removeEventListener('dataavailable', this.handleDataAvailable);
+    }
+    this.mediaRecorder = null;
+    this.recordedChunks = [];
   }
 }

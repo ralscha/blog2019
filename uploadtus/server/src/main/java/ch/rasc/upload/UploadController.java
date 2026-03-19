@@ -79,9 +79,8 @@ public class UploadController {
   }
 
   @Scheduled(fixedDelayString = "PT24H")
-  private void cleanup() {
-    Path locksDir = this.tusUploadDirectory.resolve("locks");
-    if (Files.exists(locksDir)) {
+  void cleanup() {
+    if (Files.isDirectory(this.tusUploadDirectory)) {
       try {
         this.tusFileUploadService.cleanup();
       }

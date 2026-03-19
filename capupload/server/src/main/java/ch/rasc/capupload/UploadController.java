@@ -4,9 +4,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
@@ -27,6 +27,9 @@ import me.desair.tus.server.upload.UploadInfo;
 @Controller
 public class UploadController {
 
+  private static final Logger logger = LoggerFactory
+      .getLogger(UploadController.class);
+
   private final TusFileUploadService tusFileUploadService;
 
   private final Path uploadDirectory;
@@ -37,7 +40,7 @@ public class UploadController {
       AppProperties appProperties) {
     this.tusFileUploadService = tusFileUploadService;
 
-    this.uploadDirectory = Paths.get(appProperties.getAppUploadDirectory());
+    this.uploadDirectory = Path.of(appProperties.getAppUploadDirectory());
     try {
       Files.createDirectories(this.uploadDirectory);
     }
@@ -45,7 +48,7 @@ public class UploadController {
       Application.logger.error("create upload directory", e);
     }
 
-    this.tusUploadDirectory = Paths.get(appProperties.getTusUploadDirectory());
+    this.tusUploadDirectory = Path.of(appProperties.getTusUploadDirectory());
   }
 
   @CrossOrigin
@@ -54,14 +57,16 @@ public class UploadController {
   public boolean uploadAll(@RequestParam("file") MultipartFile file) {
 
     try {
-      Path downloadedFile = this.uploadDirectory
-          .resolve(Paths.get(file.getOriginalFilename()));
+      String fileName = sanitizeFileName(file.getOriginalFilename());
+      Path downloadedFile = this.uploadDirectory.resolve(fileName);
       Files.deleteIfExists(downloadedFile);
-      Files.copy(file.getInputStream(), downloadedFile);
+      try (InputStream inputStream = file.getInputStream()) {
+        Files.copy(inputStream, downloadedFile);
+      }
       return true;
     }
     catch (IOException e) {
-      LoggerFactory.getLogger(this.getClass()).error("uploadAll", e);
+      logger.error("uploadAll", e);
       return false;
     }
 
@@ -103,6 +108,7 @@ public class UploadController {
   }
 
   @Scheduled(fixedDelayString = "PT24H")
+  @SuppressWarnings("unused")
   private void cleanup() {
     Path locksDir = this.tusUploadDirectory.resolve("locks");
     if (Files.exists(locksDir)) {
@@ -113,5 +119,13 @@ public class UploadController {
         Application.logger.error("error during cleanup", e);
       }
     }
+  }
+
+  private static String sanitizeFileName(String originalFilename) {
+    if (originalFilename == null || originalFilename.isBlank()) {
+      return "upload.bin";
+    }
+
+    return Path.of(originalFilename).getFileName().toString();
   }
 }

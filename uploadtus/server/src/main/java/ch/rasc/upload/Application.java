@@ -22,6 +22,8 @@ public class Application {
   @Bean
   TusFileUploadService tusFileUploadService(AppProperties appProperties) {
     return new TusFileUploadService()
-        .withStoragePath(appProperties.getTusUploadDirectory()).withUploadUri("/upload");
+        .withStoragePath(appProperties.getTusUploadDirectory())
+        .withUploadExpirationPeriod(86_400_000L)
+        .withUploadUri("/upload");
   }
 }

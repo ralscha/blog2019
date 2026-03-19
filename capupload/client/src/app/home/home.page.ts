@@ -19,12 +19,11 @@ import {HttpClient} from '@angular/common/http';
 import {Camera, CameraResultType, CameraSource} from '@capacitor/camera';
 import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
 import {environment} from '../../environments/environment';
-import {catchError, finalize} from 'rxjs/operators';
-import {Observable, throwError} from 'rxjs';
+import {catchError, finalize, Observable, throwError} from 'rxjs';
 import {Upload} from 'tus-js-client';
 import {FormsModule} from '@angular/forms';
-import {addIcons} from "ionicons";
-import {camera, image} from "ionicons/icons";
+import {addIcons} from 'ionicons';
+import {camera, image} from 'ionicons/icons';
 
 @Component({
   selector: 'app-home',
@@ -47,24 +46,25 @@ export class HomePage {
   }
 
   async takePhoto(): Promise<void> {
-    const ab = await this.getPhoto(CameraSource.Camera);
-    if (ab) {
-      if (this.tus) {
-        await this.uploadTus(ab);
-      } else {
-        await this.uploadAll(ab);
-      }
-    }
+    await this.handlePhotoSelection(CameraSource.Camera);
   }
 
   async selectPhoto(): Promise<void> {
-    const ab = await this.getPhoto(CameraSource.Photos);
-    if (ab) {
-      if (this.tus) {
-        await this.uploadTus(ab);
-      } else {
-        await this.uploadAll(ab);
-      }
+    await this.handlePhotoSelection(CameraSource.Photos);
+  }
+
+  private async handlePhotoSelection(source: CameraSource): Promise<void> {
+    this.error = null;
+
+    const webPath = await this.getPhoto(source);
+    if (!webPath) {
+      return;
+    }
+
+    if (this.tus) {
+      await this.uploadTus(webPath);
+    } else {
+      await this.uploadAll(webPath);
     }
   }
 
@@ -97,7 +97,10 @@ export class HomePage {
         catchError(e => this.handleError(e)),
         finalize(() => this.loading?.dismiss())
       )
-      .subscribe(ok => this.showToast(ok));
+      .subscribe({
+        next: ok => this.showToast(ok),
+        error: () => this.showToast(false)
+      });
   }
 
   private async uploadTus(webPath: string): Promise<void> {
@@ -150,7 +153,7 @@ export class HomePage {
   private handleError(error: any): Observable<never> {
     const errMsg = error.message ? error.message : error.toString();
     this.error = errMsg;
-    return throwError(errMsg);
+    return throwError(() => error);
   }
 
 }
