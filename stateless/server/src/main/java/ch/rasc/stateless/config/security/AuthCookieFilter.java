@@ -4,11 +4,12 @@ import static ch.rasc.stateless.db.tables.AppSession.APP_SESSION;
 import static ch.rasc.stateless.db.tables.AppUser.APP_USER;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.concurrent.TimeUnit;
 
 import org.jooq.DSLContext;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.filter.GenericFilterBean;
+import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
@@ -16,18 +17,17 @@ import com.github.benmanes.caffeine.cache.Caffeine;
 import ch.rasc.stateless.db.tables.records.AppUserRecord;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.ServletRequest;
-import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
-public class AuthCookieFilter extends GenericFilterBean {
+public class AuthCookieFilter extends OncePerRequestFilter {
 
   public final static String COOKIE_NAME = "authentication";
 
   private final DSLContext dsl;
 
-  private final Cache<String, AppUserDetail> userDetailsCache;
+  private final Cache<String, CachedAuthentication> userDetailsCache;
 
   public AuthCookieFilter(DSLContext dsl) {
     this.dsl = dsl;
@@ -37,32 +37,42 @@ public class AuthCookieFilter extends GenericFilterBean {
   }
 
   @Override
-  public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse,
-      FilterChain filterChain) throws IOException, ServletException {
+  protected void doFilterInternal(HttpServletRequest request,
+      HttpServletResponse response, FilterChain filterChain)
+      throws ServletException, IOException {
 
-    HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
+    String sessionId = extractAuthenticationCookie(request);
 
-    String sessionId = extractAuthenticationCookie(httpServletRequest);
+    if (sessionId != null
+        && SecurityContextHolder.getContext().getAuthentication() == null) {
+      CachedAuthentication cachedAuthentication = this.userDetailsCache.get(sessionId,
+          key -> loadAuthentication(sessionId));
 
-    if (sessionId != null) {
-      final String sId = sessionId;
-      AppUserDetail userDetails = this.userDetailsCache.get(sessionId, key -> {
-        var record = this.dsl.select(APP_USER.asterisk()).from(APP_USER)
-            .innerJoin(APP_SESSION).onKey().where(APP_SESSION.ID.eq(sId)).fetchOne()
-            .into(AppUserRecord.class);
-        if (record != null) {
-          return new AppUserDetail(record);
-        }
-        return null;
-      });
-
-      if (userDetails != null && userDetails.isEnabled()) {
-        SecurityContextHolder.getContext()
-            .setAuthentication(new UserAuthentication(userDetails));
+      if (cachedAuthentication != null
+          && cachedAuthentication.validUntil().isAfter(LocalDateTime.now())
+          && cachedAuthentication.userDetails().isEnabled()) {
+        SecurityContextHolder.getContext().setAuthentication(
+            new UserAuthentication(cachedAuthentication.userDetails()));
+      }
+      else {
+        this.userDetailsCache.invalidate(sessionId);
       }
     }
 
-    filterChain.doFilter(servletRequest, servletResponse);
+    filterChain.doFilter(request, response);
+  }
+
+  private CachedAuthentication loadAuthentication(String sessionId) {
+    var record = this.dsl.select(APP_USER.asterisk(), APP_SESSION.VALID_UNTIL)
+        .from(APP_USER).innerJoin(APP_SESSION).onKey()
+        .where(APP_SESSION.ID.eq(sessionId))
+        .and(APP_SESSION.VALID_UNTIL.gt(LocalDateTime.now())).fetchOne();
+    if (record == null) {
+      return null;
+    }
+
+    return new CachedAuthentication(record.into(AppUserRecord.class),
+        record.get(APP_SESSION.VALID_UNTIL));
   }
 
   public static String extractAuthenticationCookie(
@@ -78,5 +88,14 @@ public class AuthCookieFilter extends GenericFilterBean {
       }
     }
     return sessionId;
+  }
+
+  private record CachedAuthentication(AppUserDetail userDetails,
+      LocalDateTime validUntil) {
+
+    private CachedAuthentication(AppUserRecord appUserRecord,
+        LocalDateTime validUntil) {
+      this(new AppUserDetail(appUserRecord), validUntil);
+    }
   }
 }

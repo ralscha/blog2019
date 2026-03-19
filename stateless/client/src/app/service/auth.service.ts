@@ -1,6 +1,6 @@
 import {inject, Injectable} from '@angular/core';
 import {BehaviorSubject, Observable, of} from 'rxjs';
-import {HttpClient, HttpParams} from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
 import {catchError, map, tap} from 'rxjs/operators';
 
 @Injectable({
@@ -25,10 +25,8 @@ export class AuthService {
     return this.authoritySubject.getValue() !== null;
   }
 
-  login(username: string, password: string): Observable<boolean> {
-    const body = new HttpParams().set('username', username).set('password', password);
-
-    return this.httpClient.post('/login', body, {responseType: 'text'})
+  login(email: string, password: string): Observable<boolean> {
+    return this.httpClient.post('/login', {email, password}, {responseType: 'text'})
       .pipe(
         map(response => this.handleAuthResponse(response)),
         catchError(() => of(false))
@@ -36,7 +34,7 @@ export class AuthService {
   }
 
   logout(): Observable<void> {
-    return this.httpClient.get<void>('/logout')
+    return this.httpClient.post<void>('/logout', null)
       .pipe(
         tap(() => this.authoritySubject.next(null))
       );

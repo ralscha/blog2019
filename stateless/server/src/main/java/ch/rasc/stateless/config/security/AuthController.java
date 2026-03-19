@@ -8,20 +8,27 @@ import java.time.LocalDateTime;
 import org.jooq.DSLContext;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import ch.rasc.stateless.config.AppProperties;
 import ch.rasc.stateless.db.tables.records.AppSessionRecord;
 import ch.rasc.stateless.db.tables.records.AppUserRecord;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 
 @RestController
+@Validated
 public class AuthController {
 
   private final PasswordEncoder passwordEncoder;
@@ -50,14 +57,14 @@ public class AuthController {
     return user.getAuthorities().iterator().next().getAuthority();
   }
 
-  @PostMapping("/login")
-  public ResponseEntity<String> login(String username, String password) {
+  @PostMapping(path = "/login", consumes = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity<String> login(@Valid @RequestBody LoginRequest loginRequest) {
 
     AppUserRecord appUserRecord = this.dsl.selectFrom(APP_USER)
-        .where(APP_USER.EMAIL.eq(username)).fetchOne();
+        .where(APP_USER.EMAIL.eq(loginRequest.email())).fetchOne();
 
     if (appUserRecord != null) {
-      boolean pwMatches = this.passwordEncoder.matches(password,
+      boolean pwMatches = this.passwordEncoder.matches(loginRequest.password(),
           appUserRecord.getPasswordHash());
       if (pwMatches && appUserRecord.getEnabled().booleanValue()) {
 
@@ -80,10 +87,15 @@ public class AuthController {
       }
     }
     else {
-      this.passwordEncoder.matches(password, this.userNotFoundEncodedPassword);
+      this.passwordEncoder.matches(loginRequest.password(),
+          this.userNotFoundEncodedPassword);
     }
 
     return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+  }
+
+  private record LoginRequest(@Email @NotBlank String email,
+      @NotBlank String password) {
   }
 
 }
