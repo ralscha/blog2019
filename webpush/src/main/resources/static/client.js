@@ -1,32 +1,40 @@
 const subscribeButton = document.getElementById('subscribeButton');
 const unsubscribeButton = document.getElementById('unsubscribeButton');
 
-const factOutput = document.getElementById('fact');
+const dadJokeOutput = document.getElementById('dadJoke');
 const jokeOutput = document.getElementById('joke');
 
-if ("serviceWorker" in navigator) {
-  try {
-	checkSubscription();
-    init();
-  } catch (e) {
-    console.error('error init(): ' + e);
-  }
+let publicSigningKey;
+
+if ('serviceWorker' in navigator && 'PushManager' in window) {
+  subscribeButton.disabled = true;
+
+  startApplication().catch(error => {
+    console.error('error init(): ' + error);
+  });
 
   subscribeButton.addEventListener('click', () => {
-	  subscribe().catch(e => {
-		  if (Notification.permission === 'denied') {
-	         console.warn('Permission for notifications was denied');
-	      } else {
-	    	 console.error('error subscribe(): ' + e);
-	      }   
-	  });
+    subscribe().catch(error => {
+      if (Notification.permission === 'denied') {
+        console.warn('Permission for notifications was denied');
+      }
+      else {
+        console.error('error subscribe(): ' + error);
+      }
+    });
   });
 
   unsubscribeButton.addEventListener('click', () => {
-	unsubscribe().catch(e => console.error('error unsubscribe(): ' + e)); 
+    unsubscribe().catch(error => console.error('error unsubscribe(): ' + error));
   });
 }
 
+async function startApplication() {
+  await init();
+  const subscribed = await checkSubscription();
+  subscribeButton.disabled = subscribed;
+  unsubscribeButton.disabled = !subscribed;
+}
 
 async function checkSubscription() {
   const registration = await navigator.serviceWorker.ready;
@@ -54,31 +62,30 @@ async function checkSubscription() {
 }
 
 async function init() {
-  fetch('/publicSigningKey')
-     .then(response => response.arrayBuffer())
-     .then(key => this.publicSigningKey = key)
-     .finally(() => console.info('Application Server Public Key fetched from the server'));
-
   await navigator.serviceWorker.register("/sw.js", {
     scope: "/"
   });
 
   await navigator.serviceWorker.ready;
   console.info('Service Worker has been installed and is ready');
-  navigator.serviceWorker.addEventListener('message', event => displayLastMessages());
+  navigator.serviceWorker.addEventListener('message', () => displayLastMessages());
+
+  const response = await fetch('/publicSigningKey');
+  publicSigningKey = await response.arrayBuffer();
+  console.info('Application Server Public Key fetched from the server');
 
   displayLastMessages();
 }
 
 function displayLastMessages() {
   caches.open('data').then(dataCache => {
-    dataCache.match('fact')
+    dataCache.match('dad-joke')
       .then(response => response ? response.text() : '')
-      .then(txt => factOutput.innerText = txt);
-    
+      .then(txt => dadJokeOutput.innerText = txt);
+
     dataCache.match('joke')
-	  .then(response => response ? response.text() : '')
-	  .then(txt => jokeOutput.innerText = txt);    
+      .then(response => response ? response.text() : '')
+      .then(txt => jokeOutput.innerText = txt);
   });
 }
 
@@ -113,7 +120,7 @@ async function subscribe() {
   const registration = await navigator.serviceWorker.ready;
   const subscription = await registration.pushManager.subscribe({
     userVisibleOnly: true,
-    applicationServerKey: this.publicSigningKey
+    applicationServerKey: publicSigningKey
   });
 
   console.info(`Subscribed to Push Service: ${subscription.endpoint}`);

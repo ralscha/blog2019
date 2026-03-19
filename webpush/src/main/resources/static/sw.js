@@ -1,3 +1,5 @@
+self.addEventListener('install', event => event.waitUntil(self.skipWaiting()));
+
 self.addEventListener('activate', event => event.waitUntil(clients.claim()));
 
 self.addEventListener('push', event => event.waitUntil(handlePushEvent(event)));
@@ -7,36 +9,38 @@ self.addEventListener('notificationclick', event => event.waitUntil(handleNotifi
 self.addEventListener('notificationclose', event => console.info('notificationclose event fired'));
 
 async function handlePushEvent(event) {
-	console.info('push event emitted');
+  console.info('push event emitted');
 
   const needToShow = await needToShowNotification();
   const dataCache = await caches.open('data');
 
   if (!event.data) {
-    console.info('number fact received');
+    console.info('dad joke received without payload');
 
     if (needToShow) {
-      self.registration.showNotification('Numbers API', {
-        body: 'A new fact has arrived',
-        tag: 'numberfact',
-        icon: 'numbers.png'
+      await self.registration.showNotification('Dad Joke', {
+        body: 'A new joke has arrived',
+        tag: 'dad-joke',
+        icon: 'dad-joke.png',
+        data: { url: urlToOpen }
       });
     }
 
-    const response = await fetch('lastNumbersAPIFact');
-    const fact = await response.text();
+    const response = await fetch('lastDadJoke');
+    const dadJoke = await response.text();
 
-    await dataCache.put('fact', new Response(fact));
+    await dataCache.put('dad-joke', new Response(dadJoke));
   }
   else {
-	  console.info('chuck joke received');
+    console.info('chuck joke received');
 
     const msg = event.data.json();
 
     if (needToShow) {
-      self.registration.showNotification(msg.title, {
+      await self.registration.showNotification(msg.title, {
         body: msg.body,
-        icon: 'chuck.png'
+        icon: 'chuck.png',
+        data: { url: urlToOpen }
       });
     }
 
@@ -49,15 +53,16 @@ async function handlePushEvent(event) {
   }
 }
 
-const urlToOpen1 = new URL('/index.html', self.location.origin).href;
-const urlToOpen2 = new URL('/', self.location.origin).href;
+const urlToOpen = new URL('/index.html', self.location.origin).href;
+const alternateUrlToOpen = new URL('/', self.location.origin).href;
 
 async function handleNotificationClick(event) {
+  const targetUrl = event.notification.data?.url ?? urlToOpen;
 
   let openClient = null;
   const allClients = await clients.matchAll({ includeUncontrolled: true, type: 'window' });
   for (const client of allClients) {
-    if (client.url === urlToOpen1 || client.url === urlToOpen2) {
+    if (client.url === targetUrl || client.url === alternateUrlToOpen) {
       openClient = client;
       break;
     }
@@ -66,14 +71,17 @@ async function handleNotificationClick(event) {
   if (openClient) {
     await openClient.focus();
   } else {
-    await clients.openWindow(urlToOpen1);
+    const newClient = await clients.openWindow(targetUrl);
+    if (newClient) {
+      await newClient.focus();
+    }
   }
 
   event.notification.close();
 }
 
 async function needToShowNotification() {
-  const allClients = await clients.matchAll({ includeUncontrolled: true });
+  const allClients = await clients.matchAll({ includeUncontrolled: true, type: 'window' });
   for (const client of allClients) {
     if (client.visibilityState === 'visible') {
       return false;

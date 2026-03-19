@@ -54,7 +54,7 @@ public class PushController {
 
   private final Map<String, Subscription> subscriptions = new ConcurrentHashMap<>();
 
-  private String lastNumbersAPIFact = "";
+  private String lastDadJoke = "";
 
   private final HttpClient httpClient;
 
@@ -63,6 +63,8 @@ public class PushController {
   private final ObjectMapper objectMapper;
 
   private final ChuckNorrisJokeService service;
+
+  private final OfficialJokeService officialJokeService;
 
   public PushController(ServerKeys serverKeys, CryptoService cryptoService,
       ObjectMapper objectMapper) {
@@ -78,6 +80,12 @@ public class PushController {
     HttpServiceProxyFactory factory = HttpServiceProxyFactory
         .builderFor(WebClientAdapter.create(client)).build();
     this.service = factory.createClient(ChuckNorrisJokeService.class);
+
+    WebClient officialJokeClient = WebClient.builder()
+        .baseUrl("https://official-joke-api.appspot.com").build();
+    HttpServiceProxyFactory officialJokeFactory = HttpServiceProxyFactory
+        .builderFor(WebClientAdapter.create(officialJokeClient)).build();
+    this.officialJokeService = officialJokeFactory.createClient(OfficialJokeService.class);
   }
 
   @GetMapping(path = "/publicSigningKey", produces = "application/octet-stream")
@@ -101,29 +109,24 @@ public class PushController {
     return this.subscriptions.containsKey(subscription.getEndpoint());
   }
 
-  @GetMapping(path = "/lastNumbersAPIFact")
-  public String lastNumbersAPIFact() {
-    return this.lastNumbersAPIFact;
+  @GetMapping(path = "/lastDadJoke")
+  public String lastDadJoke() {
+    return this.lastDadJoke;
   }
 
   @Scheduled(fixedDelay = 20_000)
-  public void numberFact() {
+  public void dadJokeWithoutPayload() {
     if (this.subscriptions.isEmpty()) {
       return;
     }
 
     try {
-      HttpResponse<String> response = this.httpClient.send(
-          HttpRequest.newBuilder(URI.create("http://numbersapi.com/random/date")).build(),
-          BodyHandlers.ofString());
-
-      if (response.statusCode() == 200) {
-        this.lastNumbersAPIFact = response.body();
-        sendPushMessageToAllSubscribersWithoutPayload();
-      }
+      OfficialJokeService.Joke joke = this.officialJokeService.getRandomJoke();
+      this.lastDadJoke = joke.setup() + " " + joke.punchline();
+      sendPushMessageToAllSubscribersWithoutPayload();
     }
-    catch (IOException | InterruptedException e) {
-      Application.logger.error("fetch number fact", e);
+    catch (RuntimeException e) {
+      Application.logger.error("fetch dad joke", e);
     }
   }
 
