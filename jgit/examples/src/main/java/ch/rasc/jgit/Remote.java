@@ -33,6 +33,7 @@ public class Remote {
       git.add().addFilepattern("README.md").call();
       git.commit().setMessage("first commit").setAuthor("author", "author@email.com")
           .call();
+      String currentBranch = git.getRepository().getBranch();
 
       // git remote add origin git@github.com:ralscha/test_repo.git
       RemoteAddCommand remoteAddCommand = git.remoteAdd();
@@ -40,14 +41,14 @@ public class Remote {
       remoteAddCommand.setUri(new URIish("git@github.com:ralscha/test_repo.git"));
       remoteAddCommand.call();
 
-      // git push -u origin master
+      // git push -u origin <current branch>
       PushCommand pushCommand = git.push();
-      pushCommand.add("master");
+      pushCommand.add(currentBranch);
       pushCommand.setRemote("origin");
       pushCommand.call();
 
       // pushCommand.setCredentialsProvider(new
-      // UsernamePasswordCredentialsProvider("username", "password"));
+      // UsernamePasswordCredentialsProvider("username", "personal-access-token"));
 
       SshSessionFactory sshSessionFactory = new JschConfigSessionFactory() {
         @Override
@@ -72,7 +73,7 @@ public class Remote {
         SshTransport sshTransport = (SshTransport) transport;
         sshTransport.setSshSessionFactory(sshSessionFactory);
       });
-      pushCommand.add("master");
+      pushCommand.add(currentBranch);
       pushCommand.setRemote("origin");
       pushCommand.call();
 

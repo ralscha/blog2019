@@ -27,13 +27,15 @@ public class Branch {
       git.add().addFilepattern(".").call();
       git.commit().setMessage("initial commit").setAuthor("author", "author@email.com")
           .call();
+      String defaultBranch = git.getRepository().getBranch();
 
       // new branch
       git.branchCreate().setName("new_feature").call();
       git.checkout().setName("new_feature").call();
 
       // or
-      git.checkout().setName("new_feature").setCreateBranch(true).call();
+      git.checkout().setName("experimental_feature").setCreateBranch(true).call();
+      git.checkout().setName("new_feature").call();
 
       System.out.println(git.getRepository().getFullBranch());
 
@@ -43,7 +45,7 @@ public class Branch {
       git.commit().setMessage("implementing new feature")
           .setAuthor("author", "author@email.com").call();
 
-      git.checkout().setName("master").call();
+      git.checkout().setName(defaultBranch).call();
 
       ObjectId branchObjectId = git.getRepository().resolve("new_feature");
       MergeResult mergeResult = git.merge()
@@ -78,7 +80,8 @@ public class Branch {
       }
 
       // delete branch
-      git.checkout().setName("master").call();
+      git.checkout().setName(defaultBranch).call();
+      git.branchDelete().setBranchNames("experimental_feature").setForce(true).call();
       git.branchDelete().setBranchNames("amazing_feature").setForce(true).call();
 
       System.out.println("- after delete");

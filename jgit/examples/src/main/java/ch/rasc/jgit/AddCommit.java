@@ -41,10 +41,15 @@ public class AddCommit {
       git.commit().setAll(true).setMessage("delete file2")
           .setAuthor("author", "author@email.com").call();
 
-      // or
-      git.rm().addFilepattern("file2.md").call();
-      git.commit().setMessage("delete file2").setAuthor("author", "author@email.com")
+      // Delete with rm()
+      Files.writeString(repoPath.resolve("file2.md"), "Hello Again 2");
+      git.add().addFilepattern("file2.md").call();
+      git.commit().setMessage("restore file2").setAuthor("author", "author@email.com")
           .call();
+
+      git.rm().addFilepattern("file2.md").call();
+      git.commit().setMessage("delete file2 with rm")
+          .setAuthor("author", "author@email.com").call();
 
     }
 
