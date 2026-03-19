@@ -19,3 +19,5 @@ INSERT INTO department(no, name) VALUES
 ALTER TABLE employee ADD COLUMN department_id INTEGER; 
 UPDATE employee SET department_id = (SELECT id FROM department where no = 'dddd');
 ALTER TABLE employee ALTER COLUMN department_id SET NOT NULL;
+ALTER TABLE employee ADD CONSTRAINT fk_employee_department
+  FOREIGN KEY (department_id) REFERENCES department(id);

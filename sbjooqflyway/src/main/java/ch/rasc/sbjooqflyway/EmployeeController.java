@@ -64,7 +64,7 @@ public class EmployeeController {
     return this.dsl
             .select(EMPLOYEE.ID)
             .from(EMPLOYEE)
-            .where(EMPLOYEE.FIRST_NAME.contains(name).or(EMPLOYEE.FIRST_NAME.contains(name)))
+            .where(EMPLOYEE.FIRST_NAME.contains(name).or(EMPLOYEE.LAST_NAME.contains(name)))
             .fetchArray(EMPLOYEE.ID);
   }
 

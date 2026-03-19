@@ -2,38 +2,50 @@ package ch.rasc.sbjooqflyway;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.io.IOException;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.net.http.HttpResponse.BodyHandlers;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.resttestclient.TestRestTemplate;
-import org.springframework.boot.resttestclient.autoconfigure.AutoConfigureTestRestTemplate;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
+import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.context.annotation.Import;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpMethod;
 
 import ch.rasc.sbjooqflyway.db.tables.pojos.Department;
+import tools.jackson.core.type.TypeReference;
+import tools.jackson.databind.ObjectMapper;
 
-@AutoConfigureTestRestTemplate
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @Import(TestcontainersConfiguration.class)
 class DepartmentControllerTest {
 
-  @Autowired
-  private TestRestTemplate restTemplate;
+  private final HttpClient httpClient = HttpClient.newHttpClient();
+
+  private final ObjectMapper objectMapper = new ObjectMapper();
+
+  @LocalServerPort
+  private int port;
 
   @Test
-  public void departments() {
-    var typeRef = new ParameterizedTypeReference<List<Department>>() {
-      // nothing_here
-    };
+  public void departments() throws IOException, InterruptedException {
+    HttpRequest request = HttpRequest.newBuilder()
+        .uri(URI.create("http://localhost:" + this.port + "/departments")).GET().build();
 
-    var response = this.restTemplate.exchange("/departments", HttpMethod.GET, null,
-        typeRef);
+    HttpResponse<String> response = this.httpClient.send(request,
+        BodyHandlers.ofString());
 
-    List<Department> departments = response.getBody();
+    assertThat(response.statusCode()).isEqualTo(200);
+
+    List<Department> departments = this.objectMapper.readValue(response.body(),
+        new TypeReference<List<Department>>() {
+          // nothing here
+        });
+
     assertThat(departments.get(0).getId()).isEqualTo(1);
     assertThat(departments.get(0).getNo()).isEqualTo("d001");
     assertThat(departments.get(0).getName()).isEqualTo("Marketing");
