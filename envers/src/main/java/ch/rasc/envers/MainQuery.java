@@ -1,17 +1,17 @@
 package ch.rasc.envers;
 
-import java.util.Calendar;
+import java.time.Instant;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
-
-import jakarta.persistence.EntityManager;
 
 import org.hibernate.envers.AuditReader;
 import org.hibernate.envers.AuditReaderFactory;
 import org.hibernate.envers.RevisionType;
 import org.hibernate.envers.query.AuditEntity;
 import org.hibernate.envers.query.AuditQuery;
+
+import jakarta.persistence.EntityManager;
 
 public class MainQuery {
 
@@ -50,8 +50,7 @@ public class MainQuery {
 
     System.out.println("===========================================");
     System.out.println("getRevisionNumberForDate");
-    Calendar cal = Calendar.getInstance();
-    Number revNumber = reader.getRevisionNumberForDate(cal.getTime());
+    Number revNumber = reader.getRevisionNumberForDate(Instant.now());
     System.out.println(revNumber); // output: 5
 
     System.out.println("===========================================");

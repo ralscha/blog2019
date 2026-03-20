@@ -3,20 +3,20 @@ package ch.rasc.envers;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.hibernate.Session;
+
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.ParameterExpression;
 import jakarta.persistence.criteria.Root;
-
-import org.hibernate.Session;
-
 import net.efabrika.util.DBTablePrinter;
 
 public class Main {
 
   public static void main(String[] args) {
+    JPAUtil.resetDemoDatabase();
 
     // Revision 1
     System.out.println("Revision 1: INSERT");
