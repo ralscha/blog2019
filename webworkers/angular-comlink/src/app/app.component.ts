@@ -1,5 +1,18 @@
 import {AfterViewInit, Component, ElementRef, OnDestroy, viewChild} from '@angular/core';
-import {wrap} from 'comlink';
+import {type Remote, wrap} from 'comlink';
+
+type MandelbrotWorkerRequest = {
+  startX: number;
+  startY: number;
+  width: number;
+  height: number;
+  totalWidth: number;
+  totalHeight: number;
+  maxIteration: number;
+};
+
+type MandelbrotPoint = [number, number];
+type ComputeMandelbrotSetMethod = (request: MandelbrotWorkerRequest) => MandelbrotPoint[];
 
 @Component({
   selector: 'app-root',
@@ -18,8 +31,7 @@ export class AppComponent implements AfterViewInit, OnDestroy {
   private workX = 0;
   private workY = 0;
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private computeMandelbrotSetMethods!: any[];
+  private computeMandelbrotSetMethods!: Remote<ComputeMandelbrotSetMethod>[];
   private workers!: Worker[];
   private height!: number;
   private width!: number;
@@ -69,8 +81,7 @@ export class AppComponent implements AfterViewInit, OnDestroy {
     this.progress = '100 %';
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  async work(computeMandelbrotSetMethod: any): Promise<void> {
+  async work(computeMandelbrotSetMethod: Remote<ComputeMandelbrotSetMethod>): Promise<void> {
     while (this.workY < this.height) {
       const result = await computeMandelbrotSetMethod({
         startX: this.workX,

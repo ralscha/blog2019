@@ -1,0 +1,19 @@
+{
+  "name": "parceljs-comlink",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "vite --open",
+    "build": "vite build",
+    "watch": "vite build --watch",
+    "preview": "vite preview --open"
+  },
+  "devDependencies": {
+    "vite": "8.0.1"
+  },
+  "dependencies": {
+    "comlink": "4.4.2"
+  },
+  "browserslist": [
+    "last 2 Chrome versions"
+  ]
+}

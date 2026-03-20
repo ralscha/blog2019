@@ -1,6 +1,6 @@
 import {parse} from 'papaparse';
 import {Earthquake, EarthquakeDb} from './earthquake-db';
-import * as Comlink from 'comlink';
+import {expose} from 'comlink';
 
 type EarthquakeRow = {
   id: string;
@@ -12,18 +12,17 @@ type EarthquakeRow = {
   longitude: string
 };
 
+const db = new EarthquakeDb();
 
-class EarthquakesLoader {
-  private db: EarthquakeDb;
-
-  constructor() {
-    this.db = new EarthquakeDb();
-  }
-
+const earthquakesLoader = {
   async load(url: string): Promise<void> {
     const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`Unable to download earthquake feed: ${response.status}`);
+    }
+
     const text = await response.text();
-    const data = parse<EarthquakeRow>(text, {header: true});
+    const data = parse<EarthquakeRow>(text, {header: true, skipEmptyLines: true});
 
     const earthquakes: Earthquake[] = [];
 
@@ -40,18 +39,17 @@ class EarthquakesLoader {
       }
     }
 
-    return this.db.transaction('rw', this.db.earthquakes, async () => {
-      await this.db.earthquakes.bulkPut(earthquakes);
+    await db.transaction('rw', db.earthquakes, async () => {
+      await db.earthquakes.bulkPut(earthquakes);
     });
-  }
+  },
 
   async deleteOldRecords(): Promise<void> {
     const thirtyDaysAgo = Date.now() - (30 * 24 * 60 * 60 * 1000);
-    await this.db.earthquakes.where('time').below(thirtyDaysAgo).delete();
+    await db.earthquakes.where('time').below(thirtyDaysAgo).delete();
   }
+};
 
-}
-
-Comlink.expose(EarthquakesLoader);
+expose(earthquakesLoader);
 
 

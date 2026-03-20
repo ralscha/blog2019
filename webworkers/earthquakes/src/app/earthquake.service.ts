@@ -1,21 +1,26 @@
 import {Injectable} from '@angular/core';
 import {Earthquake, EarthquakeDb} from './earthquake-db';
 import {Subject} from 'rxjs';
-import * as Comlink from 'comlink';
+import {releaseProxy, type Remote, wrap} from 'comlink';
+
+type EarthquakesLoaderApi = {
+  load(url: string): Promise<void>;
+  deleteOldRecords(): Promise<void>;
+};
 
 @Injectable({
   providedIn: 'root'
 })
 export class EarthquakeService {
 
-  private static readonly FOURTYFIVE_MINUTES = 30 * 60 * 1000;
+  private static readonly FORTY_FIVE_MINUTES = 30 * 60 * 1000;
   private static readonly ONE_HOUR = 60 * 60 * 1000;
   private static readonly ONE_DAY = 24 * 60 * 60 * 1000;
   private static readonly SEVEN_DAYS = 7 * 24 * 60 * 60 * 1000;
 
-  private db: EarthquakeDb;
+  private readonly db: EarthquakeDb;
 
-  private changeSubject = new Subject();
+  private readonly changeSubject = new Subject<void>();
   change$ = this.changeSubject.asObservable();
 
   constructor() {
@@ -38,7 +43,7 @@ export class EarthquakeService {
       } else if (lastUpdateTs + EarthquakeService.ONE_HOUR < now) {
         // database older than 1 hour. load the 1 day file
         url = 'https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.csv';
-      } else if (lastUpdateTs + EarthquakeService.FOURTYFIVE_MINUTES < now) {
+      } else if (lastUpdateTs + EarthquakeService.FORTY_FIVE_MINUTES < now) {
         // database older than 45 minutes. load the 1 hour file
         url = 'https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_hour.csv';
       }
@@ -48,18 +53,22 @@ export class EarthquakeService {
     }
 
     if (url !== null) {
-      const EarthquakesLoader = Comlink.wrap(new Worker(new URL('./earthquakes-loader.worker', import.meta.url), {type: 'module'}));
-      // @ts-ignore
-      const earthquakesLoader = await new EarthquakesLoader();
+      const worker = new Worker(new URL('./earthquakes-loader.worker', import.meta.url), {type: 'module'});
+      const earthquakesLoader: Remote<EarthquakesLoaderApi> = wrap<EarthquakesLoaderApi>(worker);
 
-      await earthquakesLoader.load(url);
-      console.log('records loaded');
-      localStorage.setItem('lastUpdate', Date.now().toString());
+      try {
+        await earthquakesLoader.load(url);
+        console.log('records loaded');
+        localStorage.setItem('lastUpdate', Date.now().toString());
 
-      await earthquakesLoader.deleteOldRecords();
-      console.log('old records deleted');
+        await earthquakesLoader.deleteOldRecords();
+        console.log('old records deleted');
+      } finally {
+        earthquakesLoader[releaseProxy]();
+        worker.terminate();
+      }
 
-      this.changeSubject.next('changed');
+      this.changeSubject.next();
     }
   }
 
