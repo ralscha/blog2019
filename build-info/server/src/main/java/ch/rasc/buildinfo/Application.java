@@ -2,7 +2,6 @@ package ch.rasc.buildinfo;
 
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.info.BuildProperties;
@@ -17,28 +16,32 @@ import org.springframework.web.bind.annotation.RestController;
 @CrossOrigin
 public class Application {
 
+  private final BuildProperties buildProperties;
+
+  private final GitProperties gitProperties;
+
+  private final Environment environment;
+
+  public Application(BuildProperties buildProperties, GitProperties gitProperties,
+      Environment environment) {
+    this.buildProperties = buildProperties;
+    this.gitProperties = gitProperties;
+    this.environment = environment;
+  }
+
   public static void main(String[] args) {
     SpringApplication.run(Application.class, args);
   }
-
-  @Autowired
-  private BuildProperties buildProperties;
 
   @GetMapping("/build-info")
   public BuildProperties buildInfo() {
     return this.buildProperties;
   }
 
-  @Autowired
-  private GitProperties gitProperties;
-
   @GetMapping("/git-info")
   public GitProperties gitInfo() {
     return this.gitProperties;
   }
-
-  @Autowired
-  private Environment environment;
 
   @GetMapping("/profile-info")
   public Map<String, Object> profileInfo() {
