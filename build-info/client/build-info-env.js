@@ -1,33 +1,41 @@
-const replaceInFile = require('replace-in-file');
+const fs = require('node:fs/promises');
+const path = require('node:path');
 const packageJson = require('./package.json');
-const packageVersion = packageJson.version;
-const simpleGit = require('simple-git')();
+const {simpleGit} = require('simple-git');
 
-replaceInFile.sync({
-    files: './src/environments/environment.prod.ts',
-    from: [/version: '.+'/, /buildTimestamp: \d+/],
-	to: [`version: '${packageVersion}'`, `buildTimestamp: ${Math.floor(Date.now() / 1000)}`]
-});
+const environmentProdPath = path.join(__dirname, 'src', 'environments',
+    'environment.prod.ts');
 
-simpleGit.log(['--pretty=format:%h,%H,%at', '-n', '1'], (err, log) => handleGitLog(log, err));
-
-function handleGitLog(log, err) {
-  if (!err) {
-    const response = log.latest.hash;
-    const splitted = response.split(',');
-    const gitInfo = {
-      shortCommitId: splitted[0],
-      commitId: splitted[1],
-      commitTime: parseInt(splitted[2])
-    };
-
-    replaceInFile.sync({
-      files: './src/environments/environment.prod.ts',
-      from: [/shortCommitId: '.+'/, /commitId: '.+'/, /commitTime: \d+/],
-      to: [`shortCommitId: '${splitted[0]}'`, `commitId: '${splitted[1]}'`, `commitTime: ${splitted[2]}`]
-    });
-
-  } else {
-    console.log(err);
-  }
+function replaceEnvironmentValue(content, key, value) {
+  return content.replace(new RegExp(`(${key}: )([^\n]+?)(,?)$`, 'm'),
+      (_, prefix, __, trailingComma) => `${prefix}${value}${trailingComma}`);
 }
+
+async function main() {
+  const git = simpleGit(__dirname);
+  const log = await git.log({maxCount: 1});
+  const latestCommit = log.latest;
+
+  if (!latestCommit) {
+    throw new Error('Unable to read the latest Git commit');
+  }
+
+  let environmentFile = await fs.readFile(environmentProdPath, 'utf8');
+  environmentFile = replaceEnvironmentValue(environmentFile, 'version',
+      `'${packageJson.version}'`);
+  environmentFile = replaceEnvironmentValue(environmentFile, 'buildTimestamp',
+      Math.floor(Date.now() / 1000));
+  environmentFile = replaceEnvironmentValue(environmentFile, 'shortCommitId',
+      `'${latestCommit.hash.slice(0, 7)}'`);
+  environmentFile = replaceEnvironmentValue(environmentFile, 'commitId',
+      `'${latestCommit.hash}'`);
+  environmentFile = replaceEnvironmentValue(environmentFile, 'commitTime',
+      Math.floor(new Date(latestCommit.date).getTime() / 1000));
+
+  await fs.writeFile(environmentProdPath, environmentFile);
+}
+
+main().catch((error) => {
+  console.error(error);
+  process.exitCode = 1;
+});

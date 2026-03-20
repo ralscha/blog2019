@@ -3,5 +3,5 @@ export interface BuildInfo {
   artifact: string;
   name: string;
   version: string;
-  time: Date;
+  time: string;
 }

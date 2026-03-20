@@ -5,10 +5,12 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
+    "build-prod": "node ./build-info-env.js && ng build --configuration production",
     "serve-dist": "ws --hostname localhost -d dist/app/browser -p 1234 -o --log.format stats",
-    "prebuild": "node ./build-info-env.js",
-    "postbuild": "node ./git-tag.js",
-    "release-patch": "npm --no-git-tag-version version patch && npm run build-prod",
+    "release-patch": "npm version patch",
+    "release-minor": "npm version minor",
+    "release-major": "npm version major",
+    "version": "npm run build-prod && git add package.json src/environments/environment.prod.ts",
     "format": "npx prettier --write ."
   },
   "private": true,
@@ -29,7 +31,6 @@
     "@angular/cli": "21.2.3",
     "@angular/compiler-cli": "21.2.5",
     "local-web-server": "5.4.0",
-    "replace-in-file": "7.2.0",
     "simple-git": "3.33.0",
     "typescript": "5.9.3",
     "prettier": "3.8.1"
