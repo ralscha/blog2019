@@ -1,14 +1,14 @@
 import ky from 'ky';
 
 async function demo() {
-  // bodyMethods();
-  // error();
-  // timeout();
-  // retry();
-  // postBody();
-  // abort();
-  // hooks();
-  // customDefaults();
+  bodyMethods();
+  error();
+  timeout();
+  retry();
+  postBody();
+  abort();
+  hooks();
+  customDefaults();
   alwaysFail()  
 }
 
@@ -43,6 +43,12 @@ async function bodyMethods() {
   console.log('with arrayBuffer()');
   body = await ky.get('http://localhost:8080/simple-get').arrayBuffer();
   console.log('body: ', body);
+
+  if (typeof Response.prototype.bytes === 'function') {
+    console.log('with bytes()');
+    body = await ky.get('http://localhost:8080/simple-get').bytes();
+    console.log('body: ', body);
+  }
 
   console.log('with blob()');
   body = await ky.get('http://localhost:8080/simple-get').blob();
@@ -198,13 +204,13 @@ async function hooks() {
 
   const hooks = {
     beforeRequest: [
-      (request, options) => {
+      ({ request }) => {
         console.log('before request');
-        options.headers.set('x-api-key', '1111');
+        request.headers.set('x-api-key', '1111');
       }
     ],
     afterResponse: [
-      (request, options, response) => {
+      ({ response }) => {
         console.log('after response');
         console.log(response);
         // return different response
@@ -220,11 +226,11 @@ async function hooks() {
 
 async function customDefaults() {
   console.log('default ky');
-  let body = await ky.get('simple-get', { prefixUrl: 'http://localhost:8080' }).text();
+  let body = await ky.get('simple-get', { baseUrl: 'http://localhost:8080/' }).text();
   console.log(body);
 
   console.log('custom ky with defaults');
-  const customKy = ky.create({ prefixUrl: 'http://localhost:8080' });
+  const customKy = ky.create({ baseUrl: 'http://localhost:8080/' });
   body = await customKy('simple-get').text();
   console.log(body);
 
