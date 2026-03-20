@@ -135,8 +135,8 @@
   </div>
 
   <div>
-    <fa-icon [icon]="['fas', 'hand-point-left']" size="5x" transform="rotate-{{magicLevel}}" />
-    <input (input)="updateMagicLevel($event)" [value]="magicLevel" max="360" min="0" type='range'/>
+    <fa-icon [icon]="['fas', 'hand-point-left']" [transform]="magicTransform" size="5x" />
+    <input (input)="updateMagicLevel($event)" [value]="magicLevel" max="360" min="0" type="range" />
   </div>
 
   <div>
@@ -147,9 +147,9 @@
   </div>
 
   <div>
-    <fa-icon [icon]="['fas', 'bell']" [style]="dynamicStyle()" size="5x" />
+    <fa-icon [icon]="['fas', 'bell']" [style]="solidBellStyle" size="5x" />
     <fa-icon [icon]="['far', 'bell']"
-             [style]="{'color': color, 'stroke': stroke, 'stroke-width': strokeWidth + 'px', 'opacity': opacity}"
+             [style]="regularBellStyle"
              size="5x" />
   </div>
 

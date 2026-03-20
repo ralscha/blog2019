@@ -3,3 +3,5 @@
 dist/
 /.angular/cache
 .DS_Store
+bun.lock
+.vscode/

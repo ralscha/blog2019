@@ -17,7 +17,7 @@ import {
   faSkating,
   faSkiing,
   faSkiingNordic,
-  faSmileBeam as faSmileBeanSolid,
+  faSmileBeam as faSmileBeamSolid,
   faSmileWink as faSmileWinkSolid,
   faSnowboarding,
   faSpinner,
@@ -43,7 +43,7 @@ export class AppComponent {
 
   constructor() {
     // library.addIconPacks(fas);
-    this.library.addIcons(faSmileWinkSolid, faSmileBeanSolid,
+    this.library.addIcons(faSmileWinkSolid, faSmileBeamSolid,
       faSmileWink, faSmileBeam, faEnvelopeOpen, faCloud,
       faMobile, faSquare, faSpinner, faCircle,
       faSync, faPlay, faSun, faMoon, faStar,

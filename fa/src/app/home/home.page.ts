@@ -1,13 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {faHandPointLeft, faHandPointRight} from '@fortawesome/free-regular-svg-icons';
-import {
-  FaIconComponent,
-  FaLayersComponent,
-  FaLayersCounterComponent,
-  FaLayersTextComponent,
-  FaStackComponent,
-  FaStackItemSizeDirective
-} from '@fortawesome/angular-fontawesome';
+import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
 import {
   IonButton,
   IonCard,
@@ -22,46 +15,46 @@ import {
   selector: 'app-home',
   templateUrl: './home.page.html',
   styleUrls: ['./home.page.scss'],
-  imports: [FaIconComponent, FaLayersComponent, FaLayersTextComponent, FaLayersCounterComponent, FaStackComponent, FaStackItemSizeDirective, IonHeader, IonToolbar, IonTitle, IonContent, IonButton, IonCard, IonCardContent]
+  imports: [FontAwesomeModule, IonHeader, IonToolbar, IonTitle, IonContent, IonButton, IonCard, IonCardContent]
 })
 export class HomePage implements OnInit, OnDestroy {
-  faHandPointLeft = faHandPointLeft;
-  faHandPointRight = faHandPointRight;
+  readonly faHandPointLeft = faHandPointLeft;
+  readonly faHandPointRight = faHandPointRight;
 
   syncRunning = false;
   magicLevel = 0;
+  magicTransform = 'rotate-0';
 
-  color = 'red';
-  stroke = 'red';
-  strokeWidth = 0;
-  opacity = '1';
+  solidBellStyle = this.createRandomIconStyle();
+  regularBellStyle = this.createRandomIconStyle();
 
-  private interval!: any;
+  private intervalId: ReturnType<typeof window.setInterval> | undefined;
 
   ngOnDestroy(): void {
-    clearInterval(this.interval);
+    if (this.intervalId !== undefined) {
+      window.clearInterval(this.intervalId);
+    }
   }
 
   ngOnInit(): void {
-    this.interval = setInterval(() => {
-      this.color = this.randomColor();
-      this.stroke = this.randomColor();
-      this.strokeWidth = this.randomWidth();
-      this.opacity = '' + Math.random();
+    this.intervalId = window.setInterval(() => {
+      this.solidBellStyle = this.createRandomIconStyle();
+      this.regularBellStyle = this.createRandomIconStyle();
     }, 1000);
   }
 
-  dynamicStyle(): { color: string; 'stroke-width': string; opacity: string; stroke: string } {
-    return {
-      opacity: '' + Math.random(),
-      color: this.randomColor(),
-      stroke: this.randomColor(),
-      'stroke-width': this.randomWidth() + 'px'
-    };
+  updateMagicLevel(event: Event): void {
+    this.magicLevel = Number((event.target as HTMLInputElement).value);
+    this.magicTransform = `rotate-${this.magicLevel}`;
   }
 
-  updateMagicLevel($event: Event): void {
-    this.magicLevel = parseInt(($event.target as HTMLInputElement).value, 10);
+  private createRandomIconStyle(): { color: string; 'stroke-width': string; opacity: string; stroke: string } {
+    return {
+      color: this.randomColor(),
+      stroke: this.randomColor(),
+      'stroke-width': `${this.randomWidth()}px`,
+      opacity: Math.random().toString()
+    };
   }
 
   private randomWidth(): number {
@@ -69,6 +62,8 @@ export class HomePage implements OnInit, OnDestroy {
   }
 
   private randomColor(): string {
-    return '#' + (0x1000000 + (Math.random()) * 0xffffff).toString(16).substr(1, 6);
+    return `#${Math.floor(Math.random() * 0xffffff)
+      .toString(16)
+      .padStart(6, '0')}`;
   }
 }
