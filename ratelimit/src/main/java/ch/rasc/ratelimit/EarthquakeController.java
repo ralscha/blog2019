@@ -4,8 +4,8 @@ import static ch.rasc.ratelimit.db.tables.Earthquake.EARTHQUAKE;
 
 import java.math.BigDecimal;
 import java.time.Duration;
+import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import org.jooq.DSLContext;
 import org.springframework.http.HttpStatus;
@@ -18,6 +18,7 @@ import ch.rasc.ratelimit.db.tables.pojos.Earthquake;
 import io.github.bucket4j.Bandwidth;
 import io.github.bucket4j.Bucket;
 import io.github.bucket4j.ConsumptionProbe;
+import io.github.bucket4j.VerboseResult;
 
 @RestController
 public class EarthquakeController {
@@ -48,19 +49,32 @@ public class EarthquakeController {
 
   @GetMapping("/top/{top}")
   public ResponseEntity<List<Earthquake>> getTopOrderByMag(@PathVariable("top") int top) {
-    ConsumptionProbe probe = this.bucket.tryConsumeAndReturnRemaining(1);
+    VerboseResult<ConsumptionProbe> verboseResult = this.bucket.asVerbose()
+      .tryConsumeAndReturnRemaining(1);
+    ConsumptionProbe probe = verboseResult.getValue();
+    long limit = Arrays.stream(verboseResult.getConfiguration().getBandwidths())
+      .mapToLong(Bandwidth::getCapacity).max().orElseThrow();
+    long resetSeconds = nanosToSeconds(
+      verboseResult.getDiagnostics().calculateFullRefillingTime());
+
     if (probe.isConsumed()) {
       List<Earthquake> body = this.dsl.selectFrom(EARTHQUAKE)
           .orderBy(EARTHQUAKE.MAG.desc()).limit(top).fetchInto(Earthquake.class);
       return ResponseEntity.ok()
-          .header("X-Rate-Limit-Remaining", Long.toString(probe.getRemainingTokens()))
+        .header("RateLimit-Limit", Long.toString(limit))
+        .header("RateLimit-Remaining",
+          Long.toString(verboseResult.getDiagnostics().getAvailableTokens()))
+        .header("RateLimit-Reset", Long.toString(resetSeconds))
           .body(body);
     }
 
-    // X-Rate-Limit-Retry-After-Seconds
     return ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS)
-        .header("X-Rate-Limit-Retry-After-Milliseconds",
-            Long.toString(TimeUnit.NANOSECONDS.toMillis(probe.getNanosToWaitForRefill())))
+      .header("RateLimit-Limit", Long.toString(limit))
+      .header("RateLimit-Remaining",
+        Long.toString(verboseResult.getDiagnostics().getAvailableTokens()))
+      .header("RateLimit-Reset", Long.toString(resetSeconds))
+      .header("Retry-After",
+        Long.toString(nanosToSeconds(probe.getNanosToWaitForRefill())))
         .build();
   }
 
@@ -88,5 +102,9 @@ public class EarthquakeController {
       @PathVariable("to") BigDecimal toMag) {
     return this.dsl.selectFrom(EARTHQUAKE).where(EARTHQUAKE.MAG.between(fromMag, toMag))
         .fetchInto(Earthquake.class);
+  }
+
+  private static long nanosToSeconds(long nanos) {
+    return nanos <= 0 ? 0 : Math.ceilDiv(nanos, 1_000_000_000L);
   }
 }

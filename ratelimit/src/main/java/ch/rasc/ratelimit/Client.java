@@ -146,14 +146,15 @@ public class Client {
       HttpResponse<String> response = httpClient.send(request, BodyHandlers.ofString());
       System.out.print(response.statusCode());
       if (response.statusCode() == 200) {
-        String remaining = response.headers().firstValue("X-Rate-Limit-Remaining")
+        String remaining = response.headers().firstValue("RateLimit-Remaining")
             .orElse(null);
-        System.out.println(" Remaining: " + remaining);
+        String reset = response.headers().firstValue("RateLimit-Reset")
+            .orElse(null);
+        System.out.println(" Remaining: " + remaining + " Reset: " + reset);
       }
       else {
-        String retry = response.headers()
-            .firstValue("X-Rate-Limit-Retry-After-Milliseconds").orElse(null);
-        System.out.println(" retry after milliseconds: " + retry);
+        String retry = response.headers().firstValue("Retry-After").orElse(null);
+        System.out.println(" retry after seconds: " + retry);
       }
     }
     catch (IOException | InterruptedException e) {

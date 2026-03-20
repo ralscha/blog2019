@@ -1,7 +1,7 @@
 package ch.rasc.ratelimit;
 
 import java.time.Duration;
-import java.util.concurrent.TimeUnit;
+import java.util.Arrays;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -12,6 +12,8 @@ import io.github.bucket4j.Bandwidth;
 import io.github.bucket4j.Bucket;
 import io.github.bucket4j.BucketConfiguration;
 import io.github.bucket4j.ConsumptionProbe;
+import io.github.bucket4j.VerboseResult;
+import io.github.bucket4j.grid.hazelcast.Bucket4jHazelcast;
 import io.github.bucket4j.grid.hazelcast.HazelcastProxyManager;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -21,8 +23,10 @@ public class PerClientHazelcastRateLimitInterceptor implements HandlerIntercepto
   private final HazelcastProxyManager<String> proxyManager;
 
   public PerClientHazelcastRateLimitInterceptor(HazelcastInstance hzInstance) {
-    this.proxyManager = new HazelcastProxyManager<>(
-        hzInstance.getMap("per-client-bucket-map"));
+    this.proxyManager = Bucket4jHazelcast
+        .entryProcessorBasedBuilder(hzInstance.<String, byte[]>getMap(
+            "per-client-bucket-map"))
+      .build();
   }
 
   @Override
@@ -52,20 +56,37 @@ public class PerClientHazelcastRateLimitInterceptor implements HandlerIntercepto
       configuration = BucketConfiguration.builder().addLimit(limit).build();
     }
 
-    Bucket requestBucket = this.proxyManager.builder().build(apiKey, () -> configuration);
+    Bucket requestBucket = this.proxyManager.getProxy(apiKey, () -> configuration);
 
-    ConsumptionProbe probe = requestBucket.tryConsumeAndReturnRemaining(1);
+    VerboseResult<ConsumptionProbe> verboseResult = requestBucket.asVerbose()
+        .tryConsumeAndReturnRemaining(1);
+    ConsumptionProbe probe = verboseResult.getValue();
+    long limit = Arrays.stream(verboseResult.getConfiguration().getBandwidths())
+        .mapToLong(Bandwidth::getCapacity).max().orElseThrow();
+    long resetSeconds = nanosToSeconds(
+        verboseResult.getDiagnostics().calculateFullRefillingTime());
+
     if (probe.isConsumed()) {
-      response.addHeader("X-Rate-Limit-Remaining",
-          Long.toString(probe.getRemainingTokens()));
+      response.setHeader("RateLimit-Limit", Long.toString(limit));
+      response.setHeader("RateLimit-Remaining",
+          Long.toString(verboseResult.getDiagnostics().getAvailableTokens()));
+      response.setHeader("RateLimit-Reset", Long.toString(resetSeconds));
       return true;
     }
 
     response.setStatus(HttpStatus.TOO_MANY_REQUESTS.value()); // 429
-    response.addHeader("X-Rate-Limit-Retry-After-Milliseconds",
-        Long.toString(TimeUnit.NANOSECONDS.toMillis(probe.getNanosToWaitForRefill())));
+    response.setHeader("RateLimit-Limit", Long.toString(limit));
+    response.setHeader("RateLimit-Remaining",
+        Long.toString(verboseResult.getDiagnostics().getAvailableTokens()));
+    response.setHeader("RateLimit-Reset", Long.toString(resetSeconds));
+    response.setHeader("Retry-After",
+        Long.toString(nanosToSeconds(probe.getNanosToWaitForRefill())));
 
     return false;
+  }
+
+  private static long nanosToSeconds(long nanos) {
+    return nanos <= 0 ? 0 : Math.ceilDiv(nanos, 1_000_000_000L);
   }
 
 }

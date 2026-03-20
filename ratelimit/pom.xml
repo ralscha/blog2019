@@ -14,6 +14,7 @@
 
 	<properties>
 		<java.version>25</java.version>
+		<bucket4j.version>8.17.0</bucket4j.version>
 	</properties>
 
 	<dependencies>
@@ -35,11 +36,11 @@
 		</dependency>
 		<dependency>
 			<groupId>org.flywaydb</groupId>
-			<artifactId>flyway-mysql</artifactId>
+			<artifactId>flyway-database-postgresql</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.mariadb.jdbc</groupId>
-			<artifactId>mariadb-java-client</artifactId>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>com.univocity</groupId>
@@ -49,17 +50,18 @@
 		<dependency>
 		  <groupId>com.bucket4j</groupId>
 		  <artifactId>bucket4j_jdk17-core</artifactId>
-		  <version>8.17.0</version>
+		  <version>${bucket4j.version}</version>
 		</dependency>
 		<dependency>
 		    <groupId>com.bucket4j</groupId>
-		    <artifactId>bucket4j-hazelcast</artifactId>
-		    <version>8.10.1</version>
+		    <artifactId>bucket4j_jdk17-hazelcast</artifactId>
+		    <version>${bucket4j.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>javax.cache</groupId>
-			<artifactId>cache-api</artifactId>
-		</dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-docker-compose</artifactId>
+			<optional>true</optional>			
+		</dependency>			
 	</dependencies>
 
 	<build>
@@ -104,6 +106,10 @@
 												<property>
 													<key>sort</key>
 													<value>semantic</value>
+												</property>
+												<property>
+													<key>defaultNameCase</key>
+													<value>lower</value>
 												</property>
 												<property>
 													<key>scripts</key>

@@ -9,7 +9,7 @@ import com.hazelcast.config.Config;
 public class ApplicationConfig {
 
   @Bean
-  public Config hazelCastConfig() {
+  public Config hazelcastConfig() {
     Config config = new Config();
     config.setInstanceName("my-hazelcast-instance");
     return config;
