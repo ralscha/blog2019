@@ -1,0 +1,11 @@
+{
+  "name": "visibility-helpers",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "start": "ws -d src -p 1235 -o --log.format stats"
+  },
+  "devDependencies": {
+    "local-web-server": "5.4.0"
+  }
+}

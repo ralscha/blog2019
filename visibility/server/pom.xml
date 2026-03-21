@@ -9,7 +9,7 @@
 	</parent>
 	<groupId>ch.rasc</groupId>
 	<artifactId>visibility</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.1</version>
 	<name>visibility</name>
 	<description>Visibility Demo</description>
 

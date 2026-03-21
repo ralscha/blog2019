@@ -1,13 +1,25 @@
-document.addEventListener('visibilitychange', () => handleVisibility());
+const serverUrl = 'http://localhost:8080';
 
-function handleVisibility() {
-  if (document.visibilityState === 'hidden') {
-    document.title = 'Visibility: hidden';
-    fetch('http://localhost:8080/hidden');
-  } else if (document.visibilityState === 'visible') {
-    document.title = 'Visibility: visible';
-    fetch('http://localhost:8080/visible');
+document.addEventListener('visibilitychange', handleVisibilityChange);
+
+async function handleVisibilityChange() {
+  const state = document.visibilityState;
+
+  document.title = `Visibility: ${state}`;
+
+  const endpoint = document.hidden ? 'hidden' : 'visible';
+  await notifyServer(endpoint);
+}
+
+async function notifyServer(endpoint) {
+  try {
+    await fetch(`${serverUrl}/${endpoint}`, {
+      method: 'GET',
+      keepalive: true
+    });
+  } catch (error) {
+    console.error('Failed to notify server', error);
   }
 }
 
-handleVisibility();
+void handleVisibilityChange();
