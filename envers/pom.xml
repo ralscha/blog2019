@@ -7,7 +7,7 @@
   <properties>
     <maven.compiler.release>25</maven.compiler.release>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <hibernate.version>7.3.0.Final</hibernate.version>
+    <hibernate.version>7.3.2.Final</hibernate.version>
   </properties>
 
   <dependencies>
