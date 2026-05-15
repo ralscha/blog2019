@@ -41,7 +41,7 @@ public class V0002__initial_import extends BaseJavaMigration {
       for (EarthquakeImport earthquake : earthquakes) {
         if (earthquake.getMag() != null) {
 
-          insert.values(earthquake.getId(), earthquake.getLatitude(),
+            insert = insert.values(earthquake.getId(), earthquake.getLatitude(),
               earthquake.getLongitude(), earthquake.getMag(), earthquake.getDepth(),
               earthquake.getPlace(), earthquake.getTime().toInstant()
                   .atZone(ZoneId.systemDefault()).toLocalDateTime());

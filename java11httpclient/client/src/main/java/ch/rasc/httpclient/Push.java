@@ -6,6 +6,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.net.http.HttpResponse.BodyHandlers;
 import java.net.http.HttpResponse.PushPromiseHandler;
+import java.util.Arrays;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -35,7 +36,7 @@ public class Push {
       CompletableFuture<Void> cf = acceptor.apply(BodyHandlers.ofByteArray())
           .thenAccept(response -> {
             System.out.println("Got pushed resource: " + response.uri());
-            System.out.println("Body: " + response.body());
+            System.out.println("Body: " + Arrays.toString(response.body()));
           });
       asyncRequests.add(cf);
     };

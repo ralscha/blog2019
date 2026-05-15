@@ -5,7 +5,7 @@
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
     <version>4.0.6</version>
-    <relativePath/>
+    <relativePath></relativePath>
   </parent>
 
   <groupId>ch.rasc</groupId>
@@ -22,31 +22,31 @@
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-jooq</artifactId>
     </dependency>
-    
-	<dependency>
-		<groupId>org.springframework.boot</groupId>
-		<artifactId>spring-boot-starter-webmvc</artifactId>
-	</dependency>
-    
-	<dependency>
-		<groupId>org.springframework.boot</groupId>
-		<artifactId>spring-boot-flyway</artifactId>
-	</dependency>
 
-	<dependency>
-		<groupId>org.flywaydb</groupId>
-		<artifactId>flyway-database-postgresql</artifactId>
-	</dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-webmvc</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-flyway</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.flywaydb</groupId>
+      <artifactId>flyway-database-postgresql</artifactId>
+    </dependency>
 
     <dependency>
       <groupId>org.postgresql</groupId>
       <artifactId>postgresql</artifactId>
     </dependency>
 
-	<dependency>
-	    <groupId>org.springframework.boot</groupId>
-	    <artifactId>spring-boot-docker-compose</artifactId>
-	</dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-docker-compose</artifactId>
+    </dependency>
 
     <dependency>
       <groupId>org.apache.poi</groupId>
@@ -59,7 +59,7 @@
       <artifactId>poi-ooxml</artifactId>
       <version>5.5.1</version>
     </dependency>
-    
+
     <dependency>
       <groupId>com.univocity</groupId>
       <artifactId>univocity-parsers</artifactId>
@@ -79,9 +79,9 @@
     </dependency>
 
     <dependency>
-        <groupId>org.testcontainers</groupId>
-        <artifactId>testcontainers-postgresql</artifactId>
-        <scope>test</scope>
+      <groupId>org.testcontainers</groupId>
+      <artifactId>testcontainers-postgresql</artifactId>
+      <scope>test</scope>
     </dependency>
 
   </dependencies>
@@ -98,10 +98,10 @@
         <artifactId>build-helper-maven-plugin</artifactId>
         <executions>
           <execution>
-            <phase>generate-sources</phase>
             <goals>
               <goal>add-source</goal>
             </goals>
+            <phase>generate-sources</phase>
             <configuration>
               <sources>
                 <source>target/generated-sources/jooq</source>
@@ -109,6 +109,49 @@
             </configuration>
           </execution>
         </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.15.0</version>
+        <configuration>
+          <fork>true</fork>
+          <compilerArgs>
+            <arg>-XDcompilePolicy=simple</arg>
+            <arg>--should-stop=ifError=FLOW</arg>
+            <arg>-Xplugin:ErrorProne</arg>
+            <arg>-XDaddTypeAnnotationsToSymbol=true</arg>
+            <arg>-J--add-exports=jdk.compiler/com.sun.tools.javac.api=ALL-UNNAMED</arg>
+            <arg>-J--add-exports=jdk.compiler/com.sun.tools.javac.file=ALL-UNNAMED</arg>
+            <arg>-J--add-exports=jdk.compiler/com.sun.tools.javac.main=ALL-UNNAMED</arg>
+            <arg>-J--add-exports=jdk.compiler/com.sun.tools.javac.model=ALL-UNNAMED</arg>
+            <arg>-J--add-exports=jdk.compiler/com.sun.tools.javac.parser=ALL-UNNAMED</arg>
+            <arg>-J--add-exports=jdk.compiler/com.sun.tools.javac.processing=ALL-UNNAMED</arg>
+            <arg>-J--add-exports=jdk.compiler/com.sun.tools.javac.tree=ALL-UNNAMED</arg>
+            <arg>-J--add-exports=jdk.compiler/com.sun.tools.javac.util=ALL-UNNAMED</arg>
+            <arg>-J--add-opens=jdk.compiler/com.sun.tools.javac.code=ALL-UNNAMED</arg>
+            <arg>-J--add-opens=jdk.compiler/com.sun.tools.javac.comp=ALL-UNNAMED</arg>
+          </compilerArgs>
+          <annotationProcessorPaths>
+            <path>
+              <groupId>com.google.errorprone</groupId>
+              <artifactId>error_prone_core</artifactId>
+              <version>2.49.0</version>
+            </path>
+          </annotationProcessorPaths>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>com.github.ekryd.sortpom</groupId>
+        <artifactId>sortpom-maven-plugin</artifactId>
+        <version>4.0.0</version>
+        <configuration>
+          <createBackupFile>false</createBackupFile>
+          <nrOfIndentSpace>2</nrOfIndentSpace>
+          <sortProperties>false</sortProperties>
+        </configuration>
       </plugin>
 
     </plugins>
@@ -123,13 +166,20 @@
             <groupId>org.jooq</groupId>
             <artifactId>jooq-codegen-maven</artifactId>
             <version>${jooq.version}</version>
+            <dependencies>
+              <dependency>
+                <groupId>org.jooq</groupId>
+                <artifactId>jooq-meta-extensions</artifactId>
+                <version>${jooq.version}</version>
+              </dependency>
+            </dependencies>
             <executions>
               <execution>
                 <id>generate-jooq-sources</id>
-                <phase>generate-sources</phase>
                 <goals>
                   <goal>generate</goal>
                 </goals>
+                <phase>generate-sources</phase>
                 <configuration>
                   <generator>
                     <generate>
@@ -140,7 +190,7 @@
                     </generate>
                     <database>
                       <name>org.jooq.meta.extensions.ddl.DDLDatabase</name>
-                      <inputCatalog/>
+                      <inputCatalog></inputCatalog>
                       <inputSchema>PUBLIC</inputSchema>
                       <outputSchemaToDefault>true</outputSchemaToDefault>
                       <outputCatalogToDefault>true</outputCatalogToDefault>
@@ -156,7 +206,7 @@
                         <property>
                           <key>defaultNameCase</key>
                           <value>lower</value>
-                        </property>                        
+                        </property>
                       </properties>
                     </database>
                     <target>
@@ -168,13 +218,6 @@
                 </configuration>
               </execution>
             </executions>
-            <dependencies>
-              <dependency>
-                <groupId>org.jooq</groupId>
-                <artifactId>jooq-meta-extensions</artifactId>
-                <version>${jooq.version}</version>
-              </dependency>
-            </dependencies>
           </plugin>
         </plugins>
       </build>
