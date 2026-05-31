@@ -5,7 +5,7 @@
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
     <version>4.0.6</version>
-    <relativePath></relativePath>
+    <relativePath/>
   </parent>
   <groupId>ch.rasc</groupId>
   <artifactId>ratelimit</artifactId>
@@ -14,7 +14,7 @@
 
   <properties>
     <java.version>25</java.version>
-    <bucket4j.version>8.18.0</bucket4j.version>
+    <bucket4j.version>8.19.0</bucket4j.version>
   </properties>
 
   <dependencies>
@@ -149,7 +149,7 @@
                     </generate>
                     <database>
                       <name>org.jooq.meta.extensions.ddl.DDLDatabase</name>
-                      <inputCatalog></inputCatalog>
+                      <inputCatalog/>
                       <inputSchema>PUBLIC</inputSchema>
                       <outputSchemaToDefault>true</outputSchemaToDefault>
                       <outputCatalogToDefault>true</outputCatalogToDefault>
