@@ -6,7 +6,7 @@ export class EarthquakeDb extends Dexie {
   constructor() {
     super('Earthquake');
     this.version(1).stores({
-      earthquakes: 'id,mag,time'
+      earthquakes: 'id,mag,time',
     });
   }
 }
@@ -19,4 +19,3 @@ export interface Earthquake {
   depth: number;
   latLng: [number, number];
 }
-

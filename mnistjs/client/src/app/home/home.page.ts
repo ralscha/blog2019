@@ -1,19 +1,19 @@
-import {Component, viewChild} from '@angular/core';
-import {DrawableDirective} from '../drawable.directive';
+import { Component, viewChild, ChangeDetectionStrategy } from '@angular/core';
+import { DrawableDirective } from '../drawable.directive';
 // @ts-ignore
 import * as brain from 'brain.js/browser';
 import * as tf from '@tensorflow/tfjs';
-import {DecimalPipe} from '@angular/common';
-import {IonButton, IonContent, IonHeader, IonTitle, IonToolbar} from "@ionic/angular/standalone";
+import { DecimalPipe } from '@angular/common';
+import { IonButton, IonContent, IonHeader, IonTitle, IonToolbar } from '@ionic/angular/standalone';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.page.html',
   styleUrls: ['./home.page.scss'],
-  imports: [DrawableDirective, DecimalPipe, IonHeader, IonToolbar, IonTitle, IonContent, IonButton]
+  changeDetection: ChangeDetectionStrategy.Eager,
+  imports: [DrawableDirective, DecimalPipe, IonHeader, IonToolbar, IonTitle, IonContent, IonButton],
 })
 export class HomePage {
-
   readonly drawable = viewChild.required(DrawableDirective);
 
   detectionsMLP: number[] = [];
@@ -49,19 +49,28 @@ export class HomePage {
 
     const copyContext = canvasCopy.getContext('2d');
     if (!copyContext) {
-      throw new Error('can\'t get 2d context');
+      throw new Error("can't get 2d context");
     }
 
     const ratioX = canvas.width / 28;
     const ratioY = canvas.height / 28;
     const drawBox = this.drawable().getDrawingBox();
-    const scaledSourceWidth = Math.min(20, Math.max(4, ((drawBox[2] - drawBox[0] + 32) / ratioX)));
-    const scaledSourceHeight = Math.min(20, ((drawBox[3] - drawBox[1] + 32) / ratioY));
+    const scaledSourceWidth = Math.min(20, Math.max(4, (drawBox[2] - drawBox[0] + 32) / ratioX));
+    const scaledSourceHeight = Math.min(20, (drawBox[3] - drawBox[1] + 32) / ratioY);
     const dx = (28 - scaledSourceWidth) / 2;
     const dy = (28 - scaledSourceHeight) / 2;
 
-    copyContext.drawImage(canvas, drawBox[0] - 16, drawBox[1] - 16, drawBox[2] - drawBox[0] + 16, drawBox[3] - drawBox[1] + 16,
-      dx, dy, scaledSourceWidth, scaledSourceHeight);
+    copyContext.drawImage(
+      canvas,
+      drawBox[0] - 16,
+      drawBox[1] - 16,
+      drawBox[2] - drawBox[0] + 16,
+      drawBox[3] - drawBox[1] + 16,
+      dx,
+      dy,
+      scaledSourceWidth,
+      scaledSourceHeight,
+    );
     const imageData = copyContext.getImageData(0, 0, 28, 28);
 
     const numPixels = imageData.width * imageData.height;
@@ -85,7 +94,6 @@ export class HomePage {
     for (let i = 0; i <= 9; i++) {
       this.detectionsMLP.push(detection[i]);
     }
-
   }
 
   erase(): void {
@@ -101,7 +109,7 @@ export class HomePage {
     let maxKey = 0;
     let maxValue = 0;
 
-    Object.entries(obj).forEach(entry => {
+    Object.entries(obj).forEach((entry) => {
       const value = entry[1];
       if (value > maxValue) {
         maxValue = value;
@@ -120,5 +128,4 @@ export class HomePage {
 
     return indexMax;
   }
-
 }

@@ -1,4 +1,4 @@
-import {Component, inject} from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import {
   IonButton,
   IonCol,
@@ -13,22 +13,37 @@ import {
   IonToggle,
   IonToolbar,
   LoadingController,
-  ToastController
+  ToastController,
 } from '@ionic/angular/standalone';
-import {HttpClient} from '@angular/common/http';
-import {Camera, CameraResultType, CameraSource} from '@capacitor/camera';
-import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
-import {environment} from '../../environments/environment';
-import {catchError, finalize, Observable, throwError} from 'rxjs';
-import {Upload} from 'tus-js-client';
-import {FormsModule} from '@angular/forms';
-import {addIcons} from 'ionicons';
-import {camera, image} from 'ionicons/icons';
+import { HttpClient } from '@angular/common/http';
+import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { environment } from '../../environments/environment';
+import { catchError, finalize, Observable, throwError } from 'rxjs';
+import { Upload } from 'tus-js-client';
+import { FormsModule } from '@angular/forms';
+import { addIcons } from 'ionicons';
+import { camera, image } from 'ionicons/icons';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.page.html',
-  imports: [FormsModule, IonHeader, IonToolbar, IonTitle, IonContent, IonGrid, IonRow, IonCol, IonItem, IonToggle, IonButton, IonIcon, IonText]
+  changeDetection: ChangeDetectionStrategy.Eager,
+  imports: [
+    FormsModule,
+    IonHeader,
+    IonToolbar,
+    IonTitle,
+    IonContent,
+    IonGrid,
+    IonRow,
+    IonCol,
+    IonItem,
+    IonToggle,
+    IonButton,
+    IonIcon,
+    IonText,
+  ],
 })
 export class HomePage {
   public tus = false;
@@ -42,7 +57,7 @@ export class HomePage {
   private loading: HTMLIonLoadingElement | null = null;
 
   constructor() {
-    addIcons({image, camera});
+    addIcons({ image, camera });
   }
 
   async takePhoto(): Promise<void> {
@@ -73,7 +88,7 @@ export class HomePage {
       quality: 90,
       allowEditing: false,
       resultType: CameraResultType.Uri,
-      source
+      source,
     });
 
     if (image.webPath) {
@@ -84,39 +99,39 @@ export class HomePage {
 
   private async uploadAll(webPath: string): Promise<void> {
     this.loading = await this.loadingCtrl.create({
-      message: 'Uploading...'
+      message: 'Uploading...',
     });
     await this.loading.present();
 
-    const blob = await fetch(webPath).then(r => r.blob());
+    const blob = await fetch(webPath).then((r) => r.blob());
 
     const formData = new FormData();
     formData.append('file', blob, `file-${this.counter++}.jpg`);
-    this.http.post<boolean>(`${environment.serverUrl}/uploadAll`, formData)
+    this.http
+      .post<boolean>(`${environment.serverUrl}/uploadAll`, formData)
       .pipe(
-        catchError(e => this.handleError(e)),
-        finalize(() => this.loading?.dismiss())
+        catchError((e) => this.handleError(e)),
+        finalize(() => this.loading?.dismiss()),
       )
       .subscribe({
-        next: ok => this.showToast(ok),
-        error: () => this.showToast(false)
+        next: (ok) => this.showToast(ok),
+        error: () => this.showToast(false),
       });
   }
 
   private async uploadTus(webPath: string): Promise<void> {
-
     this.loading = await this.loadingCtrl.create({
-      message: 'Uploading...'
+      message: 'Uploading...',
     });
     await this.loading.present();
 
-    const blob = await fetch(webPath).then(r => r.blob());
+    const blob = await fetch(webPath).then((r) => r.blob());
     const upload = new Upload(blob, {
       endpoint: `${environment.serverUrl}/upload`,
       retryDelays: [0, 3000, 6000, 12000, 24000],
       chunkSize: 512 * 1024,
       metadata: {
-        filename: `file-${this.counter++}.jpg`
+        filename: `file-${this.counter++}.jpg`,
       },
       onError: () => {
         this.showToast(false);
@@ -125,7 +140,7 @@ export class HomePage {
       onSuccess: () => {
         this.showToast(true);
         this.loading?.dismiss();
-      }
+      },
     });
 
     upload.start();
@@ -136,14 +151,14 @@ export class HomePage {
       const toast = await this.toastCtrl.create({
         message: 'Upload successful',
         duration: 3000,
-        position: 'top'
+        position: 'top',
       });
       toast.present();
     } else {
       const toast = await this.toastCtrl.create({
         message: 'Upload failed',
         duration: 3000,
-        position: 'top'
+        position: 'top',
       });
       toast.present();
     }
@@ -155,5 +170,4 @@ export class HomePage {
     this.error = errMsg;
     return throwError(() => error);
   }
-
 }

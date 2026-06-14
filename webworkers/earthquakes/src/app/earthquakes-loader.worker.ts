@@ -1,6 +1,6 @@
-import {parse} from 'papaparse';
-import {Earthquake, EarthquakeDb} from './earthquake-db';
-import {expose} from 'comlink';
+import { parse } from 'papaparse';
+import { Earthquake, EarthquakeDb } from './earthquake-db';
+import { expose } from 'comlink';
 
 type EarthquakeRow = {
   id: string;
@@ -9,7 +9,7 @@ type EarthquakeRow = {
   mag: string;
   depth: string;
   latitude: string;
-  longitude: string
+  longitude: string;
 };
 
 const db = new EarthquakeDb();
@@ -22,7 +22,7 @@ const earthquakesLoader = {
     }
 
     const text = await response.text();
-    const data = parse<EarthquakeRow>(text, {header: true, skipEmptyLines: true});
+    const data = parse<EarthquakeRow>(text, { header: true, skipEmptyLines: true });
 
     const earthquakes: Earthquake[] = [];
 
@@ -34,7 +34,7 @@ const earthquakesLoader = {
           mag: Number(row.mag),
           depth: Number(row.depth),
           latLng: [Number(row.latitude), Number(row.longitude)],
-          id: row.id
+          id: row.id,
         });
       }
     }
@@ -45,11 +45,9 @@ const earthquakesLoader = {
   },
 
   async deleteOldRecords(): Promise<void> {
-    const thirtyDaysAgo = Date.now() - (30 * 24 * 60 * 60 * 1000);
+    const thirtyDaysAgo = Date.now() - 30 * 24 * 60 * 60 * 1000;
     await db.earthquakes.where('time').below(thirtyDaysAgo).delete();
-  }
+  },
 };
 
 expose(earthquakesLoader);
-
-

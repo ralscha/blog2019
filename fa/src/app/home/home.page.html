@@ -1,13 +1,10 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>
-      FontAwesome
-    </ion-title>
+    <ion-title> FontAwesome </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content class="ion-padding">
-
   <div>
     <fa-icon icon="smile-wink" />
     <fa-icon icon="smile-beam" />
@@ -55,7 +52,12 @@
   </div>
 
   <div>
-    <fa-icon [icon]="['fas', 'swimmer']" [mask]="['fas', 'circle']" size="6x" transform="shrink-10 down-4" />
+    <fa-icon
+      [icon]="['fas', 'swimmer']"
+      [mask]="['fas', 'circle']"
+      size="6x"
+      transform="shrink-10 down-4"
+    />
   </div>
 
   <div>
@@ -123,7 +125,7 @@
   <div>
     <fa-layers size="5x">
       <fa-icon [icon]="['fas', 'cloud']" />
-      <fa-layers-text content="Cloud" style="color: white;" transform="shrink-12" />
+      <fa-layers-text content="Cloud" style="color: white" transform="shrink-12" />
     </fa-layers>
   </div>
 
@@ -142,15 +144,12 @@
   <div>
     <fa-stack size="5x">
       <fa-icon [icon]="['fas', 'camera']" stackItemSize="1x" />
-      <fa-icon [icon]="['fas', 'ban']" stackItemSize="2x" style="color:Tomato" />
+      <fa-icon [icon]="['fas', 'ban']" stackItemSize="2x" style="color: Tomato" />
     </fa-stack>
   </div>
 
   <div>
     <fa-icon [icon]="['fas', 'bell']" [style]="solidBellStyle" size="5x" />
-    <fa-icon [icon]="['far', 'bell']"
-             [style]="regularBellStyle"
-             size="5x" />
+    <fa-icon [icon]="['far', 'bell']" [style]="regularBellStyle" size="5x" />
   </div>
-
 </ion-content>

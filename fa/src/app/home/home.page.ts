@@ -1,6 +1,6 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {faHandPointLeft, faHandPointRight} from '@fortawesome/free-regular-svg-icons';
-import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
+import { Component, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { faHandPointLeft, faHandPointRight } from '@fortawesome/free-regular-svg-icons';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import {
   IonButton,
   IonCard,
@@ -8,14 +8,24 @@ import {
   IonContent,
   IonHeader,
   IonTitle,
-  IonToolbar
-} from "@ionic/angular/standalone";
+  IonToolbar,
+} from '@ionic/angular/standalone';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.page.html',
   styleUrls: ['./home.page.scss'],
-  imports: [FontAwesomeModule, IonHeader, IonToolbar, IonTitle, IonContent, IonButton, IonCard, IonCardContent]
+  changeDetection: ChangeDetectionStrategy.Eager,
+  imports: [
+    FontAwesomeModule,
+    IonHeader,
+    IonToolbar,
+    IonTitle,
+    IonContent,
+    IonButton,
+    IonCard,
+    IonCardContent,
+  ],
 })
 export class HomePage implements OnInit, OnDestroy {
   readonly faHandPointLeft = faHandPointLeft;
@@ -48,12 +58,17 @@ export class HomePage implements OnInit, OnDestroy {
     this.magicTransform = `rotate-${this.magicLevel}`;
   }
 
-  private createRandomIconStyle(): { color: string; 'stroke-width': string; opacity: string; stroke: string } {
+  private createRandomIconStyle(): {
+    color: string;
+    'stroke-width': string;
+    opacity: string;
+    stroke: string;
+  } {
     return {
       color: this.randomColor(),
       stroke: this.randomColor(),
       'stroke-width': `${this.randomWidth()}px`,
-      opacity: Math.random().toString()
+      opacity: Math.random().toString(),
     };
   }
 

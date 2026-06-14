@@ -1,36 +1,37 @@
 <!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport"
-        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Basic Usage</title>
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Basic Usage</title>
+  </head>
+  <body>
+    <script src="https://unpkg.com/tesseract.js@5.0.0/dist/tesseract.min.js"></script>
+    <script>
+      const exampleImage = 'https://tesseract.projectnaptha.com/img/eng_bw.png';
+      Tesseract.setLogging(true);
 
-<script src="https://unpkg.com/tesseract.js@5.0.0/dist/tesseract.min.js"></script>
-<script>
-  const exampleImage = 'https://tesseract.projectnaptha.com/img/eng_bw.png';
-  Tesseract.setLogging(true);
+      const workerPromise = Tesseract.createWorker('eng', 1, {
+        legacyCore: true,
+        legacyLang: true,
+        logger: (m) => console.log(m),
+      });
 
-  const workerPromise = Tesseract.createWorker("eng", 1, {
-    legacyCore: true,
-    legacyLang: true,
-    logger: m => console.log(m)
-  });
+      workerPromise.then((worker) => work(worker));
 
-  workerPromise.then(worker => work(worker));
+      async function work(worker) {
+        let result = await worker.detect(exampleImage);
+        console.log(result.data);
 
-  async function work(worker) {
-    let result = await worker.detect(exampleImage);
-    console.log(result.data);
+        result = await worker.recognize(exampleImage);
+        console.log(result.data);
 
-    result = await worker.recognize(exampleImage);
-    console.log(result.data);
-
-    await worker.terminate();
-  }
-</script>
-</body>
+        await worker.terminate();
+      }
+    </script>
+  </body>
 </html>

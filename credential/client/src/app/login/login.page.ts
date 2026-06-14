@@ -1,8 +1,8 @@
-import {Component, inject} from '@angular/core';
-import {AuthService} from '../auth.service';
-import {noop} from 'rxjs';
-import {FormsModule} from '@angular/forms';
-import {RouterLink} from '@angular/router';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
+import { AuthService } from '../auth.service';
+import { noop } from 'rxjs';
+import { FormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
 import {
   IonButton,
   IonContent,
@@ -12,8 +12,8 @@ import {
   IonList,
   IonRouterLink,
   IonTitle,
-  IonToolbar
-} from "@ionic/angular/standalone";
+  IonToolbar,
+} from '@ionic/angular/standalone';
 
 @Component({
   selector: 'app-login',
@@ -28,17 +28,15 @@ import {
     IonInput,
     IonButton,
     RouterLink,
-    IonRouterLink
+    IonRouterLink,
   ],
-  templateUrl: './login.page.html'
+  changeDetection: ChangeDetectionStrategy.Eager,
+  templateUrl: './login.page.html',
 })
 export class LoginPage {
   private readonly authService = inject(AuthService);
 
-
   login(username: string, password: string): void {
     this.authService.login(username, password).subscribe(noop);
   }
-
-
 }

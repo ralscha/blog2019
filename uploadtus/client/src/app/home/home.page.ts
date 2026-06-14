@@ -1,5 +1,12 @@
-import {ChangeDetectorRef, Component, ElementRef, inject, viewChild} from '@angular/core';
-import {Upload} from 'tus-js-client';
+import {
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  inject,
+  viewChild,
+  ChangeDetectionStrategy,
+} from '@angular/core';
+import { Upload } from 'tus-js-client';
 import {
   IonButton,
   IonCol,
@@ -10,15 +17,27 @@ import {
   IonRow,
   IonTitle,
   IonToolbar,
-  ToastController
+  ToastController,
 } from '@ionic/angular/standalone';
-import {environment} from '../../environments/environment';
-import {ProgressBarComponent} from '../progress-bar/progress-bar.component';
+import { environment } from '../../environments/environment';
+import { ProgressBarComponent } from '../progress-bar/progress-bar.component';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.page.html',
-  imports: [ProgressBarComponent, IonHeader, IonToolbar, IonTitle, IonContent, IonItem, IonLabel, IonRow, IonCol, IonButton]
+  changeDetection: ChangeDetectionStrategy.Eager,
+  imports: [
+    ProgressBarComponent,
+    IonHeader,
+    IonToolbar,
+    IonTitle,
+    IonContent,
+    IonItem,
+    IonLabel,
+    IonRow,
+    IonCol,
+    IonButton,
+  ],
 })
 export class HomePage {
   recording = false;
@@ -33,18 +52,19 @@ export class HomePage {
   async start(): Promise<void> {
     this.recording = true;
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({video: true, audio: false});
+      const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
       this.mediaStream = stream;
       this.videoElement().nativeElement.srcObject = stream;
       await this.videoElement().nativeElement.play();
 
       this.recordedChunks = [];
       const mimeType = this.getPreferredVideoMimeType();
-      this.mediaRecorder = mimeType ? new MediaRecorder(stream, {mimeType}) : new MediaRecorder(stream);
+      this.mediaRecorder = mimeType
+        ? new MediaRecorder(stream, { mimeType })
+        : new MediaRecorder(stream);
       this.mediaRecorder.addEventListener('dataavailable', this.handleDataAvailable);
       this.mediaRecorder.start();
-    }
-    catch (error) {
+    } catch (error) {
       this.recording = false;
       console.error('Could not start video capture', error);
       await this.presentToast('Could not access the camera');
@@ -55,24 +75,27 @@ export class HomePage {
     this.recording = false;
     const mediaRecorder = this.mediaRecorder;
     if (mediaRecorder && mediaRecorder.state !== 'inactive') {
-      mediaRecorder.addEventListener('stop', () => {
-        const recordedBlob = new Blob(this.recordedChunks, {
-          type: mediaRecorder.mimeType || 'video/webm'
-        });
-        this.resetRecorder();
-        if (recordedBlob.size > 0) {
-          this.uploadVideo(recordedBlob);
-        }
-      }, {once: true});
+      mediaRecorder.addEventListener(
+        'stop',
+        () => {
+          const recordedBlob = new Blob(this.recordedChunks, {
+            type: mediaRecorder.mimeType || 'video/webm',
+          });
+          this.resetRecorder();
+          if (recordedBlob.size > 0) {
+            this.uploadVideo(recordedBlob);
+          }
+        },
+        { once: true },
+      );
       mediaRecorder.stop();
-    }
-    else {
+    } else {
       this.resetRecorder();
     }
 
     this.videoElement().nativeElement.pause();
     this.videoElement().nativeElement.srcObject = null;
-    this.mediaStream?.getTracks().forEach(track => track.stop());
+    this.mediaStream?.getTracks().forEach((track) => track.stop());
     this.mediaStream = null;
   }
 
@@ -90,7 +113,7 @@ export class HomePage {
 
   private uploadVideo(blob: Blob): void {
     const f = new File([blob], `video_${Date.now()}.webm`, {
-      type: 'video/webm'
+      type: 'video/webm',
     });
 
     this.uploadFile(f);
@@ -99,7 +122,7 @@ export class HomePage {
   private uploadSnapshot(blob: Blob | null): void {
     if (blob) {
       const f = new File([blob], `snapshot_${Date.now()}.jpg`, {
-        type: 'image/jpeg'
+        type: 'image/jpeg',
       });
 
       this.uploadFile(f);
@@ -115,20 +138,20 @@ export class HomePage {
       chunkSize: 20000,
       metadata: {
         filename: file.name,
-        filetype: file.type
+        filetype: file.type,
       },
       onError: async (error) => {
         await this.presentToast('Upload failed: ' + error);
       },
       onProgress: (bytesUploaded, bytesTotal) => {
-        this.uploadProgress = Math.floor(bytesUploaded / bytesTotal * 100);
+        this.uploadProgress = Math.floor((bytesUploaded / bytesTotal) * 100);
         this.changeDetectionRef.detectChanges();
       },
       onSuccess: async () => {
         this.uploadProgress = 100;
         this.changeDetectionRef.detectChanges();
         await this.presentToast('Upload successful');
-      }
+      },
     });
 
     try {
@@ -137,8 +160,7 @@ export class HomePage {
         upload.resumeFromPreviousUpload(previousUploads[0]);
       }
       upload.start();
-    }
-    catch (error) {
+    } catch (error) {
       await this.presentToast('Could not initialize the upload');
       console.error('Could not initialize upload', error);
     }
@@ -151,11 +173,7 @@ export class HomePage {
   };
 
   private getPreferredVideoMimeType(): string | undefined {
-    const supportedTypes = [
-      'video/webm;codecs=vp9',
-      'video/webm;codecs=vp8',
-      'video/webm'
-    ];
+    const supportedTypes = ['video/webm;codecs=vp9', 'video/webm;codecs=vp8', 'video/webm'];
 
     return supportedTypes.find((candidate) => MediaRecorder.isTypeSupported(candidate));
   }
@@ -164,7 +182,7 @@ export class HomePage {
     const toast = await this.toastCtrl.create({
       message,
       duration: 3000,
-      position: 'top'
+      position: 'top',
     });
     await toast.present();
   }

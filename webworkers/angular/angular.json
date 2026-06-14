@@ -21,15 +21,10 @@
               "base": "dist/app"
             },
             "index": "src/index.html",
-            "polyfills": [
-              "zone.js"
-            ],
+            "polyfills": ["zone.js"],
             "tsConfig": "tsconfig.app.json",
-            "assets": [
-            ],
-            "styles": [
-              "src/styles.css"
-            ],
+            "assets": [],
+            "styles": ["src/styles.css"],
             "scripts": [],
             "webWorkerTsConfig": "tsconfig.worker.json",
             "browser": "src/main.ts"
@@ -81,9 +76,7 @@
     }
   },
   "cli": {
-    "schematicCollections": [
-      "@angular-eslint/schematics"
-    ]
+    "schematicCollections": ["@angular-eslint/schematics"]
   },
   "schematics": {
     "@schematics/angular:component": {

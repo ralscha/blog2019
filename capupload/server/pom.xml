@@ -4,8 +4,8 @@
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
-    <version>4.0.6</version>
-    <relativePath></relativePath>
+    <version>4.1.0</version>
+    <relativePath/>
   </parent>
   <groupId>ch.rasc</groupId>
   <artifactId>capupload</artifactId>
@@ -25,7 +25,7 @@
     <dependency>
       <groupId>me.desair.tus</groupId>
       <artifactId>tus-java-server</artifactId>
-      <version>1.0.0-3.0</version>
+      <version>1.0.0-3.1</version>
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>

@@ -1,7 +1,7 @@
-import {Injectable} from '@angular/core';
-import {Earthquake, EarthquakeDb} from './earthquake-db';
-import {Subject} from 'rxjs';
-import {releaseProxy, type Remote, wrap} from 'comlink';
+import { Injectable } from '@angular/core';
+import { Earthquake, EarthquakeDb } from './earthquake-db';
+import { Subject } from 'rxjs';
+import { releaseProxy, type Remote, wrap } from 'comlink';
 
 type EarthquakesLoaderApi = {
   load(url: string): Promise<void>;
@@ -9,10 +9,9 @@ type EarthquakesLoaderApi = {
 };
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class EarthquakeService {
-
   private static readonly FORTY_FIVE_MINUTES = 30 * 60 * 1000;
   private static readonly ONE_HOUR = 60 * 60 * 1000;
   private static readonly ONE_DAY = 24 * 60 * 60 * 1000;
@@ -53,7 +52,9 @@ export class EarthquakeService {
     }
 
     if (url !== null) {
-      const worker = new Worker(new URL('./earthquakes-loader.worker', import.meta.url), {type: 'module'});
+      const worker = new Worker(new URL('./earthquakes-loader.worker', import.meta.url), {
+        type: 'module',
+      });
       const earthquakesLoader: Remote<EarthquakesLoaderApi> = wrap<EarthquakesLoaderApi>(worker);
 
       try {
@@ -75,6 +76,4 @@ export class EarthquakeService {
   async fetchAll(): Promise<Earthquake[]> {
     return this.db.earthquakes.toArray();
   }
-
-
 }

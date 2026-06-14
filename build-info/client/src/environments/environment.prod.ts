@@ -1,4 +1,4 @@
-import {Env} from './env';
+import { Env } from './env';
 
 export const environment: Env = {
   production: true,
@@ -7,5 +7,5 @@ export const environment: Env = {
   buildTimestamp: 1773987576,
   shortCommitId: '5145160',
   commitId: '5145160dec08e87765640b59a1fba7d7a83d3500',
-  commitTime: 1773985782
+  commitTime: 1773985782,
 };

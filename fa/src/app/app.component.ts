@@ -1,6 +1,6 @@
-import {Component, inject} from '@angular/core';
-import {IonApp, IonRouterOutlet} from "@ionic/angular/standalone";
-import {FaIconLibrary} from '@fortawesome/angular-fontawesome';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
+import { IonApp, IonRouterOutlet } from '@ionic/angular/standalone';
+import { FaIconLibrary } from '@fortawesome/angular-fontawesome';
 import {
   faAsterisk,
   faBan,
@@ -25,30 +25,54 @@ import {
   faStar,
   faSun,
   faSwimmer,
-  faSync
+  faSync,
 } from '@fortawesome/free-solid-svg-icons';
-import {faBell as faRegularBell, faSmileBeam, faSmileWink} from '@fortawesome/free-regular-svg-icons';
+import {
+  faBell as faRegularBell,
+  faSmileBeam,
+  faSmileWink,
+} from '@fortawesome/free-regular-svg-icons';
 
 // import {fas} from '@fortawesome/free-solid-svg-icons';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  imports: [
-    IonApp,
-    IonRouterOutlet
-  ]
+  changeDetection: ChangeDetectionStrategy.Eager,
+  imports: [IonApp, IonRouterOutlet],
 })
 export class AppComponent {
   private readonly library = inject(FaIconLibrary);
 
   constructor() {
     // library.addIconPacks(fas);
-    this.library.addIcons(faSmileWinkSolid, faSmileBeamSolid,
-      faSmileWink, faSmileBeam, faEnvelopeOpen, faCloud,
-      faMobile, faSquare, faSpinner, faCircle,
-      faSync, faPlay, faSun, faMoon, faStar,
-      faHandPointLeft, faAsterisk, faCog, faSkating,
-      faSkiing, faSkiingNordic, faSnowboarding, faSwimmer,
-      faSolidBell, faRegularBell, faCamera, faBan);
+    this.library.addIcons(
+      faSmileWinkSolid,
+      faSmileBeamSolid,
+      faSmileWink,
+      faSmileBeam,
+      faEnvelopeOpen,
+      faCloud,
+      faMobile,
+      faSquare,
+      faSpinner,
+      faCircle,
+      faSync,
+      faPlay,
+      faSun,
+      faMoon,
+      faStar,
+      faHandPointLeft,
+      faAsterisk,
+      faCog,
+      faSkating,
+      faSkiing,
+      faSkiingNordic,
+      faSnowboarding,
+      faSwimmer,
+      faSolidBell,
+      faRegularBell,
+      faCamera,
+      faBan,
+    );
   }
 }

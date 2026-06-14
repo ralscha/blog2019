@@ -1,8 +1,6 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>
-      MNIST
-    </ion-title>
+    <ion-title> MNIST </ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -15,20 +13,19 @@
   @if (detectionsCNN !== null) {
     <table>
       <thead>
-      <th></th>
-      <th style="text-align: right">MLP: {{ detectedNumberMLP }}</th>
-      <th style="text-align: right">CNN: {{ detectedNumberCNN }}</th>
+        <th></th>
+        <th style="text-align: right">MLP: {{ detectedNumberMLP }}</th>
+        <th style="text-align: right">CNN: {{ detectedNumberCNN }}</th>
       </thead>
       <tbody>
         @for (detection of detectionsMLP; track detection) {
           <tr>
             <td>{{ $index }}</td>
-            <td class="ion-text-end">{{ detection * 100 | number:'1.1-1' }} %</td>
-            <td class="ion-text-end">{{ detectionsCNN[$index] * 100 | number:'1.1-1' }} %</td>
+            <td class="ion-text-end">{{ detection * 100 | number: '1.1-1' }} %</td>
+            <td class="ion-text-end">{{ detectionsCNN[$index] * 100 | number: '1.1-1' }} %</td>
           </tr>
         }
       </tbody>
     </table>
   }
-
 </ion-content>

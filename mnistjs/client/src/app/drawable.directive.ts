@@ -1,7 +1,15 @@
-import {Directive, ElementRef, HostListener, inject, OnInit, output, Renderer2} from '@angular/core';
-import {Platform} from '@ionic/angular/standalone';
+import {
+  Directive,
+  ElementRef,
+  HostListener,
+  inject,
+  OnInit,
+  output,
+  Renderer2,
+} from '@angular/core';
+import { Platform } from '@ionic/angular/standalone';
 
-@Directive({selector: '[appDrawable]'})
+@Directive({ selector: '[appDrawable]' })
 export class DrawableDirective implements OnInit {
   newImage = output<HTMLCanvasElement>();
   private readonly el = inject(ElementRef);
@@ -20,8 +28,16 @@ export class DrawableDirective implements OnInit {
   ngOnInit(): void {
     this.canvas = this.el.nativeElement as HTMLCanvasElement;
     this.ctx = this.canvas.getContext('2d');
-    this.renderer.setAttribute(this.canvas, 'width', '' + Math.min(300, this.platform.width() / 1.5));
-    this.renderer.setAttribute(this.canvas, 'height', '' + Math.min(300, this.platform.width() / 1.5));
+    this.renderer.setAttribute(
+      this.canvas,
+      'width',
+      '' + Math.min(300, this.platform.width() / 1.5),
+    );
+    this.renderer.setAttribute(
+      this.canvas,
+      'height',
+      '' + Math.min(300, this.platform.width() / 1.5),
+    );
   }
 
   @HostListener('touchend')
@@ -111,5 +127,4 @@ export class DrawableDirective implements OnInit {
   getImgData(): HTMLCanvasElement {
     return this.canvas;
   }
-
 }

@@ -1,8 +1,6 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>
-      Upload with tus
-    </ion-title>
+    <ion-title> Upload with tus </ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -21,24 +19,43 @@
     <ion-label>
       <ion-row>
         <ion-col size="6">
-          <ion-button (click)="start()" [disabled]="recording" color="secondary" expand="full" shape="round"
-                      size="large"
-                      type="button">
+          <ion-button
+            (click)="start()"
+            [disabled]="recording"
+            color="secondary"
+            expand="full"
+            shape="round"
+            size="large"
+            type="button"
+          >
             Start
           </ion-button>
         </ion-col>
         <ion-col size="6">
-          <ion-button (click)="stop()" [disabled]="!recording" color="danger" expand="full" shape="round" size="large"
-                      type="button">
+          <ion-button
+            (click)="stop()"
+            [disabled]="!recording"
+            color="danger"
+            expand="full"
+            shape="round"
+            size="large"
+            type="button"
+          >
             Stop
           </ion-button>
         </ion-col>
       </ion-row>
       <ion-row>
         <ion-col size="12">
-          <ion-button (click)="takeSnapshot()" [disabled]="!recording" color="secondary" expand="full" shape="round"
-                      size="large"
-                      type="button">
+          <ion-button
+            (click)="takeSnapshot()"
+            [disabled]="!recording"
+            color="secondary"
+            expand="full"
+            shape="round"
+            size="large"
+            type="button"
+          >
             Take a Snapshot
           </ion-button>
         </ion-col>

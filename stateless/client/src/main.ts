@@ -1,41 +1,40 @@
-import {provideRouter, RouteReuseStrategy, Routes, withHashLocation} from '@angular/router';
-import {IonicRouteStrategy, provideIonicAngular} from '@ionic/angular/standalone';
-import {provideHttpClient, withInterceptorsFromDi} from '@angular/common/http';
-import {bootstrapApplication} from '@angular/platform-browser';
-import {HomePage} from './app/home/home.page';
-import {inject, provideZoneChangeDetection} from '@angular/core';
-import {AuthGuard} from './app/service/auth.guard';
-import {LoginPage} from './app/login/login.page';
-import {AppComponent} from './app/app.component';
+import { provideRouter, RouteReuseStrategy, Routes, withHashLocation } from '@angular/router';
+import { IonicRouteStrategy, provideIonicAngular } from '@ionic/angular/standalone';
+import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
+import { bootstrapApplication } from '@angular/platform-browser';
+import { HomePage } from './app/home/home.page';
+import { inject, provideZoneChangeDetection } from '@angular/core';
+import { AuthGuard } from './app/service/auth.guard';
+import { LoginPage } from './app/login/login.page';
+import { AppComponent } from './app/app.component';
 
 const routes: Routes = [
   {
     path: '',
     redirectTo: 'home',
-    pathMatch: 'full'
+    pathMatch: 'full',
   },
   {
     path: 'home',
     component: HomePage,
-    canActivate: [() => inject(AuthGuard).canActivate()]
+    canActivate: [() => inject(AuthGuard).canActivate()],
   },
   {
     path: 'login',
-    component: LoginPage
+    component: LoginPage,
   },
   {
     path: '**',
-    redirectTo: '/home'
-  }
+    redirectTo: '/home',
+  },
 ];
-
 
 bootstrapApplication(AppComponent, {
   providers: [
-    provideZoneChangeDetection(),provideIonicAngular(),
-    {provide: RouteReuseStrategy, useClass: IonicRouteStrategy},
-    provideHttpClient(withInterceptorsFromDi()),
-    provideRouter(routes, withHashLocation())
-  ]
-})
-  .catch(err => console.error(err));
+    provideZoneChangeDetection(),
+    provideIonicAngular(),
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+    provideHttpClient(withXhr(), withInterceptorsFromDi()),
+    provideRouter(routes, withHashLocation()),
+  ],
+}).catch((err) => console.error(err));

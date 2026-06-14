@@ -1,6 +1,14 @@
-import {AfterViewInit, ChangeDetectorRef, Component, ElementRef, inject, viewChild} from '@angular/core';
-import {createWorker, Line, Page, Symbol as TesseractSymbol, Word} from 'tesseract.js';
-import {FormsModule} from '@angular/forms';
+import {
+  AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  inject,
+  viewChild,
+  ChangeDetectionStrategy,
+} from '@angular/core';
+import { createWorker, Line, Page, Symbol as TesseractSymbol, Word } from 'tesseract.js';
+import { FormsModule } from '@angular/forms';
 import {
   MatCell,
   MatCellDef,
@@ -11,9 +19,9 @@ import {
   MatHeaderRowDef,
   MatRow,
   MatRowDef,
-  MatTable
+  MatTable,
 } from '@angular/material/table';
-import {DecimalPipe, PercentPipe} from '@angular/common';
+import { DecimalPipe, PercentPipe } from '@angular/common';
 import {
   IonButton,
   IonButtons,
@@ -30,16 +38,47 @@ import {
   IonSelect,
   IonSelectOption,
   IonTitle,
-  IonToolbar
-} from "@ionic/angular/standalone";
-import {addIcons} from "ionicons";
-import {cameraOutline} from "ionicons/icons";
+  IonToolbar,
+} from '@ionic/angular/standalone';
+import { addIcons } from 'ionicons';
+import { cameraOutline } from 'ionicons/icons';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.page.html',
   styleUrl: './home.page.scss',
-  imports: [FormsModule, MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, DecimalPipe, PercentPipe, IonHeader, IonToolbar, IonTitle, IonButtons, IonItem, IonSelect, IonSelectOption, IonButton, IonIcon, IonContent, IonGrid, IonRow, IonCol, IonCard, IonCardHeader, IonCardContent]
+  changeDetection: ChangeDetectionStrategy.Eager,
+  imports: [
+    FormsModule,
+    MatTable,
+    MatColumnDef,
+    MatHeaderCellDef,
+    MatHeaderCell,
+    MatCellDef,
+    MatCell,
+    MatHeaderRowDef,
+    MatHeaderRow,
+    MatRowDef,
+    MatRow,
+    DecimalPipe,
+    PercentPipe,
+    IonHeader,
+    IonToolbar,
+    IonTitle,
+    IonButtons,
+    IonItem,
+    IonSelect,
+    IonSelectOption,
+    IonButton,
+    IonIcon,
+    IonContent,
+    IonGrid,
+    IonRow,
+    IonCol,
+    IonCard,
+    IonCardHeader,
+    IonCardContent,
+  ],
 })
 export class HomePage implements AfterViewInit {
   readonly fileInput = viewChild.required<ElementRef>('fileSelector');
@@ -63,7 +102,7 @@ export class HomePage implements AfterViewInit {
   private ratio: number | null = null;
 
   constructor() {
-    addIcons({cameraOutline});
+    addIcons({ cameraOutline });
   }
 
   ngAfterViewInit(): void {
@@ -112,12 +151,14 @@ export class HomePage implements AfterViewInit {
         this.progressStatus = progress.status;
         this.progress = progress.progress;
         this.changeDetectionRef.markForCheck();
-      }
+      },
     });
 
     try {
       if (this.selectedFile) {
-        const recognizeResult = await worker.recognize(this.selectedFile, undefined, {blocks: true});
+        const recognizeResult = await worker.recognize(this.selectedFile, undefined, {
+          blocks: true,
+        });
         if (recognizeResult) {
           this.result = recognizeResult.data;
         } else {
@@ -126,7 +167,7 @@ export class HomePage implements AfterViewInit {
         await worker.terminate();
       }
     } catch (e) {
-      this.progressStatus = "" + e;
+      this.progressStatus = '' + e;
       this.progress = null;
     } finally {
       this.progressStatus = null;
@@ -146,7 +187,7 @@ export class HomePage implements AfterViewInit {
     }
   }
 
-  drawBBox(bbox: { x0: number, x1: number, y0: number, y1: number }): void {
+  drawBBox(bbox: { x0: number; x1: number; y0: number; y1: number }): void {
     if (bbox) {
       this.redrawImage();
 
@@ -208,7 +249,16 @@ export class HomePage implements AfterViewInit {
     this.canvas().nativeElement.height = img.height * this.ratio;
 
     this.ctx.clearRect(0, 0, width, height);
-    this.ctx.drawImage(img, 0, 0, img.width, img.height, 0, 0, img.width * this.ratio, img.height * this.ratio);
+    this.ctx.drawImage(
+      img,
+      0,
+      0,
+      img.width,
+      img.height,
+      0,
+      0,
+      img.width * this.ratio,
+      img.height * this.ratio,
+    );
   }
-
 }

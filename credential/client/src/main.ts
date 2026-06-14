@@ -1,17 +1,17 @@
-import { provideZoneChangeDetection } from "@angular/core";
-import {AppComponent} from "./app/app.component";
-import {bootstrapApplication} from "@angular/platform-browser";
-import {IonicRouteStrategy, provideIonicAngular} from "@ionic/angular/standalone";
-import {routes} from "./app/app.routes";
-import {provideRouter, RouteReuseStrategy, withHashLocation} from "@angular/router";
-import {provideHttpClient, withInterceptorsFromDi} from "@angular/common/http";
+import { provideZoneChangeDetection } from '@angular/core';
+import { AppComponent } from './app/app.component';
+import { bootstrapApplication } from '@angular/platform-browser';
+import { IonicRouteStrategy, provideIonicAngular } from '@ionic/angular/standalone';
+import { routes } from './app/app.routes';
+import { provideRouter, RouteReuseStrategy, withHashLocation } from '@angular/router';
+import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 
 bootstrapApplication(AppComponent, {
   providers: [
-    provideZoneChangeDetection(),provideIonicAngular(),
-    provideHttpClient(withInterceptorsFromDi()),
+    provideZoneChangeDetection(),
+    provideIonicAngular(),
+    provideHttpClient(withXhr(), withInterceptorsFromDi()),
     provideRouter(routes, withHashLocation()),
-    {provide: RouteReuseStrategy, useClass: IonicRouteStrategy}
-  ]
-})
-  .catch(err => console.error(err));
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+  ],
+}).catch((err) => console.error(err));

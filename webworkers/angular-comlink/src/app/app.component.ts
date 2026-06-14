@@ -1,5 +1,12 @@
-import {AfterViewInit, Component, ElementRef, OnDestroy, viewChild} from '@angular/core';
-import {type Remote, wrap} from 'comlink';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  OnDestroy,
+  viewChild,
+  ChangeDetectionStrategy,
+} from '@angular/core';
+import { type Remote, wrap } from 'comlink';
 
 type MandelbrotWorkerRequest = {
   startX: number;
@@ -16,7 +23,8 @@ type ComputeMandelbrotSetMethod = (request: MandelbrotWorkerRequest) => Mandelbr
 
 @Component({
   selector: 'app-root',
-  templateUrl: './app.component.html'
+  changeDetection: ChangeDetectionStrategy.Eager,
+  templateUrl: './app.component.html',
 })
 export class AppComponent implements AfterViewInit, OnDestroy {
   duration = '';
@@ -47,7 +55,9 @@ export class AppComponent implements AfterViewInit, OnDestroy {
     this.computeMandelbrotSetMethods = [];
     this.workers = [];
     for (let w = 0; w < this.numberOfWorkers; w++) {
-      this.workers[w] = new Worker(new URL('./mandelbrot.worker', import.meta.url), {type: 'module'});
+      this.workers[w] = new Worker(new URL('./mandelbrot.worker', import.meta.url), {
+        type: 'module',
+      });
       this.computeMandelbrotSetMethods[w] = wrap(this.workers[w]);
     }
   }
@@ -67,7 +77,6 @@ export class AppComponent implements AfterViewInit, OnDestroy {
 
     this.workX = 0;
     this.workY = 0;
-
 
     const promises: Promise<void>[] = [];
     for (let w = 0; w < this.numberOfWorkers; w++) {
@@ -90,7 +99,7 @@ export class AppComponent implements AfterViewInit, OnDestroy {
         height: 100,
         totalWidth: this.width,
         totalHeight: this.height,
-        maxIteration: this.maxIteration
+        maxIteration: this.maxIteration,
       });
 
       for (const point of result) {
@@ -99,7 +108,8 @@ export class AppComponent implements AfterViewInit, OnDestroy {
 
       const last = result[result.length - 1];
       if (last) {
-        this.progress = Math.round((last[0] + (last[1] * this.width)) * 100 / this.totalPixels) + ' %';
+        this.progress =
+          Math.round(((last[0] + last[1] * this.width) * 100) / this.totalPixels) + ' %';
       }
 
       this.workX += 100;
@@ -109,5 +119,4 @@ export class AppComponent implements AfterViewInit, OnDestroy {
       }
     }
   }
-
 }

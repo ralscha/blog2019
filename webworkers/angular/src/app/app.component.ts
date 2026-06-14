@@ -1,8 +1,16 @@
-import {AfterViewInit, Component, ElementRef, OnDestroy, viewChild} from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  OnDestroy,
+  viewChild,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 
 @Component({
   selector: 'app-root',
-  templateUrl: './app.component.html'
+  changeDetection: ChangeDetectionStrategy.Eager,
+  templateUrl: './app.component.html',
 })
 export class AppComponent implements AfterViewInit, OnDestroy {
   duration = '';
@@ -31,8 +39,12 @@ export class AppComponent implements AfterViewInit, OnDestroy {
 
     this.workers = [];
     for (let w = 0; w < this.numberOfWorkers; w++) {
-      this.workers[w] = new Worker(new URL('./mandelbrot.worker', import.meta.url), {type: 'module'});
-      this.workers[w].addEventListener('message', message => this.handleWorkerMessage(this.workers[w], message));
+      this.workers[w] = new Worker(new URL('./mandelbrot.worker', import.meta.url), {
+        type: 'module',
+      });
+      this.workers[w].addEventListener('message', (message) =>
+        this.handleWorkerMessage(this.workers[w], message),
+      );
     }
   }
 
@@ -65,7 +77,7 @@ export class AppComponent implements AfterViewInit, OnDestroy {
         height: 100,
         totalWidth: this.width,
         totalHeight: this.height,
-        maxIteration: this.maxIteration
+        maxIteration: this.maxIteration,
       });
       this.workX += 100;
       if (this.workX === this.width) {
@@ -75,7 +87,6 @@ export class AppComponent implements AfterViewInit, OnDestroy {
     }
   }
 
-
   private handleWorkerMessage(worker: Worker, message: MessageEvent): void {
     const data = message.data;
     for (const point of data) {
@@ -84,7 +95,8 @@ export class AppComponent implements AfterViewInit, OnDestroy {
 
     const last = data[data.length - 1];
     if (last) {
-      this.progress = Math.round((last[0] + (last[1] * this.width)) * 100 / this.totalPixels) + ' %';
+      this.progress =
+        Math.round(((last[0] + last[1] * this.width) * 100) / this.totalPixels) + ' %';
     }
 
     if (this.workY < this.height) {
@@ -95,7 +107,7 @@ export class AppComponent implements AfterViewInit, OnDestroy {
         height: 100,
         totalWidth: this.width,
         totalHeight: this.height,
-        maxIteration: this.maxIteration
+        maxIteration: this.maxIteration,
       });
 
       this.workX += 100;
@@ -113,6 +125,4 @@ export class AppComponent implements AfterViewInit, OnDestroy {
       }
     }
   }
-
-
 }
