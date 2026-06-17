@@ -20,7 +20,7 @@
     "@angular/router": "22.0.1",
     "@ionic/angular": "8.8.10",
     "comlink": "4.4.2",
-    "dexie": "4.4.3",
+    "dexie": "4.4.4",
     "ionicons": "8.0.13",
     "papaparse": "5.5.3",
     "rxjs": "7.8.2",
