@@ -1,13 +1,11 @@
-import { inject, Injectable } from '@angular/core';
+import { inject, Service } from '@angular/core';
 import { from, Observable, of } from 'rxjs';
 import { environment } from '../environments/environment';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { catchError, finalize, map, mapTo, switchMap, tap } from 'rxjs/operators';
 import { LoadingController, NavController, ToastController } from '@ionic/angular/standalone';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Service()
 export class AuthService {
   private readonly httpClient = inject(HttpClient);
   private readonly navCtrl = inject(NavController);

@@ -46,9 +46,9 @@
   </div>
 
   <div>
-    <fa-icon [animation]="syncRunning ? 'spin' : undefined" [icon]="['fas', 'sync']" size="6x" />
-    <ion-button (click)="syncRunning = true" [disabled]="syncRunning">Start</ion-button>
-    <ion-button (click)="syncRunning = false" [disabled]="!syncRunning">Stop</ion-button>
+    <fa-icon [animation]="syncRunning() ? 'spin' : undefined" [icon]="['fas', 'sync']" size="6x" />
+    <ion-button (click)="syncRunning.set(true)" [disabled]="syncRunning()">Start</ion-button>
+    <ion-button (click)="syncRunning.set(false)" [disabled]="!syncRunning()">Stop</ion-button>
   </div>
 
   <div>
@@ -137,8 +137,14 @@
   </div>
 
   <div>
-    <fa-icon [icon]="['fas', 'hand-point-left']" [transform]="magicTransform" size="5x" />
-    <input (input)="updateMagicLevel($event)" [value]="magicLevel" max="360" min="0" type="range" />
+    <fa-icon [icon]="['fas', 'hand-point-left']" [transform]="magicTransform()" size="5x" />
+    <input
+      (input)="updateMagicLevel($event)"
+      [value]="magicLevel()"
+      max="360"
+      min="0"
+      type="range"
+    />
   </div>
 
   <div>
@@ -149,7 +155,7 @@
   </div>
 
   <div>
-    <fa-icon [icon]="['fas', 'bell']" [style]="solidBellStyle" size="5x" />
-    <fa-icon [icon]="['far', 'bell']" [style]="regularBellStyle" size="5x" />
+    <fa-icon [icon]="['fas', 'bell']" [style]="solidBellStyle()" size="5x" />
+    <fa-icon [icon]="['far', 'bell']" [style]="regularBellStyle()" size="5x" />
   </div>
 </ion-content>

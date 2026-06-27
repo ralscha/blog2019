@@ -1,4 +1,4 @@
-import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import {
   IonButton,
   IonContent,
@@ -12,14 +12,19 @@ import {
 } from '@ionic/angular/standalone';
 import { AuthService } from '../service/auth.service';
 import { MessagesService } from '../service/messages.service';
-import { FormsModule } from '@angular/forms';
+import { FormField, FormRoot, form } from '@angular/forms/signals';
+
+interface LoginForm {
+  email: string;
+  password: string;
+}
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
-    FormsModule,
+    FormField,
+    FormRoot,
     IonHeader,
     IonToolbar,
     IonTitle,
@@ -31,11 +36,18 @@ import { FormsModule } from '@angular/forms';
   ],
 })
 export class LoginPage {
+  readonly loginModel = signal<LoginForm>({
+    email: '',
+    password: '',
+  });
+  readonly loginForm = form(this.loginModel);
+
   private readonly navCtrl = inject(NavController);
   private readonly authService = inject(AuthService);
   private readonly messagesService = inject(MessagesService);
 
-  async login({ email, password }: { email: string; password: string }): Promise<void> {
+  async login(): Promise<void> {
+    const { email, password } = this.loginModel();
     const loading = await this.messagesService.showLoading('Logging in');
 
     this.authService.login(email, password).subscribe(

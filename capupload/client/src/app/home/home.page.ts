@@ -1,4 +1,4 @@
-import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import {
   IonButton,
   IonCol,
@@ -21,16 +21,13 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { environment } from '../../environments/environment';
 import { catchError, finalize, Observable, throwError } from 'rxjs';
 import { Upload } from 'tus-js-client';
-import { FormsModule } from '@angular/forms';
 import { addIcons } from 'ionicons';
 import { camera, image } from 'ionicons/icons';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.page.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
-    FormsModule,
     IonHeader,
     IonToolbar,
     IonTitle,
@@ -46,9 +43,9 @@ import { camera, image } from 'ionicons/icons';
   ],
 })
 export class HomePage {
-  public tus = false;
-  public error: string | null = null;
-  photo: SafeResourceUrl | null = null;
+  readonly tus = signal(false);
+  readonly error = signal<string | null>(null);
+  readonly photo = signal<SafeResourceUrl | null>(null);
   private readonly http = inject(HttpClient);
   private readonly sanitizer = inject(DomSanitizer);
   private readonly loadingCtrl = inject(LoadingController);
@@ -69,14 +66,14 @@ export class HomePage {
   }
 
   private async handlePhotoSelection(source: CameraSource): Promise<void> {
-    this.error = null;
+    this.error.set(null);
 
     const webPath = await this.getPhoto(source);
     if (!webPath) {
       return;
     }
 
-    if (this.tus) {
+    if (this.tus()) {
       await this.uploadTus(webPath);
     } else {
       await this.uploadAll(webPath);
@@ -92,7 +89,7 @@ export class HomePage {
     });
 
     if (image.webPath) {
-      this.photo = this.sanitizer.bypassSecurityTrustResourceUrl(image.webPath);
+      this.photo.set(this.sanitizer.bypassSecurityTrustResourceUrl(image.webPath));
     }
     return image.webPath;
   }
@@ -167,7 +164,7 @@ export class HomePage {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private handleError(error: any): Observable<never> {
     const errMsg = error.message ? error.message : error.toString();
-    this.error = errMsg;
+    this.error.set(errMsg);
     return throwError(() => error);
   }
 }

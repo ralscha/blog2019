@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Service } from '@angular/core';
 import { Earthquake, EarthquakeDb } from './earthquake-db';
 import { Subject } from 'rxjs';
 import { releaseProxy, type Remote, wrap } from 'comlink';
@@ -8,9 +8,7 @@ type EarthquakesLoaderApi = {
   deleteOldRecords(): Promise<void>;
 };
 
-@Injectable({
-  providedIn: 'root',
-})
+@Service()
 export class EarthquakeService {
   private static readonly FORTY_FIVE_MINUTES = 30 * 60 * 1000;
   private static readonly ONE_HOUR = 60 * 60 * 1000;

@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { AuthService } from '../service/auth.service';
 import {
   IonButton,
@@ -16,12 +16,11 @@ import { AsyncPipe } from '@angular/common';
 @Component({
   selector: 'app-home',
   templateUrl: './home.page.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [AsyncPipe, IonHeader, IonToolbar, IonTitle, IonContent, IonButton],
 })
 export class HomePage implements OnInit {
   message!: Observable<string>;
-  userEnabled = false;
+  userEnabled = signal(false);
   private readonly authService = inject(AuthService);
   private readonly navCtrl = inject(NavController);
   private readonly httpClient = inject(HttpClient);
@@ -43,7 +42,7 @@ export class HomePage implements OnInit {
         concatMap(() => this.httpClient.get<boolean>('/isEnabled')),
       )
       .subscribe(
-        (flag) => (this.userEnabled = flag),
+        (flag) => this.userEnabled.set(flag),
         (err) => console.log(err),
       );
   }
@@ -58,14 +57,14 @@ export class HomePage implements OnInit {
 
   enable(): void {
     this.httpClient.get<void>('/enable').subscribe(
-      () => (this.userEnabled = true),
+      () => this.userEnabled.set(true),
       (error) => console.log('enable: ' + error),
     );
   }
 
   disable(): void {
     this.httpClient.get<void>('/disable').subscribe(
-      () => (this.userEnabled = false),
+      () => this.userEnabled.set(false),
       (error) => console.log('disable: ' + error),
     );
   }

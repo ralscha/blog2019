@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnDestroy, OnInit, signal } from '@angular/core';
 import { faHandPointLeft, faHandPointRight } from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import {
@@ -15,7 +15,6 @@ import {
   selector: 'app-home',
   templateUrl: './home.page.html',
   styleUrls: ['./home.page.scss'],
-  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     FontAwesomeModule,
     IonHeader,
@@ -31,12 +30,12 @@ export class HomePage implements OnInit, OnDestroy {
   readonly faHandPointLeft = faHandPointLeft;
   readonly faHandPointRight = faHandPointRight;
 
-  syncRunning = false;
-  magicLevel = 0;
-  magicTransform = 'rotate-0';
+  syncRunning = signal(false);
+  magicLevel = signal(0);
+  magicTransform = signal('rotate-0');
 
-  solidBellStyle = this.createRandomIconStyle();
-  regularBellStyle = this.createRandomIconStyle();
+  solidBellStyle = signal(this.createRandomIconStyle());
+  regularBellStyle = signal(this.createRandomIconStyle());
 
   private intervalId: ReturnType<typeof window.setInterval> | undefined;
 
@@ -48,14 +47,15 @@ export class HomePage implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.intervalId = window.setInterval(() => {
-      this.solidBellStyle = this.createRandomIconStyle();
-      this.regularBellStyle = this.createRandomIconStyle();
+      this.solidBellStyle.set(this.createRandomIconStyle());
+      this.regularBellStyle.set(this.createRandomIconStyle());
     }, 1000);
   }
 
   updateMagicLevel(event: Event): void {
-    this.magicLevel = Number((event.target as HTMLInputElement).value);
-    this.magicTransform = `rotate-${this.magicLevel}`;
+    const magicLevel = Number((event.target as HTMLInputElement).value);
+    this.magicLevel.set(magicLevel);
+    this.magicTransform.set(`rotate-${magicLevel}`);
   }
 
   private createRandomIconStyle(): {

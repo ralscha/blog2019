@@ -1,20 +1,12 @@
-import {
-  AfterViewInit,
-  Component,
-  ElementRef,
-  OnDestroy,
-  viewChild,
-  ChangeDetectionStrategy,
-} from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnDestroy, signal, viewChild } from '@angular/core';
 
 @Component({
   selector: 'app-root',
-  changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: './app.component.html',
 })
 export class AppComponent implements AfterViewInit, OnDestroy {
-  duration = '';
-  progress = '0 %';
+  duration = signal('');
+  progress = signal('0 %');
 
   readonly myCanvasRef = viewChild.required<ElementRef>('myCanvas');
   private ctx!: CanvasRenderingContext2D;
@@ -56,7 +48,7 @@ export class AppComponent implements AfterViewInit, OnDestroy {
 
   startCalculation(): void {
     this.ctx.clearRect(0, 0, this.width, this.height);
-    this.duration = 'working...';
+    this.duration.set('working...');
     performance.clearMarks();
     performance.clearMeasures();
     performance.mark('start-mandelbrot');
@@ -95,8 +87,9 @@ export class AppComponent implements AfterViewInit, OnDestroy {
 
     const last = data[data.length - 1];
     if (last) {
-      this.progress =
-        Math.round(((last[0] + last[1] * this.width) * 100) / this.totalPixels) + ' %';
+      this.progress.set(
+        Math.round(((last[0] + last[1] * this.width) * 100) / this.totalPixels) + ' %',
+      );
     }
 
     if (this.workY < this.height) {
@@ -120,8 +113,8 @@ export class AppComponent implements AfterViewInit, OnDestroy {
       if (this.endCounter === this.numberOfWorkers) {
         performance.mark('end-mandelbrot');
         performance.measure('mandelbrot', 'start-mandelbrot', 'end-mandelbrot');
-        this.duration = performance.getEntriesByName('mandelbrot')[0].duration + 'ms';
-        this.progress = '100 %';
+        this.duration.set(performance.getEntriesByName('mandelbrot')[0].duration + 'ms');
+        this.progress.set('100 %');
       }
     }
   }

@@ -1,7 +1,6 @@
-import { AsyncPipe, DatePipe } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
-import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
-import { forkJoin, Observable } from 'rxjs';
+import { DatePipe } from '@angular/common';
+import { httpResource } from '@angular/common/http';
+import { Component, computed } from '@angular/core';
 import { environment } from '../environments/environment';
 import { BuildInfo } from './model/build-info';
 import { ClientInfo } from './model/client-info';
@@ -13,12 +12,9 @@ import { ProfileInfo } from './model/profile-info';
   standalone: true,
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
-  changeDetection: ChangeDetectionStrategy.Eager,
-  imports: [AsyncPipe, DatePipe],
+  imports: [DatePipe],
 })
 export class AppComponent {
-  private readonly httpClient = inject(HttpClient);
-
   readonly clientInfo: ClientInfo = {
     version: environment.version,
     buildTimestamp: environment.buildTimestamp ? environment.buildTimestamp * 1000 : null,
@@ -27,9 +23,21 @@ export class AppComponent {
     commitTime: environment.commitTime ? environment.commitTime * 1000 : null,
   };
 
-  readonly info$: Observable<{ build: BuildInfo; git: GitInfo; profile: ProfileInfo }> = forkJoin({
-    build: this.httpClient.get<BuildInfo>(`${environment.serverURL}/build-info`),
-    git: this.httpClient.get<GitInfo>(`${environment.serverURL}/git-info`),
-    profile: this.httpClient.get<ProfileInfo>(`${environment.serverURL}/profile-info`),
+  private readonly buildInfo = httpResource<BuildInfo>(() => `${environment.serverURL}/build-info`);
+  private readonly gitInfo = httpResource<GitInfo>(() => `${environment.serverURL}/git-info`);
+  private readonly profileInfo = httpResource<ProfileInfo>(
+    () => `${environment.serverURL}/profile-info`,
+  );
+
+  readonly info = computed<{ build: BuildInfo; git: GitInfo; profile: ProfileInfo } | null>(() => {
+    if (!this.buildInfo.hasValue() || !this.gitInfo.hasValue() || !this.profileInfo.hasValue()) {
+      return null;
+    }
+
+    return {
+      build: this.buildInfo.value(),
+      git: this.gitInfo.value(),
+      profile: this.profileInfo.value(),
+    };
   });
 }

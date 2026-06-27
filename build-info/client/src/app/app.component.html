@@ -3,7 +3,7 @@
 </div>
 
 <h2>Server</h2>
-@if (info$ | async; as info) {
+@if (info(); as info) {
   <h3>Build Info</h3>
   <p>
     Name: <strong>{{ info.build.name }}</strong>

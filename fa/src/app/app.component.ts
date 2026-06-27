@@ -1,4 +1,4 @@
-import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { IonApp, IonRouterOutlet } from '@ionic/angular/standalone';
 import { FaIconLibrary } from '@fortawesome/angular-fontawesome';
 import {
@@ -37,7 +37,6 @@ import {
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [IonApp, IonRouterOutlet],
 })
 export class AppComponent {

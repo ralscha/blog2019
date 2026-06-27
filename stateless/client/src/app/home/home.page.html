@@ -13,10 +13,10 @@
 
   @if (isAdmin() | async) {
     <div class="ion-margin-top">
-      @if (userEnabled) {
+      @if (userEnabled()) {
         <ion-button (click)="disable()">disable User</ion-button>
       }
-      @if (!userEnabled) {
+      @if (!userEnabled()) {
         <ion-button (click)="enable()">Enable User</ion-button>
       }
     </div>

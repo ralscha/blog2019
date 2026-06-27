@@ -6,7 +6,7 @@
 
 <ion-content>
   <cdk-virtual-scroll-viewport itemSize="128" maxBufferPx="1350" minBufferPx="900">
-    <ion-item *cdkVirtualFor="let earthquake of earthquakes">
+    <ion-item *cdkVirtualFor="let earthquake of earthquakes()">
       <ion-label>
         <ion-row>
           <ion-col size="3">

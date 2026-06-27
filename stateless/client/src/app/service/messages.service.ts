@@ -1,9 +1,7 @@
-import { inject, Injectable } from '@angular/core';
+import { inject, Service } from '@angular/core';
 import { LoadingController, ToastController } from '@ionic/angular/standalone';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Service()
 export class MessagesService {
   private readonly toastCtrl = inject(ToastController);
   private readonly loadingCtrl = inject(LoadingController);

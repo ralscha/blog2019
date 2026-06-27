@@ -1,7 +1,7 @@
-import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { AuthService } from '../auth.service';
 import { noop } from 'rxjs';
-import { FormsModule } from '@angular/forms';
+import { FormField, FormRoot, form } from '@angular/forms/signals';
 import { RouterLink } from '@angular/router';
 import {
   IonButton,
@@ -15,6 +15,11 @@ import {
   IonToolbar,
 } from '@ionic/angular/standalone';
 
+interface LoginForm {
+  username: string;
+  password: string;
+}
+
 @Component({
   selector: 'app-login',
   imports: [
@@ -22,7 +27,8 @@ import {
     IonToolbar,
     IonTitle,
     IonContent,
-    FormsModule,
+    FormField,
+    FormRoot,
     IonList,
     IonItem,
     IonInput,
@@ -30,13 +36,19 @@ import {
     RouterLink,
     IonRouterLink,
   ],
-  changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: './login.page.html',
 })
 export class LoginPage {
+  readonly loginModel = signal<LoginForm>({
+    username: '',
+    password: '',
+  });
+  readonly loginForm = form(this.loginModel);
+
   private readonly authService = inject(AuthService);
 
-  login(username: string, password: string): void {
+  login(): void {
+    const { username, password } = this.loginModel();
     this.authService.login(username, password).subscribe(noop);
   }
 }

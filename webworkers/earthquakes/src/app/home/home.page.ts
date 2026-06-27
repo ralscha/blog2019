@@ -1,4 +1,4 @@
-import { Component, inject, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
 import { EarthquakeService } from '../earthquake.service';
 import { Earthquake } from '../earthquake-db';
 import { Subscription } from 'rxjs';
@@ -23,7 +23,6 @@ import {
   selector: 'app-home',
   templateUrl: './home.page.html',
   styleUrl: './home.page.scss',
-  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     CdkVirtualScrollViewport,
     CdkFixedSizeVirtualScroll,
@@ -41,16 +40,16 @@ import {
   ],
 })
 export class HomePage implements OnInit, OnDestroy {
-  earthquakes: Earthquake[] = [];
+  earthquakes = signal<Earthquake[]>([]);
   subscription!: Subscription;
   private readonly earthquakeService = inject(EarthquakeService);
 
   async ngOnInit(): Promise<void> {
     this.subscription = this.earthquakeService.change$.subscribe(async () => {
-      this.earthquakes = await this.earthquakeService.fetchAll();
+      this.earthquakes.set(await this.earthquakeService.fetchAll());
     });
 
-    this.earthquakes = await this.earthquakeService.fetchAll();
+    this.earthquakes.set(await this.earthquakeService.fetchAll());
   }
 
   ngOnDestroy(): void {

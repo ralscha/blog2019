@@ -1,11 +1,4 @@
-import {
-  ChangeDetectorRef,
-  Component,
-  ElementRef,
-  inject,
-  viewChild,
-  ChangeDetectionStrategy,
-} from '@angular/core';
+import { Component, ElementRef, inject, signal, viewChild } from '@angular/core';
 import { Upload } from 'tus-js-client';
 import {
   IonButton,
@@ -25,7 +18,6 @@ import { ProgressBarComponent } from '../progress-bar/progress-bar.component';
 @Component({
   selector: 'app-home',
   templateUrl: './home.page.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     ProgressBarComponent,
     IonHeader,
@@ -40,17 +32,16 @@ import { ProgressBarComponent } from '../progress-bar/progress-bar.component';
   ],
 })
 export class HomePage {
-  recording = false;
-  uploadProgress = 0;
+  recording = signal(false);
+  uploadProgress = signal(0);
   readonly videoElement = viewChild.required<ElementRef<HTMLVideoElement>>('videoElement');
   private readonly toastCtrl = inject(ToastController);
-  private readonly changeDetectionRef = inject(ChangeDetectorRef);
   private mediaRecorder: MediaRecorder | null = null;
   private mediaStream: MediaStream | null = null;
   private recordedChunks: Blob[] = [];
 
   async start(): Promise<void> {
-    this.recording = true;
+    this.recording.set(true);
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
       this.mediaStream = stream;
@@ -65,14 +56,14 @@ export class HomePage {
       this.mediaRecorder.addEventListener('dataavailable', this.handleDataAvailable);
       this.mediaRecorder.start();
     } catch (error) {
-      this.recording = false;
+      this.recording.set(false);
       console.error('Could not start video capture', error);
       await this.presentToast('Could not access the camera');
     }
   }
 
   stop(): void {
-    this.recording = false;
+    this.recording.set(false);
     const mediaRecorder = this.mediaRecorder;
     if (mediaRecorder && mediaRecorder.state !== 'inactive') {
       mediaRecorder.addEventListener(
@@ -130,7 +121,7 @@ export class HomePage {
   }
 
   private async uploadFile(file: File): Promise<void> {
-    this.uploadProgress = 0;
+    this.uploadProgress.set(0);
 
     const upload = new Upload(file, {
       endpoint: `${environment.serverURL}/upload`,
@@ -144,12 +135,10 @@ export class HomePage {
         await this.presentToast('Upload failed: ' + error);
       },
       onProgress: (bytesUploaded, bytesTotal) => {
-        this.uploadProgress = Math.floor((bytesUploaded / bytesTotal) * 100);
-        this.changeDetectionRef.detectChanges();
+        this.uploadProgress.set(Math.floor((bytesUploaded / bytesTotal) * 100));
       },
       onSuccess: async () => {
-        this.uploadProgress = 100;
-        this.changeDetectionRef.detectChanges();
+        this.uploadProgress.set(100);
         await this.presentToast('Upload successful');
       },
     });

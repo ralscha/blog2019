@@ -4,11 +4,10 @@ import {
   Component,
   ElementRef,
   inject,
+  signal,
   viewChild,
-  ChangeDetectionStrategy,
 } from '@angular/core';
 import { createWorker, Line, Page, Symbol as TesseractSymbol, Word } from 'tesseract.js';
-import { FormsModule } from '@angular/forms';
 import {
   MatCell,
   MatCellDef,
@@ -47,9 +46,7 @@ import { cameraOutline } from 'ionicons/icons';
   selector: 'app-home',
   templateUrl: './home.page.html',
   styleUrl: './home.page.scss',
-  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
-    FormsModule,
     MatTable,
     MatColumnDef,
     MatHeaderCellDef,
@@ -93,7 +90,7 @@ export class HomePage implements AfterViewInit {
   elementColumns: string[] = ['text', 'confidence'];
   progressStatus: string | null = null;
   progress: number | null = null;
-  language = 'eng';
+  language = signal('eng');
   private readonly changeDetectionRef = inject(ChangeDetectorRef);
   private ctx!: CanvasRenderingContext2D;
   private selectedFile: File | null = null;
@@ -134,7 +131,7 @@ export class HomePage implements AfterViewInit {
     }
 
     /* download files from 3rd party server
-    const worker = await createWorker(this.language, 1, {
+    const worker = await createWorker(this.language(), 1, {
       logger: progress => {
         this.progressStatus = progress.status;
         this.progress = progress.progress;
@@ -143,7 +140,7 @@ export class HomePage implements AfterViewInit {
     });
      */
 
-    const worker = await createWorker(this.language, 1, {
+    const worker = await createWorker(this.language(), 1, {
       workerPath: 'tesseract7/worker.min.js',
       corePath: 'tesseract7/',
       // eslint-disable-next-line @typescript-eslint/no-explicit-any

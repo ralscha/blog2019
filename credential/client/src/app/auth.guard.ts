@@ -1,12 +1,10 @@
-import { inject, Injectable } from '@angular/core';
+import { inject, Service } from '@angular/core';
 import { Router, UrlTree } from '@angular/router';
 import { from, Observable, of } from 'rxjs';
 import { AuthService } from './auth.service';
 import { map, mergeMap } from 'rxjs/operators';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Service()
 export class AuthGuard {
   private readonly authService = inject(AuthService);
   private readonly router = inject(Router);

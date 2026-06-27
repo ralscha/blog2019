@@ -10,7 +10,12 @@
 </ion-header>
 
 <ion-item>
-  <ion-select [(ngModel)]="language" label="Language" labelPlacement="stacked">
+  <ion-select
+    [value]="language()"
+    (ionChange)="language.set($event.detail.value)"
+    label="Language"
+    labelPlacement="stacked"
+  >
     <ion-select-option value="afr">Afrikaans</ion-select-option>
     <ion-select-option value="amh">Amharic</ion-select-option>
     <ion-select-option value="ara">Arabic</ion-select-option>
