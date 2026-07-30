@@ -28,8 +28,8 @@
     "tus-js-client": "4.3.1"
   },
   "devDependencies": {
-    "@angular/build": "22.1.0",
-    "@angular/cli": "22.1.0",
+    "@angular/build": "22.1.2",
+    "@angular/cli": "22.1.2",
     "@angular/compiler-cli": "22.1.0",
     "@capacitor/cli": "8.4.2",
     "@ionic/angular-toolkit": "12.3.0",
