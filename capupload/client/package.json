@@ -18,7 +18,7 @@
     "@angular/platform-browser": "22.1.0",
     "@angular/router": "22.1.0",
     "@capacitor/android": "8.4.2",
-    "@capacitor/camera": "8.2.1",
+    "@capacitor/camera": "8.2.2",
     "@capacitor/core": "8.4.2",
     "@ionic/angular": "8.8.16",
     "@ionic/pwa-elements": "3.4.0",
