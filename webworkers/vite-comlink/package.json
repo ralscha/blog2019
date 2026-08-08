@@ -8,7 +8,7 @@
     "preview": "vite preview --open"
   },
   "devDependencies": {
-    "vite": "8.2.0"
+    "vite": "8.2.1"
   },
   "dependencies": {
     "comlink": "4.4.2"
