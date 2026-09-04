@@ -1,4 +1,11 @@
-import { Component, ElementRef, inject, signal, viewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  inject,
+  signal,
+  viewChild,
+} from '@angular/core';
 import { Upload } from 'tus-js-client';
 import {
   IonButton,
@@ -11,11 +18,12 @@ import {
   IonTitle,
   IonToolbar,
   ToastController,
-} from '@ionic/angular/standalone';
+} from '@ionic/angular';
 import { environment } from '../../environments/environment';
 import { ProgressBarComponent } from '../progress-bar/progress-bar.component';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.Eager,
   selector: 'app-home',
   templateUrl: './home.page.html',
   imports: [

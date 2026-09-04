@@ -3,7 +3,7 @@ import { from, Observable, of } from 'rxjs';
 import { environment } from '../environments/environment';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { catchError, finalize, map, mapTo, switchMap, tap } from 'rxjs/operators';
-import { LoadingController, NavController, ToastController } from '@ionic/angular/standalone';
+import { LoadingController, NavController, ToastController } from '@ionic/angular';
 
 @Service()
 export class AuthService {

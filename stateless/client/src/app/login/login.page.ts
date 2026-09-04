@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import {
   IonButton,
   IonContent,
@@ -9,7 +9,7 @@ import {
   IonTitle,
   IonToolbar,
   NavController,
-} from '@ionic/angular/standalone';
+} from '@ionic/angular';
 import { AuthService } from '../service/auth.service';
 import { MessagesService } from '../service/messages.service';
 import { FormField, FormRoot, form } from '@angular/forms/signals';
@@ -20,6 +20,7 @@ interface LoginForm {
 }
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.Eager,
   selector: 'app-login',
   templateUrl: './login.page.html',
   imports: [

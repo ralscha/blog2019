@@ -1,12 +1,13 @@
-import { Component, viewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, viewChild } from '@angular/core';
 import { DrawableDirective } from '../drawable.directive';
 // @ts-ignore
 import * as brain from 'brain.js/browser';
 import * as tf from '@tensorflow/tfjs';
 import { DecimalPipe } from '@angular/common';
-import { IonButton, IonContent, IonHeader, IonTitle, IonToolbar } from '@ionic/angular/standalone';
+import { IonButton, IonContent, IonHeader, IonTitle, IonToolbar } from '@ionic/angular';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.Eager,
   selector: 'app-home',
   templateUrl: './home.page.html',
   styleUrls: ['./home.page.scss'],

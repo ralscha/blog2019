@@ -1,5 +1,5 @@
-import { Component, inject } from '@angular/core';
-import { IonApp, IonRouterOutlet } from '@ionic/angular/standalone';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { IonApp, IonRouterOutlet } from '@ionic/angular';
 import { FaIconLibrary } from '@fortawesome/angular-fontawesome';
 import {
   faAsterisk,
@@ -35,6 +35,7 @@ import {
 
 // import {fas} from '@fortawesome/free-solid-svg-icons';
 @Component({
+  changeDetection: ChangeDetectionStrategy.Eager,
   selector: 'app-root',
   templateUrl: './app.component.html',
   imports: [IonApp, IonRouterOutlet],

@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { AuthService } from '../auth.service';
 import { noop } from 'rxjs';
 import { FormField, FormRoot, form } from '@angular/forms/signals';
@@ -13,7 +13,7 @@ import {
   IonRouterLink,
   IonTitle,
   IonToolbar,
-} from '@ionic/angular/standalone';
+} from '@ionic/angular';
 
 interface LoginForm {
   username: string;
@@ -21,6 +21,7 @@ interface LoginForm {
 }
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.Eager,
   selector: 'app-login',
   imports: [
     IonHeader,

@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import {
   IonButton,
   IonCol,
@@ -14,7 +14,7 @@ import {
   IonToolbar,
   LoadingController,
   ToastController,
-} from '@ionic/angular/standalone';
+} from '@ionic/angular';
 import { HttpClient } from '@angular/common/http';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
@@ -25,6 +25,7 @@ import { addIcons } from 'ionicons';
 import { camera, image } from 'ionicons/icons';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.Eager,
   selector: 'app-home',
   templateUrl: './home.page.html',
   imports: [

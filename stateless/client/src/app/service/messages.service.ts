@@ -1,5 +1,5 @@
 import { inject, Service } from '@angular/core';
-import { LoadingController, ToastController } from '@ionic/angular/standalone';
+import { LoadingController, ToastController } from '@ionic/angular';
 
 @Service()
 export class MessagesService {
