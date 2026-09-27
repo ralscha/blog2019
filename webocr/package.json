@@ -31,7 +31,7 @@
     "@angular/cli": "22.2.0",
     "@angular/compiler-cli": "22.2.0",
     "@ionic/angular-toolkit": "13.0.0",
-    "@types/node": "26.6.2",
+    "@types/node": "26.6.3",
     "bread-compressor-cli": "4.1.1",
     "local-web-server": "5.4.0",
     "prettier": "3.9.9",
