@@ -26,6 +26,10 @@ public class Watcher {
         for (WatchEvent<?> watchEvent : key.pollEvents()) {
 
           Kind<?> kind = watchEvent.kind();
+          if (kind == StandardWatchEventKinds.OVERFLOW) {
+            System.err.println("Watch events were lost; rescan the directory");
+            continue;
+          }
           Path context = (Path) watchEvent.context();
 
           System.out.printf("%s:%s\n", context, kind);

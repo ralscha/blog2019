@@ -14,6 +14,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -31,10 +32,12 @@ public class File {
     var url = "https://www.7-zip.org/a/7z1806-x64.exe";
 
     var client = HttpClient.newBuilder().build();
-    var request = HttpRequest.newBuilder().GET().uri(URI.create(url)).build();
+    var request = HttpRequest.newBuilder().GET().uri(URI.create(url))
+        .timeout(Duration.ofSeconds(30)).build();
 
     Path localFile = Paths.get("7z.exe");
     HttpResponse<Path> response = client.send(request, BodyHandlers.ofFile(localFile));
+    requireSuccess(response);
     System.out.println(response);
 
     String virusTotalApiKey = "......................";
@@ -46,30 +49,42 @@ public class File {
     request = HttpRequest.newBuilder()
         .header("Content-Type", "multipart/form-data;boundary=" + boundary)
         .header("x-apikey", virusTotalApiKey).POST(ofMimeMultipartData(data, boundary))
-        .uri(URI.create("https://www.virustotal.com/api/v3/files")).build();
+        .uri(URI.create("https://www.virustotal.com/api/v3/files"))
+        .timeout(Duration.ofSeconds(30)).build();
 
     HttpResponse<String> vtResponse = client.send(request, BodyHandlers.ofString());
+    requireSuccess(vtResponse);
 
     try (JsonReader jsonReader = Json.createReader(new StringReader(vtResponse.body()))) {
       JsonObject jobj = jsonReader.readObject();
-      String analysisId = jobj.getJsonObject("data").get("id").toString().replace("\"",
-          "");
+      String analysisId = jobj.getJsonObject("data").getString("id");
       URI uri = UrlBuilder
           .fromString("https://www.virustotal.com/api/v3/analyses/" + analysisId).toUri();
 
-      HttpResponse<String> status = client.send(
-          HttpRequest.newBuilder(uri).header("x-apikey", virusTotalApiKey).build(),
-          BodyHandlers.ofString());
+      for (int attempt = 0; attempt < 30; attempt++) {
+        HttpResponse<String> status = client.send(HttpRequest.newBuilder(uri)
+            .header("x-apikey", virusTotalApiKey).timeout(Duration.ofSeconds(30)).build(),
+            BodyHandlers.ofString());
+        requireSuccess(status);
+        try (JsonReader statusReader = Json.createReader(new StringReader(status.body()))) {
+          String state = statusReader.readObject().getJsonObject("data")
+              .getJsonObject("attributes").getString("status");
+          if ("completed".equals(state)) {
+            System.out.println(status.body());
+            return;
+          }
+        }
+        if (attempt < 29) {
+          TimeUnit.SECONDS.sleep(20);
+        }
+      }
+      throw new IOException("VirusTotal analysis did not complete within 30 polls");
+    }
+  }
 
-      System.out.println(status.body());
-
-      TimeUnit.MINUTES.sleep(2);
-
-      status = client.send(
-          HttpRequest.newBuilder(uri).header("x-apikey", virusTotalApiKey).build(),
-          BodyHandlers.ofString());
-
-      System.out.println(status.body());
+  private static void requireSuccess(HttpResponse<?> response) throws IOException {
+    if (response.statusCode() < 200 || response.statusCode() >= 300) {
+      throw new IOException("HTTP request failed with status " + response.statusCode());
     }
   }
 

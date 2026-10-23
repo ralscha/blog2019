@@ -33,6 +33,11 @@ public class TreeWatcher {
       WatchKey key = watchService.take();
       for (WatchEvent<?> watchEvent : key.pollEvents()) {
         Kind<?> kind = watchEvent.kind();
+        if (kind == StandardWatchEventKinds.OVERFLOW) {
+          registerTree(watchService, start);
+          System.err.println("Watch events were lost; directory registrations refreshed");
+          continue;
+        }
         Path eventPath = (Path) watchEvent.context();
 
         Path directory = watchKeyToPathMap.get(key);

@@ -1,7 +1,7 @@
 import { inject, Service } from '@angular/core';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { catchError, map, tap } from 'rxjs/operators';
+import { catchError, map, switchMap, tap } from 'rxjs/operators';
 
 @Service()
 export class AuthService {
@@ -22,7 +22,9 @@ export class AuthService {
   }
 
   login(email: string, password: string): Observable<boolean> {
-    return this.httpClient.post('/login', { email, password }, { responseType: 'text' }).pipe(
+    return this.httpClient.get<void>('/csrf').pipe(
+      switchMap(() => this.httpClient.post('/login', { email, password }, { responseType: 'text' })),
+      switchMap((response) => this.httpClient.get<void>('/csrf').pipe(map(() => response))),
       map((response) => this.handleAuthResponse(response)),
       catchError(() => of(false)),
     );
@@ -31,7 +33,10 @@ export class AuthService {
   logout(): Observable<void> {
     return this.httpClient
       .post<void>('/logout', null)
-      .pipe(tap(() => this.authoritySubject.next(null)));
+      .pipe(
+        tap(() => this.authoritySubject.next(null)),
+        switchMap(() => this.httpClient.get<void>('/csrf')),
+      );
   }
 
   private handleAuthResponse(response: string): boolean {

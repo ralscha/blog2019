@@ -10,14 +10,16 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configurers.CsrfConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.logout.HeaderWriterLogoutHandler;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
+import org.springframework.security.web.authentication.session.NullAuthenticatedSessionStrategy;
 import org.springframework.security.web.context.SecurityContextHolderFilter;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+import org.springframework.security.web.csrf.CsrfTokenRepository;
 import org.springframework.security.web.header.writers.ClearSiteDataHeaderWriter;
 import org.springframework.security.web.header.writers.ClearSiteDataHeaderWriter.Directive;
 
@@ -38,18 +40,27 @@ public class SecurityConfig {
   }
 
   @Bean
-  public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+  public CsrfTokenRepository csrfTokenRepository() {
+    return CookieCsrfTokenRepository.withHttpOnlyFalse();
+  }
+
+  @Bean
+  public SecurityFilterChain filterChain(HttpSecurity http,
+      CsrfTokenRepository csrfTokenRepository) throws Exception {
     http.sessionManagement(
         cust -> cust.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .headers(cust -> cust.contentSecurityPolicy(customizer -> customizer
             .policyDirectives("script-src 'self'; object-src 'none'; base-uri 'self'")))
-        .csrf(CsrfConfigurer::disable).logout(cust -> {
+        .csrf(csrf -> csrf.spa().csrfTokenRepository(csrfTokenRepository)
+            // AuthController rotates the token at login; restoring a cookie is not a new login.
+            .sessionAuthenticationStrategy(new NullAuthenticatedSessionStrategy()))
+        .logout(cust -> {
           cust.addLogoutHandler(new HeaderWriterLogoutHandler(
               new ClearSiteDataHeaderWriter(Directive.ALL)));
           cust.logoutSuccessHandler(this.logoutSuccessHandler);
           cust.deleteCookies(AuthCookieFilter.COOKIE_NAME);
         }).authorizeHttpRequests(cust -> {
-          cust.requestMatchers("/login").permitAll().anyRequest().authenticated();
+          cust.requestMatchers("/login", "/csrf").permitAll().anyRequest().authenticated();
         })
         .exceptionHandling(cust -> cust
             .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))

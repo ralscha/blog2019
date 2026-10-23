@@ -2,10 +2,13 @@ package ch.rasc.upload;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.UUID;
 
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
@@ -45,7 +48,8 @@ public class UploadController {
   }
 
   @RequestMapping(value = { "/upload", "/upload/**" }, method = { RequestMethod.POST,
-      RequestMethod.PATCH, RequestMethod.HEAD, RequestMethod.DELETE, RequestMethod.GET })
+      RequestMethod.PATCH, RequestMethod.HEAD, RequestMethod.DELETE, RequestMethod.GET,
+      RequestMethod.OPTIONS })
   public void upload(HttpServletRequest servletRequest,
       HttpServletResponse servletResponse) throws IOException {
     this.tusFileUploadService.process(servletRequest, servletResponse);
@@ -62,11 +66,12 @@ public class UploadController {
 
     if (uploadInfo != null && !uploadInfo.isUploadInProgress()) {
       try (InputStream is = this.tusFileUploadService.getUploadedBytes(uploadURI)) {
-        Path output = this.uploadDirectory.resolve(uploadInfo.getFileName());
-        Files.copy(is, output, StandardCopyOption.REPLACE_EXISTING);
+        saveUpload(this.uploadDirectory, uploadURI, is);
       }
       catch (IOException | TusException e) {
         Application.logger.error("get uploaded bytes", e);
+        servletResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        return;
       }
 
       try {
@@ -87,6 +92,27 @@ public class UploadController {
       catch (IOException e) {
         Application.logger.error("error during cleanup", e);
       }
+    }
+  }
+
+  static void saveUpload(Path directory, String uploadId, InputStream input) throws IOException {
+    Path destination = directory.resolve(UUID.nameUUIDFromBytes(
+        uploadId.getBytes(StandardCharsets.UTF_8)).toString());
+    if (Files.exists(destination)) {
+      return;
+    }
+    Path temporary = Files.createTempFile(directory, ".upload-", ".tmp");
+    try {
+      Files.copy(input, temporary, StandardCopyOption.REPLACE_EXISTING);
+      try {
+        Files.move(temporary, destination);
+      }
+      catch (FileAlreadyExistsException e) {
+        // Another finalization request already saved this upload.
+      }
+    }
+    finally {
+      Files.deleteIfExists(temporary);
     }
   }
 

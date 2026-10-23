@@ -14,6 +14,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.csrf.CsrfToken;
+import org.springframework.security.web.csrf.CsrfTokenRepository;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,6 +25,8 @@ import org.springframework.web.bind.annotation.RestController;
 import ch.rasc.stateless.config.AppProperties;
 import ch.rasc.stateless.db.tables.records.AppSessionRecord;
 import ch.rasc.stateless.db.tables.records.AppUserRecord;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -39,16 +43,25 @@ public class AuthController {
 
   private final AppProperties appProperties;
 
+  private final CsrfTokenRepository csrfTokenRepository;
+
   private final String userNotFoundEncodedPassword;
 
   public AuthController(PasswordEncoder passwordEncoder, DSLContext dsl,
-      TokenService tokenService, AppProperties appProperties) {
+      TokenService tokenService, AppProperties appProperties,
+      CsrfTokenRepository csrfTokenRepository) {
     this.passwordEncoder = passwordEncoder;
     this.dsl = dsl;
     this.tokenService = tokenService;
     this.appProperties = appProperties;
+    this.csrfTokenRepository = csrfTokenRepository;
     this.userNotFoundEncodedPassword = this.passwordEncoder
         .encode("userNotFoundPassword");
+  }
+
+  @GetMapping("/csrf")
+  public void csrf(CsrfToken token) {
+    token.getToken();
   }
 
   @GetMapping("/authenticate")
@@ -58,7 +71,8 @@ public class AuthController {
   }
 
   @PostMapping(path = "/login", consumes = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<String> login(@Valid @RequestBody LoginRequest loginRequest) {
+  public ResponseEntity<String> login(@Valid @RequestBody LoginRequest loginRequest,
+      HttpServletRequest request, HttpServletResponse response) {
 
     AppUserRecord appUserRecord = this.dsl.selectFrom(APP_USER)
         .where(APP_USER.EMAIL.eq(loginRequest.email())).fetchOne();
@@ -76,14 +90,15 @@ public class AuthController {
         record.setValidUntil(
             LocalDateTime.now().plus(this.appProperties.getCookieMaxAge()));
         record.store();
+        this.csrfTokenRepository.saveToken(null, request, response);
 
         ResponseCookie cookie = ResponseCookie
             .from(AuthCookieFilter.COOKIE_NAME, sessionId)
             .maxAge(this.appProperties.getCookieMaxAge()).sameSite("Strict").path("/")
             .httpOnly(true).secure(this.appProperties.isSecureCookie()).build();
 
-        return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, cookie.toString())
-            .body(appUserRecord.getAuthority());
+        response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
+        return ResponseEntity.ok().body(appUserRecord.getAuthority());
       }
     }
     else {

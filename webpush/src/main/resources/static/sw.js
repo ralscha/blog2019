@@ -11,24 +11,21 @@ self.addEventListener('notificationclose', event => console.info('notificationcl
 async function handlePushEvent(event) {
   console.info('push event emitted');
 
-  const needToShow = await needToShowNotification();
-  const dataCache = await caches.open('data');
 
   if (!event.data) {
     console.info('dad joke received without payload');
 
-    if (needToShow) {
-      await self.registration.showNotification('Dad Joke', {
+    await self.registration.showNotification('Dad Joke', {
         body: 'A new joke has arrived',
         tag: 'dad-joke',
         icon: 'dad-joke.png',
         data: { url: urlToOpen }
-      });
-    }
+    });
 
     const response = await fetch('lastDadJoke');
     const dadJoke = await response.text();
 
+    const dataCache = await caches.open('data');
     await dataCache.put('dad-joke', new Response(dadJoke));
   }
   else {
@@ -36,14 +33,13 @@ async function handlePushEvent(event) {
 
     const msg = event.data.json();
 
-    if (needToShow) {
-      await self.registration.showNotification(msg.title, {
+    await self.registration.showNotification(msg.title, {
         body: msg.body,
         icon: 'chuck.png',
         data: { url: urlToOpen }
-      });
-    }
+    });
 
+    const dataCache = await caches.open('data');
     await dataCache.put('joke', new Response(msg.body));
   }
 
@@ -78,14 +74,4 @@ async function handleNotificationClick(event) {
   }
 
   event.notification.close();
-}
-
-async function needToShowNotification() {
-  const allClients = await clients.matchAll({ includeUncontrolled: true, type: 'window' });
-  for (const client of allClients) {
-    if (client.visibilityState === 'visible') {
-      return false;
-    }
-  }
-  return true;
 }

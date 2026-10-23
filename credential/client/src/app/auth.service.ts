@@ -59,7 +59,14 @@ export class AuthService {
       .get<void>(`${environment.serverUrl}/logout`, {
         withCredentials: true,
       })
-      .pipe(tap(() => (this.loggedIn = false)));
+      .pipe(
+        tap(() => (this.loggedIn = false)),
+        switchMap(async () => {
+          if (navigator.credentials?.preventSilentAccess) {
+            await navigator.credentials.preventSilentAccess();
+          }
+        }),
+      );
   }
 
   isLoggedIn(): boolean {

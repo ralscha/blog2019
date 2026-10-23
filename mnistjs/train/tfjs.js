@@ -31,19 +31,15 @@ async function run() {
     const testLabels = await mnist.getTestLabels();
     const testDigits = await mnist.getTestImages();
 
-    const trainDigitsTensor = tf.tensor4d(trainDigits.map(mnist.normalize),
-        [trainDigits.length / (28 * 28), 28, 28, 1]);
+    const trainingOrder = Array.from(tf.util.createShuffledIndices(trainLabels.length));
+    const [trainDigitsTensor, trainLabelsTensor] = tf.tidy(() => {
+        const images = tf.tensor4d(trainDigits.map(mnist.normalize), [trainLabels.length, 28, 28, 1]);
+        const labels = tf.oneHot(tf.tensor1d(trainLabels, 'int32'), 10);
+        return [tf.gather(images, trainingOrder), tf.gather(labels, trainingOrder)];
+    });
 
     const testDigitsTensor = tf.tensor4d(testDigits.map(mnist.normalize),
         [testDigits.length / (28 * 28), 28, 28, 1]);
-
-    const outputs = [];
-    for (let ix = 0; ix < trainLabels.length; ix++) {
-        const output = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-        output[trainLabels[ix]] = 1;
-        outputs.push(output);
-    }
-    const trainLabelsTensor = tf.tensor2d(outputs);
 
     const testOutputs = [];
     for (let ix = 0; ix < testLabels.length; ix++) {
@@ -66,7 +62,7 @@ async function run() {
 
     await model.fit(trainDigitsTensor, trainLabelsTensor, {
         batchSize,
-        validationData: [testDigitsTensor, testLabelsTensor],
+        validationSplit: 0.1,
         shuffle: true,
         epochs: trainEpochs
     });

@@ -73,7 +73,7 @@ public class EmployeeController {
     return this.dsl.fetchCount(EMPLOYEE);
   }
 
-  @GetMapping("/insertMultiple1")
+  @PostMapping("/insertMultiple1")
   @Transactional
   public void insertMultiple1() {
     Employee e1 = new Employee();
@@ -99,7 +99,7 @@ public class EmployeeController {
     this.employeeDao.insert(e2);
   }
 
-  @GetMapping("/insertMultiple2")
+  @PostMapping("/insertMultiple2")
   public void insertMultiple2() {
     this.transactionTemplate.execute(txStatus -> {
       Employee e1 = new Employee();
@@ -128,7 +128,7 @@ public class EmployeeController {
     });
   }
 
-  @GetMapping("/insertMultiple3")
+  @PostMapping("/insertMultiple3")
   public void insertMultiple3() {
 
     this.dsl.transaction(txConf -> {

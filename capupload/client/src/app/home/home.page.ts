@@ -16,8 +16,7 @@ import {
   ToastController,
 } from '@ionic/angular';
 import { HttpClient } from '@angular/common/http';
-import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
-import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { Camera, MediaResult, MediaTypeSelection } from '@capacitor/camera';
 import { environment } from '../../environments/environment';
 import { catchError, finalize, Observable, throwError } from 'rxjs';
 import { Upload } from 'tus-js-client';
@@ -46,9 +45,8 @@ import { camera, image } from 'ionicons/icons';
 export class HomePage {
   readonly tus = signal(false);
   readonly error = signal<string | null>(null);
-  readonly photo = signal<SafeResourceUrl | null>(null);
+  readonly photo = signal<string | null>(null);
   private readonly http = inject(HttpClient);
-  private readonly sanitizer = inject(DomSanitizer);
   private readonly loadingCtrl = inject(LoadingController);
   private readonly toastCtrl = inject(ToastController);
   private counter = 0;
@@ -59,40 +57,41 @@ export class HomePage {
   }
 
   async takePhoto(): Promise<void> {
-    await this.handlePhotoSelection(CameraSource.Camera);
+    await this.handlePhotoSelection(() => Camera.takePhoto({ quality: 90 }));
   }
 
   async selectPhoto(): Promise<void> {
-    await this.handlePhotoSelection(CameraSource.Photos);
-  }
-
-  private async handlePhotoSelection(source: CameraSource): Promise<void> {
-    this.error.set(null);
-
-    const webPath = await this.getPhoto(source);
-    if (!webPath) {
-      return;
-    }
-
-    if (this.tus()) {
-      await this.uploadTus(webPath);
-    } else {
-      await this.uploadAll(webPath);
-    }
-  }
-
-  private async getPhoto(source: CameraSource): Promise<string | undefined> {
-    const image = await Camera.getPhoto({
-      quality: 90,
-      allowEditing: false,
-      resultType: CameraResultType.Uri,
-      source,
+    await this.handlePhotoSelection(async () => {
+      const result = await Camera.chooseFromGallery({ mediaType: MediaTypeSelection.Photo, allowMultipleSelection: false });
+      return result.results[0];
     });
+  }
 
-    if (image.webPath) {
-      this.photo.set(this.sanitizer.bypassSecurityTrustResourceUrl(image.webPath));
+  private async handlePhotoSelection(select: () => Promise<MediaResult | undefined>): Promise<void> {
+    this.error.set(null);
+    try {
+      const image = await select();
+      if (!image?.webPath) {
+        return;
+      }
+      this.photo.set(image.webPath);
+      if (this.tus()) {
+        await this.uploadTus(image.webPath);
+      } else {
+        await this.uploadAll(image.webPath);
+      }
+    } catch (error) {
+      this.error.set(error instanceof Error ? error.message : String(error));
+      await this.loading?.dismiss();
     }
-    return image.webPath;
+  }
+
+  private fileName(blob: Blob): string {
+    const extensions: Record<string, string> = {
+      'image/jpeg': 'jpg', 'image/png': 'png', 'image/webp': 'webp',
+      'image/gif': 'gif', 'image/heic': 'heic', 'image/heif': 'heif',
+    };
+    return `file-${this.counter++}.${extensions[blob.type] ?? 'bin'}`;
   }
 
   private async uploadAll(webPath: string): Promise<void> {
@@ -104,7 +103,7 @@ export class HomePage {
     const blob = await fetch(webPath).then((r) => r.blob());
 
     const formData = new FormData();
-    formData.append('file', blob, `file-${this.counter++}.jpg`);
+    formData.append('file', blob, this.fileName(blob));
     this.http
       .post<boolean>(`${environment.serverUrl}/uploadAll`, formData)
       .pipe(
@@ -129,7 +128,7 @@ export class HomePage {
       retryDelays: [0, 3000, 6000, 12000, 24000],
       chunkSize: 512 * 1024,
       metadata: {
-        filename: `file-${this.counter++}.jpg`,
+        filename: this.fileName(blob),
       },
       onError: () => {
         this.showToast(false);
