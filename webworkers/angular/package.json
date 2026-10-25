@@ -26,6 +26,6 @@
     "@angular/compiler-cli": "22.2.3",
     "local-web-server": "5.4.2",
     "prettier": "3.9.10",
-    "typescript": "6.0.3"
+    "typescript": "7.0.2"
   }
 }
