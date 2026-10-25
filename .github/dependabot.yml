@@ -1,0 +1,92 @@
+# Weekly version updates; security updates are enabled in repository settings.
+# Minor and patch releases are grouped; major releases remain separate.
+version: 2
+updates:
+- package-ecosystem: docker-compose
+  directories:
+  - /ratelimit
+  - /sbjooqflyway
+  schedule:
+    interval: weekly
+    day: monday
+    time: "09:00"
+    timezone: Europe/Zurich
+  open-pull-requests-limit: 5
+  groups:
+    minor-and-patch:
+      applies-to: version-updates
+      patterns:
+      - '*'
+      update-types:
+      - minor
+      - patch
+- package-ecosystem: maven
+  directories:
+  - /bigintjson
+  - /build-info/server
+  - /capupload/server
+  - /catch-all-smtp
+  - /credential/server
+  - /envers
+  - /java11httpclient/client
+  - /java11httpclient/server
+  - /jgit/examples
+  - /jgit/githubbackup
+  - /json-p
+  - /ky/server
+  - /ratelimit
+  - /sbjooqflyway
+  - /stateless/server
+  - /tls-and-h2
+  - /uploadtus/server
+  - /visibility/server
+  - /webpush
+  schedule:
+    interval: weekly
+    day: monday
+    time: "09:00"
+    timezone: Europe/Zurich
+  open-pull-requests-limit: 5
+  groups:
+    minor-and-patch:
+      applies-to: version-updates
+      patterns:
+      - '*'
+      update-types:
+      - minor
+      - patch
+- package-ecosystem: npm
+  directories:
+  - /build-info/client
+  - /capupload/client
+  - /credential/client
+  - /fa
+  - /googlefont
+  - /ky/client
+  - /mnistjs/client
+  - /mnistjs/train
+  - /stateless/client
+  - /uploadtus/client
+  - /visibility/client/simple
+  - /visibility/client/visibilityjs
+  - /webocr
+  - /webworkers/angular
+  - /webworkers/angular-comlink
+  - /webworkers/basic
+  - /webworkers/earthquakes
+  - /webworkers/mandel-with-worker
+  - /webworkers/vite-comlink
+  schedule:
+    interval: weekly
+    day: monday
+    time: "09:00"
+    timezone: Europe/Zurich
+  open-pull-requests-limit: 5
+  groups:
+    minor-and-patch:
+      applies-to: version-updates
+      patterns:
+      - '*'
+      update-types:
+      - minor
+      - patch
