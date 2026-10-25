@@ -31,7 +31,7 @@
     "@angular/compiler-cli": "22.2.3",
     "local-web-server": "5.4.2",
     "prettier": "3.9.10",
-    "simple-git": "3.36.0",
+    "simple-git": "4.0.1",
     "typescript": "6.0.3"
   }
 }
