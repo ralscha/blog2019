@@ -14,7 +14,7 @@
 
   <properties>
     <java.version>25</java.version>
-    <bucket4j.version>8.22.0</bucket4j.version>
+    <bucket4j.version>8.23.0</bucket4j.version>
   </properties>
 
   <dependencies>
